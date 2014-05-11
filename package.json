@@ -1,0 +1,14 @@
+{
+  "name": "slack-chat",
+  "main": "./lib/slack-chat",
+  "version": "0.0.0",
+  "description": "A short description of your package",
+  "activationEvents": ["slack-chat:toggle"],
+  "repository": "https://github.com/atom/slack-chat",
+  "license": "MIT",
+  "engines": {
+    "atom": ">0.50.0"
+  },
+  "dependencies": {
+  }
+}
