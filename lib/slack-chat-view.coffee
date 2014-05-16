@@ -3,8 +3,8 @@
 module.exports =
 class SlackChatView extends View
   @content: ->
-    @div class: 'slack-chat overlay from-top', =>
-      @div "The SlackChat package is Alive! It's ALIVE!", class: "message"
+    @div class: 'slack-chat', => 
+      @div "The SlackChat package is Alive! It's ALIVE!"
 
   initialize: (serializeState) ->
     atom.workspaceView.command "slack-chat:toggle", => @toggle()
@@ -21,4 +21,4 @@ class SlackChatView extends View
     if @hasParent()
       @detach()
     else
-      atom.workspaceView.append(this)
+      atom.workspaceView.appendToRight(this)
