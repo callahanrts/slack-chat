@@ -4,8 +4,13 @@ $ = require 'jquery'
 module.exports =
 class ConversationView extends View
   @content: ->
-    
-  initialize: (serializeState) ->
+    @div class: 'slack-chat', =>
+      @div '<', class: 'back'
+
+  initialize: (callback) ->
+    @.on 'click', '.back', (e) =>
+      @toggle()
+      callback()
 
   # Returns an object that can be retrieved when package is activated
   serialize: ->
@@ -14,7 +19,12 @@ class ConversationView extends View
   destroy: ->
     @detach()
 
-  toggle: ->
+  displayMember: ->
+    console.log @member
+
+  toggle: (member) ->
+    @member = member
+    @displayMember()
     if @hasParent()
       @detach()
     else

@@ -9,6 +9,8 @@ module.exports =
 
   activate: (state) ->
     @slackChatView = new SlackChatView(state.slackChatViewState)
+    atom.workspaceView.command "slack-chat:toggle", => 
+      @slackChatView.toggle()
 
   deactivate: ->
     @slackChatView.destroy()
