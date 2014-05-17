@@ -21,7 +21,6 @@ module.exports =
             @li "#{u.name}", class: 'member', 'data-id': u.id, click: 'openConversation'
     
     initialize: (serializeState) ->
-      @conversationView = new ConversationView(=> @toggle())
       # @sendMessage($(e.toElement).data('im'), "test message")
 
     # Returns an object that can be retrieved when package is activated
@@ -39,5 +38,6 @@ module.exports =
 
     openConversation: (e, el) ->
       member = _.findWhere(slackTeam, { id: $(el).data('id') })
-      @conversationView.toggle(member)
+      @conversationView = new ConversationView(member, => @toggle())
+      @conversationView.toggle()
       @toggle()

@@ -3,14 +3,12 @@ $ = require 'jquery'
 
 module.exports =
   class ConversationView extends View
-    @content: ->
+    @content: (member) ->
       @div class: 'slack-chat', =>
-        @div '<', class: 'back'
+        @div '<', class: 'back', click: 'toggle'
+        @div "#{member.name}", class: 'title'
 
-    initialize: (callback) ->
-      @.on 'click', '.back', (e) =>
-        @toggle()
-        callback()
+    initialize: (member, @callback) ->
 
     # Returns an object that can be retrieved when package is activated
     serialize: ->
@@ -19,12 +17,9 @@ module.exports =
     destroy: ->
       @detach()
 
-    displayMember: ->
-      console.log @member
-
-    toggle: (@member) ->
+    toggle: ->
       if @hasParent()
         @detach()
+        @callback()
       else
-        @displayMember()
         atom.workspaceView.appendToRight(this)
