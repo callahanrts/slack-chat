@@ -5,23 +5,25 @@ _ = require 'underscore-plus'
 slackTeam = []
 channels = []
 ims = []
-username = '(AT) cody'
 
 # Callahan
-token = "xoxp-2343778742-2343778744-2343809454-cb6720"
+# token = "xoxp-2343778742-2343778744-2343809454-cb6720"
 
 # Shortstack
 # token = "xoxp-2268699755-2285215027-2304671872-f10511"
 
 module.exports =
 class SlackChatView extends View
+  conversationView: null
+
   @content: ->
     @div class: 'slack-chat'
       
   initialize: (serializeState) ->
     @.on 'click', '.member', (e) =>
-      console.log $(e.toElement).data('im')
-      @sendMessage($(e.toElement).data('im'), "test message")
+      @toggle()
+      
+      # @sendMessage($(e.toElement).data('im'), "test message")
 
     atom.workspaceView.command "slack-chat:toggle", => 
       @getChannels()
@@ -41,6 +43,8 @@ class SlackChatView extends View
     else
       atom.workspaceView.appendToRight(this)
       
+  # Displays a list of channels in the side panel. Eventually this should probably be a view class
+  # or just find a way to use the @div and @ul functions atom seems to use.
   displayChannels: ->
     html = '<div class = "title">Channels</div>'
     html += '<ul class="channels">'
@@ -48,7 +52,9 @@ class SlackChatView extends View
       html += "<li class='channel'>##{c.name}</li>"
     html += "</ul>"
     $('.slack-chat').prepend html
-    
+
+  # Displays a list of team members in the side panel. Eventually this should probably be a view class
+  # or just find a way to use the @div and @ul functions atom seems to use.    
   displayTeamMembers: ->
     html = '<div class ="title">Users</div>'
     html += '<ul class="users">'
@@ -72,18 +78,17 @@ class SlackChatView extends View
     else
       args.icon_image = icon
 
-    console.log args
     $.get('https://slack.com/api/chat.postMessage', args).done (data) =>
       console.log data
         
   #################################################################################
   #
   # GET Methods
-  #
+  # Should probably switch to deferreds or something later
   #################################################################################
   getChannels: ->
     unless channels.length > 0
-      $.get 'https://slack.com/api/channels.list', { token: token }
+      $.get 'https://slack.com/api/channels.list', { token: atom.config.get('slack-chat.token') }
        .done (data) =>
           if data.ok is true
             for c in data.channels
@@ -92,7 +97,7 @@ class SlackChatView extends View
 
   getTeam: ->
     unless slackTeam.length > 0
-      $.get "https://slack.com/api/users.list?", { token: token }
+      $.get "https://slack.com/api/users.list?", { token: atom.config.get('slack-chat.token') }
         .done (data) =>
           if data.ok is true
             for m in data.members
@@ -101,7 +106,7 @@ class SlackChatView extends View
 
   getIMs: ->
     unless slackTeam.length > 0 and slackTeam[0].im
-      $.get 'https://slack.com/api/im.list', { token: token }
+      $.get 'https://slack.com/api/im.list', { token: atom.config.get('slack-chat.token') }
        .done (data) =>
           if data.ok is true
             for i in data.ims
