@@ -59,14 +59,21 @@ class SlackChatView extends View
     
 
   sendMessage: (im, message) ->
-    $.get('https://slack.com/api/chat.postMessage', {
-        token: token
-        channel: im
-        text: message
-        username: username
-        icon_emoji: ":ghost:"
-        icon_image: 'test' unless icon_emoji
-    }).done (data) =>
+    regex = /:.{1,}:/
+    icon = atom.config.get('slack-chat.icon_emoji_or_image')
+    args = {
+      token: atom.config.get('slack-chat.token')
+      channel: im
+      text: message
+      username: atom.config.get('slack-chat.username')
+    }
+    if regex.test(icon)
+      args.icon_emoji = icon
+    else
+      args.icon_image = icon
+
+    console.log args
+    $.get('https://slack.com/api/chat.postMessage', args).done (data) =>
       console.log data
         
   #################################################################################

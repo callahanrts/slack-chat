@@ -1,6 +1,10 @@
 SlackChatView = require './slack-chat-view'
 
 module.exports =
+  configDefaults: 
+    username: '(AT) username'
+    token: 'xxxx-xxxxxxxxxx-xxxxxxxxxx-xxxxxxxxxx-xxxxxx'
+    icon_emoji_or_image: ':slack:'
   slackChatView: null
 
   activate: (state) ->
