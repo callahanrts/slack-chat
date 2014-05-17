@@ -1,21 +1,25 @@
 {View} = require 'atom'
 $ = require 'jquery'
+_ = require 'underscore-plus'
 
 slackTeam = []
 channels = []
+ims = []
 
-_div = null
 
 module.exports =
 class SlackChatView extends View
   @content: ->
-    _div = @div
-    @div class: 'slack-chat', =>
+    @div class: 'slack-chat'
       
   initialize: (serializeState) ->
+    @.on 'click', '.member', (e) =>
+      console.log $(e.toElement).data('im')
+
     atom.workspaceView.command "slack-chat:toggle", => 
       @getChannels()
       @getTeam()
+      @getIMs()
       @toggle()
 
   # Returns an object that can be retrieved when package is activated
@@ -31,15 +35,6 @@ class SlackChatView extends View
     else
       atom.workspaceView.appendToRight(this)
       
-  getChannels: ->
-    unless channels.length > 0
-      $.get 'https://slack.com/api/channels.list?token=xoxp-2268699755-2285215027-2304671872-f10511'
-       .done (data) =>
-          if data.ok is true
-            for c in data.channels
-              channels.push c
-            @displayChannels()
-
   displayChannels: ->
     html = '<div class = "title">Channels</div>'
     html += '<ul class="channels">'
@@ -52,22 +47,36 @@ class SlackChatView extends View
     html = '<div class ="title">Users</div>'
     html += '<ul class="users">'
     for m in slackTeam
-      console.log m, m.name
-      html += "<li class ='member'>#{m.name}</li>"
+      html += "<li class = 'member' data-im='#{m.im.id if m.im}'>#{m.name}</li>"
     html += '</ul>'
     $('.slack-chat').append html
         
+  getChannels: ->
+    unless channels.length > 0
+      $.get 'https://slack.com/api/channels.list', { token: 'xoxp-2268699755-2285215027-2304671872-f10511' }
+       .done (data) =>
+          if data.ok is true
+            for c in data.channels
+              channels.push c
+            @displayChannels()
+
   getTeam: ->
     unless slackTeam.length > 0
-      $.get 'https://slack.com/api/users.list?token=xoxp-2268699755-2285215027-2304671872-f10511'
-       .done (data) =>
+      $.ajax
+        async: false
+        type: 'GET'
+        url:  'https://slack.com/api/users.list?token=xoxp-2268699755-2285215027-2304671872-f10511'
+        success: (data) =>
           if data.ok is true
             for m in data.members
               slackTeam.push m
-          @displayTeamMembers()
-      
-class SlackMember
-  constructor: (@data) ->
-    
-  sendMessage: (message) ->
-    console.log @data.real_name, message
+
+  getIMs: ->
+    unless slackTeam.length > 0 and slackTeam[0].im
+      $.get 'https://slack.com/api/im.list', { token: 'xoxp-2268699755-2285215027-2304671872-f10511' }
+       .done (data) =>
+          if data.ok is true
+            for i in data.ims
+              m = _.findWhere(slackTeam, {id: i.user})
+              m.im = i if m
+            @displayTeamMembers()

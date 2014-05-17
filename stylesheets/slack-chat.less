@@ -5,9 +5,10 @@
 @import "ui-variables";
 
 .slack-chat {
+  overflow: auto;
   padding-top: 5px;
   background-color: #1e1e1e;
-  min-width: 200px;
+  min-width: 400px;
   color: #aaaaaa;
 
   -webkit-box-shadow:inset 1px 0 1px 0 #000;
@@ -23,6 +24,16 @@
   
   ul {
     list-style: none;
-    padding-left: 15px;
+    padding-left: 0px;
+    li{
+      .active{
+        background-color: #444;
+        color: #ff982d;
+      }
+      padding-left: 15px;
+      height: 25px;
+      vertical-align: center;
+      line-height: 30px;
+    }
   }
 }
