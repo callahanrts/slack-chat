@@ -31,16 +31,12 @@ module.exports =
 
         @div 'Users', class: 'title'
         @ul class: 'users', =>
-          @li "#{u.name}", class: 'member', 'data-id': u.id for u in slackTeam
+          for u in slackTeam
+            @li "#{u.name}", class: 'member', 'data-id': u.id, click: 'openConversation'
     
     initialize: (serializeState) ->
       @conversationView = new ConversationView(=> @toggle())
-      @.on 'click', '.member', (e) =>
-        m = _.findWhere slackTeam, id: $(e.toElement).data('id')
-        @conversationView.toggle(m)
-        @toggle()
-        
-        # @sendMessage($(e.toElement).data('im'), "test message")
+      # @sendMessage($(e.toElement).data('im'), "test message")
 
     # Returns an object that can be retrieved when package is activated
     serialize: ->
@@ -54,6 +50,11 @@ module.exports =
         @detach()
       else
         atom.workspaceView.appendToRight(this)    
+
+    openConversation: (e, el) ->
+      member = _.findWhere(slackTeam, { id: $(el).data('id') })
+      @conversationView.toggle(member)
+      @toggle()
 
     sendMessage: (im, message) ->
       regex = /:.{1,}:/
@@ -85,8 +86,7 @@ module.exports =
           url: "https://slack.com/api/channels.list?token=#{atom.config.get('slack-chat.token')}"
           success: (data) =>
             if data.ok is true
-              for c in data.channels
-                channels.push c
+              channels.push c for c in data.channels
 
     getTeam: ->
       unless slackTeam.length > 0
@@ -96,8 +96,7 @@ module.exports =
           url: "https://slack.com/api/users.list?token=#{atom.config.get('slack-chat.token')}"
           success: (data) =>
             if data.ok is true
-              for m in data.members
-                slackTeam.push m
+              slackTeam.push m for m in data.members
 
     getIMs: ->
       unless slackTeam.length > 0 and slackTeam[0].im
