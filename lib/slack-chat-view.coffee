@@ -5,7 +5,13 @@ _ = require 'underscore-plus'
 slackTeam = []
 channels = []
 ims = []
+username = '(AT) cody'
 
+# Callahan
+token = "xoxp-2343778742-2343778744-2343809454-cb6720"
+
+# Shortstack
+# token = "xoxp-2268699755-2285215027-2304671872-f10511"
 
 module.exports =
 class SlackChatView extends View
@@ -15,11 +21,11 @@ class SlackChatView extends View
   initialize: (serializeState) ->
     @.on 'click', '.member', (e) =>
       console.log $(e.toElement).data('im')
+      @sendMessage($(e.toElement).data('im'), "test message")
 
     atom.workspaceView.command "slack-chat:toggle", => 
       @getChannels()
       @getTeam()
-      @getIMs()
       @toggle()
 
   # Returns an object that can be retrieved when package is activated
@@ -50,10 +56,27 @@ class SlackChatView extends View
       html += "<li class = 'member' data-im='#{m.im.id if m.im}'>#{m.name}</li>"
     html += '</ul>'
     $('.slack-chat').append html
+    
+
+  sendMessage: (im, message) ->
+    $.get('https://slack.com/api/chat.postMessage', {
+        token: token
+        channel: im
+        text: message
+        username: username
+        icon_emoji: ":ghost:"
+        icon_image: 'test' unless icon_emoji
+    }).done (data) =>
+      console.log data
         
+  #################################################################################
+  #
+  # GET Methods
+  #
+  #################################################################################
   getChannels: ->
     unless channels.length > 0
-      $.get 'https://slack.com/api/channels.list', { token: 'xoxp-2268699755-2285215027-2304671872-f10511' }
+      $.get 'https://slack.com/api/channels.list', { token: token }
        .done (data) =>
           if data.ok is true
             for c in data.channels
@@ -62,18 +85,16 @@ class SlackChatView extends View
 
   getTeam: ->
     unless slackTeam.length > 0
-      $.ajax
-        async: false
-        type: 'GET'
-        url:  'https://slack.com/api/users.list?token=xoxp-2268699755-2285215027-2304671872-f10511'
-        success: (data) =>
+      $.get "https://slack.com/api/users.list?", { token: token }
+        .done (data) =>
           if data.ok is true
             for m in data.members
               slackTeam.push m
+            @getIMs()
 
   getIMs: ->
     unless slackTeam.length > 0 and slackTeam[0].im
-      $.get 'https://slack.com/api/im.list', { token: 'xoxp-2268699755-2285215027-2304671872-f10511' }
+      $.get 'https://slack.com/api/im.list', { token: token }
        .done (data) =>
           if data.ok is true
             for i in data.ims
