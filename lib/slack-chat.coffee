@@ -1,4 +1,7 @@
 SlackChatView = require './slack-chat-view'
+SlackAPI = require './slack-api'
+$ = require 'jquery'
+_ = require 'underscore-plus'
 
 module.exports =
   configDefaults: 
@@ -8,7 +11,8 @@ module.exports =
   slackChatView: null
 
   activate: (state) ->
-    @slackChatView = new SlackChatView(state.slackChatViewState)
+    @slack = new SlackAPI()
+    @slackChatView = new SlackChatView(channels: @slack.channels(), slackTeam: @slack.team())
     atom.workspaceView.command "slack-chat:toggle", => 
       @slackChatView.toggle()
 
@@ -17,6 +21,3 @@ module.exports =
 
   serialize: ->
     slackChatViewState: @slackChatView.serialize()
-
-  chooseMember: ->
-    slackTeam[0] if slackTeam.length > 0

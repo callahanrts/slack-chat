@@ -4,34 +4,20 @@ $ = require 'jquery'
 _ = require 'underscore-plus'
 
 slackTeam = []
-channels = []
-ims = []
-
-# Callahan
-# token = "xoxp-2343778742-2343778744-2343809454-cb6720"
-
-# Shortstack
-# token = "xoxp-2268699755-2285215027-2304671872-f10511"
-
 module.exports =
   class SlackChatView extends View
     conversationView: null
 
-    constructor: ->
-      @getChannels()
-      @getTeam()
-      super
-
-    @content: ->
+    @content: (params) ->
+      slackTeam = params.slackTeam
       @div class: 'slack-chat', =>
         @div 'Channels', class: 'title'
         @ul class: 'channels', =>
-          console.log @channels
-          @li "##{c.name}", class: 'channel' for c in channels
+          @li "##{c.name}", class: 'channel' for c in params.channels
 
         @div 'Users', class: 'title'
         @ul class: 'users', =>
-          for u in slackTeam
+          for u in params.slackTeam
             @li "#{u.name}", class: 'member', 'data-id': u.id, click: 'openConversation'
     
     initialize: (serializeState) ->
@@ -55,54 +41,3 @@ module.exports =
       member = _.findWhere(slackTeam, { id: $(el).data('id') })
       @conversationView.toggle(member)
       @toggle()
-
-    sendMessage: (im, message) ->
-      regex = /:.{1,}:/
-      icon = atom.config.get('slack-chat.icon_emoji_or_image')
-      args = {
-        token: atom.config.get('slack-chat.token')
-        channel: im
-        text: message
-        username: atom.config.get('slack-chat.username')
-      }
-      if regex.test(icon)
-        args.icon_emoji = icon
-      else
-        args.icon_image = icon
-
-      $.get('https://slack.com/api/chat.postMessage', args).done (data) =>
-        console.log data
-          
-    #################################################################################
-    #
-    # GET Methods
-    # Should probably switch to deferreds or something later
-    #################################################################################
-    getChannels: ->
-      unless channels.length > 0
-        $.ajax
-          async: false
-          type: 'GET'
-          url: "https://slack.com/api/channels.list?token=#{atom.config.get('slack-chat.token')}"
-          success: (data) =>
-            if data.ok is true
-              channels.push c for c in data.channels
-
-    getTeam: ->
-      unless slackTeam.length > 0
-        $.ajax
-          async: false
-          type: 'GET'
-          url: "https://slack.com/api/users.list?token=#{atom.config.get('slack-chat.token')}"
-          success: (data) =>
-            if data.ok is true
-              slackTeam.push m for m in data.members
-
-    getIMs: ->
-      unless slackTeam.length > 0 and slackTeam[0].im
-        $.get 'https://slack.com/api/im.list', { token: atom.config.get('slack-chat.token') }
-         .done (data) =>
-            if data.ok is true
-              for i in data.ims
-                m = _.findWhere(slackTeam, {id: i.user})
-                m.im = i if m
