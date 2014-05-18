@@ -7,7 +7,6 @@ SlackAPI = require './slack-api'
 {$, ScrollView} = require 'atom'
 _ = require 'underscore-plus'
 
-slackTeam = []
 module.exports =
   class SlackChatView extends ScrollView
     conversationView: null
@@ -28,7 +27,6 @@ module.exports =
       @slack = new SlackAPI()
       @addChannels()
       @addPeople()
-      @selectEntry()
       @on 'mousedown', '.slack-chat-resize-handle', (e) => @resizeStarted(e)
       @on 'click', '.entry', (e) =>
         @entryClicked(e)
@@ -36,7 +34,6 @@ module.exports =
       @command 'core:move-down', => @moveDown()
       @command 'tool-panel:unfocus', => @unfocus()
       @command 'core:cancel', => @unfocus()
-      # @sendMessage($(e.toElement).data('im'), "test message")
 
     # Returns an object that can be retrieved when package is activated
     serialize: ->
@@ -45,9 +42,7 @@ module.exports =
     destroy: ->
       @detach()
 
-    openConversation: (e, el) ->
-      member = _.findWhere(slackTeam, { id: $(el).data('id') })
-      @slack = new SlackAPI()
+    openConversation: (member) ->
       @conversationView = new ConversationView(member, @slack.messages(member.im.id), => @toggle())
       @conversationView.toggle()
       @toggle()
@@ -70,10 +65,10 @@ module.exports =
     deselect: ->
       @list.find('.selected').removeClass('selected')
       
-    entryClicked: (e) ->
+    entryClicked: (e, el) ->
       entry = $(e.currentTarget).view()
       @selectEntry(entry)
-      # @openSelectedEntry(false) if entry instanceof MemberView
+      @openConversation(entry.member) if entry instanceof MemberView
       # @openSelectedEntry(false) if entry instanceof ChannelView
       false
       
@@ -82,7 +77,7 @@ module.exports =
       if selectedEntry
         @selectEntry(selectedEntry.next('.entry'))
       else
-        @selectEntry(@root)
+        @selectEntry(@list.find('.entry').first())
       @scrollToEntry(@selectedEntry())
 
     moveUp: ->
