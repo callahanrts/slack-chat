@@ -1,4 +1,4 @@
-$ = require 'jquery'
+{$, ScrollView} = require 'atom'
 _ = require 'underscore-plus'
 
 module.exports =

@@ -8,6 +8,7 @@ module.exports =
     username: '(AT) username'
     token: 'xxxx-xxxxxxxxxx-xxxxxxxxxx-xxxxxxxxxx-xxxxxx'
     icon_emoji_or_image: ':slack:'
+    show_on_right_side: true
   slackChatView: null
 
   activate: (state) ->

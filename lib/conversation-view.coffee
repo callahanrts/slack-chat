@@ -7,7 +7,7 @@ module.exports =
 
     @content: (member, messages) ->
       @div class: 'slack-chat', =>
-        @div '<', class: 'back', click: 'toggle'
+        @span class: 'back glyphicon glyphicon-chevron-left',  click: 'toggle'
         @div "#{member.name}", class: 'title'
         @div id: 'messages', =>
           for m in messages
