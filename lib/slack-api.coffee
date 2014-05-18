@@ -8,17 +8,36 @@ module.exports =
       @getTeam()
 
     channels: ->
-      console.log
       @slackChannels
     
     team: ->
       @slackTeam
+      
+    messages: (channel) ->
+      @getMessages(channel)
+      @slackMessages
 
     #################################################################################
     #
     # GET Methods
     # Should probably switch to deferreds or something later
     #################################################################################
+    sendRequest: (params) ->
+      $.ajax
+        async: false
+        type: 'GET'
+        url: "https://slack.com/api/im.history?token=#{atom.config.get('slack-chat.token')}&channel=#{channel}"
+        success: (data) =>
+          params.success()
+
+    getMessages: (channel) ->
+      $.ajax
+        async: false
+        type: 'GET'
+        url: "https://slack.com/api/im.history?token=#{atom.config.get('slack-chat.token')}&channel=#{channel}"
+        success: (data) =>
+          @slackMessages = data.messages if data.ok
+
     getChannels: ->
       @slackChannels ||= []
       unless @slackChannels.length > 0

@@ -1,4 +1,5 @@
 ConversationView = require './conversation-view'
+SlackAPI = require './slack-api'
 {View} = require 'atom'
 $ = require 'jquery'
 _ = require 'underscore-plus'
@@ -38,6 +39,7 @@ module.exports =
 
     openConversation: (e, el) ->
       member = _.findWhere(slackTeam, { id: $(el).data('id') })
-      @conversationView = new ConversationView(member, => @toggle())
+      @slack = new SlackAPI()
+      @conversationView = new ConversationView(member, @slack.messages(member.im.id), => @toggle())
       @conversationView.toggle()
       @toggle()
