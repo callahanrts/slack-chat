@@ -1,5 +1,4 @@
 SlackChatView = require './slack-chat-view'
-SlackAPI = require './slack-api'
 $ = require 'jquery'
 _ = require 'underscore-plus'
 
@@ -12,8 +11,7 @@ module.exports =
   slackChatView: null
 
   activate: (state) ->
-    @slack = new SlackAPI()
-    @slackChatView = new SlackChatView(channels: @slack.channels(), slackTeam: @slack.team())
+    @slackChatView = new SlackChatView()
     atom.workspaceView.command "slack-chat:toggle", => 
       @slackChatView.toggle()
 

@@ -15,9 +15,15 @@
   position: relative;
 
   // This fixes #110, see that issue for more details
-  .entry:before {
-    content: '';
-    position: absolute;
+  .entry {
+    &.selected{
+      font-weight: normal;
+      color: #ffffff;
+      text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);}
+    &.selected:before{
+      background: #444;
+      box-shadow: inset -3px 0 0 rgba(0, 0, 0, 0.05);
+    }
   }
   .white{background-color: white;width:50px;height:20px;}
   .back{
@@ -101,3 +107,4 @@
   width: 100%;
   overflow: auto;
 }
+.icon{margin-right:10px;}

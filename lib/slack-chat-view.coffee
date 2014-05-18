@@ -1,4 +1,8 @@
+# Views
 ConversationView = require './conversation-view'
+MemberView = require './member-view'
+ChannelView = require './channel-view'
+
 SlackAPI = require './slack-api'
 {$, ScrollView} = require 'atom'
 _ = require 'underscore-plus'
@@ -9,38 +13,29 @@ module.exports =
     conversationView: null
 
     @content: (params) ->
-      # @div class: 'slack-chat-resizer', 
-      #'data-show-on-right-side': atom.config.get('slack-chat.show_on_right_side'), =>
+      # @div class: 'list-inline tab-bar inset-panel', =>
+        # @div 'Slack Chat', class: 'slack-title'
       @div class: 'slack-chat-resizer', =>
         @div class: 'slack-chat-scroller', outlet: 'scroller', =>
-          # @div class: 'list-inline tab-bar inset-panel', =>
-            # @div 'Slack Chat', class: 'slack-title'
           @ol 
             class: 'slack-chat full-menu list-tree has-collapsable-children focusable-panel'
             tabindex: -1
             outlet: 'list'
         @div class: 'slack-chat-resize-handle', outlet: 'resizeHandle'
-      #   
-      # slackTeam = params.slackTeam
-      # @div class: 'slack-chat', =>
-      #   @div class: 'list-inline tab-bar inset-panel', =>
-      #     @div 'Slack Chat', class: 'slack-title'
-      # 
-      #   @div class: 'tree-view-scroller', =>
-      #     @div 'Channels', class: 'title'
-      #     @ol class: 'tree-view full-menu list-tree focusable-panel', =>
-      #       for c in params.channels
-      #         @li class: 'file entry list-item', =>
-      #           @span "##{c.name}", class: "name icon icon-book" 
-      # 
-      #     @div 'Users', class: 'title'
-      #     @ol class: 'users', =>
-      #       for u in params.slackTeam
-      #         @li "#{u.name}", class: 'member', 'data-id': u.id, click: 'openConversation'
   
-    initialize: (serializeState) ->
+    initialize: (@channels, @team) ->
       @width(400)
+      @slack = new SlackAPI()
+      @addChannels()
+      @addPeople()
+      @selectEntry()
       @on 'mousedown', '.slack-chat-resize-handle', (e) => @resizeStarted(e)
+      @on 'click', '.entry', (e) =>
+        @entryClicked(e)
+      @command 'core:move-up', => @moveUp()
+      @command 'core:move-down', => @moveDown()
+      @command 'tool-panel:unfocus', => @unfocus()
+      @command 'core:cancel', => @unfocus()
       # @sendMessage($(e.toElement).data('im'), "test message")
 
     # Returns an object that can be retrieved when package is activated
@@ -50,18 +45,69 @@ module.exports =
     destroy: ->
       @detach()
 
-    # toggle: ->
-    #   if @hasParent()
-    #     @detach()
-    #   else
-    #     atom.workspaceView.appendToRight(this)
     openConversation: (e, el) ->
       member = _.findWhere(slackTeam, { id: $(el).data('id') })
       @slack = new SlackAPI()
       @conversationView = new ConversationView(member, @slack.messages(member.im.id), => @toggle())
       @conversationView.toggle()
       @toggle()
+
+
+    ############################################################
+    # Selection
+    #
+    ############################################################
+    selectedEntry: ->
+      @list.find('.selected')?.view()
+
+    selectEntry: (entry) ->
+      entry = entry?.view()
+      return false unless entry?
+
+      @deselect()
+      entry.addClass('selected')
+
+    deselect: ->
+      @list.find('.selected').removeClass('selected')
       
+    entryClicked: (e) ->
+      entry = $(e.currentTarget).view()
+      @selectEntry(entry)
+      # @openSelectedEntry(false) if entry instanceof MemberView
+      # @openSelectedEntry(false) if entry instanceof ChannelView
+      false
+      
+    moveDown: ->
+      selectedEntry = @selectedEntry()
+      if selectedEntry
+        @selectEntry(selectedEntry.next('.entry'))
+      else
+        @selectEntry(@root)
+      @scrollToEntry(@selectedEntry())
+
+    moveUp: ->
+      selectedEntry = @selectedEntry()
+      if selectedEntry
+        @selectEntry(selectedEntry.prev('.entry'))
+      else
+        @selectEntry(@list.find('.entry').last())
+      @scrollToEntry(@selectedEntry())
+
+      
+    ############################################################
+    # Populate
+    #
+    ############################################################
+    addChannels: ->
+      @channels ||= @slack.channels()
+      for c in @channels
+        @list.append new ChannelView(c)
+
+    addPeople: ->
+      @team ||= @slack.team()
+      for m in @slack.team()
+        @list.append new MemberView(m)
+
     ############################################################
     # Display and focus
     #
@@ -128,3 +174,38 @@ module.exports =
       else
         width = pageX
       @width(width)
+              
+    ######################################################
+    # Scroll Code
+    #
+    ######################################################
+
+    scrollTop: (top) ->
+      if top?
+        @scroller.scrollTop(top)
+      else
+        @scroller.scrollTop()
+
+    scrollBottom: (bottom) ->
+      if bottom?
+        @scroller.scrollBottom(bottom)
+      else
+        @scroller.scrollBottom()
+
+    scrollToEntry: (entry, offset = 0) ->
+      displayElement = entry
+      top = displayElement.position().top
+      bottom = top + displayElement.outerHeight()
+      if bottom > @scrollBottom()
+        @scrollBottom(bottom + offset)
+      if top < @scrollTop()
+        @scrollTop(top + offset)
+
+    scrollToBottom: ->
+      if lastEntry = @root?.find('.entry:last').view()
+        @selectEntry(lastEntry)
+        @scrollToEntry(lastEntry)
+
+    scrollToTop: ->
+      @selectEntry(@root) if @root?
+      @scrollTop(0)
