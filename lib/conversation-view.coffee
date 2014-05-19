@@ -1,4 +1,4 @@
-{$, View} = require 'atom'
+{$, EditorView, View} = require 'atom'
 SlackAPI = require './slack-api'
 MessageView = require './message-view'
 
@@ -15,7 +15,7 @@ module.exports =
           outlet: 'messages'
 
         @div id: 'message_input', =>
-          @textarea id: 'msg', class: 'form-control', outlet: 'messageInput'
+          @subview 'miniEditor', new EditorView(mini: true)
 
     initialize: (@member, @parent) ->
       @slack = new SlackAPI()
@@ -40,7 +40,8 @@ module.exports =
         @messages.append new MessageView(m)
         
     focus: ->
-      @messageInput.focus()
+      @miniEditor.height(34)
+      @miniEditor.focus()
       
     hasFocus: ->
       @messageInput.is(':focus')
