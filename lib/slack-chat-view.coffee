@@ -26,7 +26,8 @@ module.exports =
           @div class: 'slack-chat-resize-handle', outlet: 'resizeHandle'
   
     initialize: (@channels, @team) ->
-      @conversations = []
+      @prevConversations = []
+      @nextConversations = []
       @slack = new SlackAPI()
       @width(400)
       @addChannels()
@@ -38,6 +39,7 @@ module.exports =
       @command 'core:move-down', => @moveDown()
 
       @command 'slack-chat:jump-to-previous-conversation', => @previousConversation()
+      @command 'slack-chat:jump-to-next-conversation', => @nextConversation()
       @command 'core:cancel', => @unfocus()
       # @command 'slack-chat:focus', => @focus()
       @command 'core:confirm', => @openConversation(@selectedEntry())
@@ -57,7 +59,7 @@ module.exports =
     openConversation: (view) ->
       member = view.member
       @currentConversation = new ConversationView(member, @)
-      @conversations.push @currentConversation
+      @prevConversations.push @currentConversation
       @menu.hide()
       @conversation.show()
       @conversation.html @currentConversation
@@ -70,15 +72,24 @@ module.exports =
       @menu.show()
       @focus()
       
+    nextConversation: () ->
+      # if @nextConversations.length > 0
+      #   c = @nextConversations.pop()
+      #   c.load()
+      #   @conversation.html c
+      #   c.focus()
+      #   @prevConversations.push c
+
     previousConversation: () ->
-      if @conversations.length > 0
+      if @prevConversations.length > 0
         @menu.hide()
         @conversation.show()
-        c = @conversations.pop()
-        c = @conversations.pop() if c is @currentConversation
+        c = @prevConversations.pop()
+        c = @prevConversations.pop() if c is @currentConversation
         c.load()
         @conversation.html c
         c.focus()
+        @nextConversations.push c
 
     ############################################################
     # Selection

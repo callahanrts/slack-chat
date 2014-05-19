@@ -10,7 +10,8 @@
     "slack-chat:focus",
     "slack-chat:open-conversation",
     "slack-chat:close-conversation",
-    "slack-chat:jump-to-previous-conversation"
+    "slack-chat:jump-to-previous-conversation",
+    "slack-chat:jump-to-next-conversation"
   ],
   "repository": "https://github.com/atom/slack-chat",
   "license": "MIT",
