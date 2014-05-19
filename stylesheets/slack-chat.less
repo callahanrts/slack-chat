@@ -6,16 +6,18 @@
 
 .slack-chat {
   // background-color: #1e1e1e;
-  // word-wrap: break-word;
-  // color: #aaaaaa;
-  // 
+  overflow: auto;
+  color: #aaaaaa;
+
   height: 100%;
   padding-left: @component-icon-padding;
   padding-right: @component-padding;
   position: relative;
+  max-width: 500px;
 
   // This fixes #110, see that issue for more details
   .entry {
+    .icon{margin-right:10px;}
     &.selected{
       font-weight: normal;
       color: #ffffff;
@@ -24,13 +26,6 @@
       background: #444;
       box-shadow: inset -3px 0 0 rgba(0, 0, 0, 0.05);
     }
-  }
-  .white{background-color: white;width:50px;height:20px;}
-  .back{
-    display: inline;
-    float: left;
-    cursor: pointer;
-    padding: 0 10px;
   }
   .slack-header {
     position: absolute;
@@ -77,6 +72,12 @@
   width: 200px;
   z-index: 2;
 
+  .slack-chat-scroller, .chat-menu, .conversation {
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+  }
+
   .slack-chat-resize-handle {
     position: absolute;
     top: 0;
@@ -100,11 +101,22 @@
       right: -5px;
     }
   }
+  
+  .conversation {
+    display:none;
+    word-wrap: break-word;
+    .message {
+      word-wrap: break-word;
+    }
+    #msg{
+      height: 400px;
+    }
+    .back{
+      display: inline;
+      float: left;
+      cursor: pointer;
+      padding: 0 10px;
+    }
+  }
 }
 
-.slack-chat-scroller {
-  height: 100%;
-  width: 100%;
-  overflow: auto;
-}
-.icon{margin-right:10px;}

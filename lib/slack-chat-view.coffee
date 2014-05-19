@@ -16,24 +16,33 @@ module.exports =
         # @div 'Slack Chat', class: 'slack-title'
       @div class: 'slack-chat-resizer', =>
         @div class: 'slack-chat-scroller', outlet: 'scroller', =>
-          @ol 
-            class: 'slack-chat full-menu list-tree has-collapsable-children focusable-panel'
-            tabindex: -1
-            outlet: 'list'
+          @div class: 'conversation', outlet: 'conversation'
+          @div class: 'chat-menu', outlet: 'menu', =>
+            @ol 
+              class: 'slack-chat full-menu list-tree has-collapsable-children focusable-panel'
+              tabindex: -1
+              outlet: 'list'
         @div class: 'slack-chat-resize-handle', outlet: 'resizeHandle'
   
     initialize: (@channels, @team) ->
-      @width(400)
       @slack = new SlackAPI()
+      @width(400)
       @addChannels()
       @addPeople()
       @on 'mousedown', '.slack-chat-resize-handle', (e) => @resizeStarted(e)
-      @on 'click', '.entry', (e) =>
-        @entryClicked(e)
+      @on 'click', '.entry', (e) => @entryClicked(e)
+      @on 'keypress', '', (e) =>
       @command 'core:move-up', => @moveUp()
       @command 'core:move-down', => @moveDown()
-      @command 'tool-panel:unfocus', => @unfocus()
+
       @command 'core:cancel', => @unfocus()
+      # @command 'slack-chat:focus', => @focus()
+      @command 'core:confirm', => @openConversation(@selectedEntry())
+      @command 'core:cancel', => @backToMenu()
+      # @command 'slack-chat:unfocus', => @unfocus()
+      # @command 'slack-chat:focus', => @focus()
+      # @command 'slack-chat:open-conversation', => @openConversation(@selectedEntry())
+      # @command 'slack-chat:close-conversation', => @backToMenu()
 
     # Returns an object that can be retrieved when package is activated
     serialize: ->
@@ -42,11 +51,18 @@ module.exports =
     destroy: ->
       @detach()
 
-    openConversation: (member) ->
-      @conversationView = new ConversationView(member, @slack.messages(member.im.id), => @toggle())
-      @conversationView.toggle()
-      @toggle()
-
+    openConversation: (view) ->
+      member = view.member
+      @currentConversation = new ConversationView(member, @)
+      @menu.hide()
+      @conversation.show()
+      @conversation.html @currentConversation
+      @currentConversation.focus()
+      
+    backToMenu: () ->
+      @conversation.hide()
+      @menu.show()
+      @focus()
 
     ############################################################
     # Selection
@@ -68,8 +84,7 @@ module.exports =
     entryClicked: (e, el) ->
       entry = $(e.currentTarget).view()
       @selectEntry(entry)
-      @openConversation(entry.member) if entry instanceof MemberView
-      # @openSelectedEntry(false) if entry instanceof ChannelView
+      @openConversation(entry) if entry instanceof MemberView
       false
       
     moveDown: ->

@@ -15,7 +15,7 @@ module.exports =
       
     messages: (channel) ->
       @getMessages(channel)
-      @slackMessages
+      @slackMessages.reverse()
 
     #################################################################################
     #
@@ -84,5 +84,5 @@ module.exports =
       else
         args.icon_image = icon
 
-      $.get('https://slack.com/api/chat.postMessage', args).done (data) =>
-        console.log data
+      $.get('https://slack.com/api/chat.postMessage', args)#.done (data) =>
+        # console.log data

@@ -1,34 +1,26 @@
-{View} = require 'atom'
-$ = require 'jquery'
+{$, View} = require 'atom'
+SlackAPI = require './slack-api'
+MessageView = require './message-view'
 
-messages = []
 module.exports =
   class ConversationView extends View
-
-    @content: (member, messages) ->
-      @div class: 'slack-chat', =>
+    @content: (member) ->
+      @div class: 'conversation-view',  =>
         @span class: 'back glyphicon glyphicon-chevron-left',  click: 'toggle'
         @div "#{member.name}", class: 'title'
-        @div id: 'messages', =>
-          for m in messages
-            console.log m
-            @div m.username
-            @div m.user
-            @div m.text 
-            @div m.ts
-            @div '_____________________'
+        @ol 
+          class: 'slack-chat full-menu list-tree has-collapsable-children focusable-panel'
+          tabindex: -1
+          outlet: 'messages'
+
         @div id: 'message_input', =>
-          @input id: 'msg', class: 'form-control'
+          @textarea id: 'msg', class: 'form-control', outlet: 'messageInput'
 
-    initialize: (member, messages, @callback) ->
-
-      # @displayMessages(member)
-      
-    # displayMessages: (member) ->
-    #   for message in @slack.messages(member.im.id)
-    #     console.log message
-    #     $('#messages').append("asdf")
-
+    initialize: (@member) ->
+      @slack = new SlackAPI()
+      @getMessages()
+      console.log 'init'
+  
     # Returns an object that can be retrieved when package is activated
     serialize: ->
 
@@ -36,9 +28,12 @@ module.exports =
     destroy: ->
       @detach()
 
-    toggle: ->
-      if @hasParent()
-        @detach()
-        @callback()
-      else
-        atom.workspaceView.appendToRight(this)
+    getMessages: ->
+      for m in @slack.messages(@member.im.id)
+        @messages.append new MessageView(m)
+        
+    focus: ->
+      @messageInput.focus()
+      
+    hasFocus: ->
+      @messageInput.is(':focus')

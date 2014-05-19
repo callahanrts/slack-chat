@@ -5,7 +5,11 @@
   "description": "A short description of your package",
   "activationEvents": [
     "slack-chat:toggle",
-    "slack-chat:send-message"
+    "slack-chat:send-message",
+    "slack-chat:unfocus",
+    "slack-chat:focus",
+    "slack-chat:open-conversation",
+    "slack-chat:close-conversation"
   ],
   "repository": "https://github.com/atom/slack-chat",
   "license": "MIT",
