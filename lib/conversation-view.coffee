@@ -18,8 +18,11 @@ module.exports =
           @textarea id: 'msg', class: 'form-control', outlet: 'messageInput'
 
     initialize: (@member, @parent) ->
-      @header.hide()
       @slack = new SlackAPI()
+      @load()
+  
+    load: ->
+      @header.hide()
       @parent.title.html @header.html()
       $('.back').click (e) =>
         @closeConversation()
