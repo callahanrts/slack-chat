@@ -6,8 +6,9 @@ module.exports =
   class ConversationView extends View
     @content: (member) ->
       @div class: 'conversation-view',  =>
-        @span class: 'back glyphicon glyphicon-chevron-left',  click: 'toggle'
-        @div "#{member.name}", class: 'title'
+        @div class: 'conversation-header', outlet: 'header', =>
+          @span class: 'back glyphicon glyphicon-chevron-left'
+          @div "#{member.name}", class: 'title'
         @ol 
           class: 'slack-chat full-menu list-tree has-collapsable-children focusable-panel'
           tabindex: -1
@@ -16,10 +17,13 @@ module.exports =
         @div id: 'message_input', =>
           @textarea id: 'msg', class: 'form-control', outlet: 'messageInput'
 
-    initialize: (@member) ->
+    initialize: (@member, @parent) ->
+      @header.hide()
       @slack = new SlackAPI()
+      @parent.title.html @header.html()
+      $('.back').click (e) =>
+        @closeConversation()
       @getMessages()
-      console.log 'init'
   
     # Returns an object that can be retrieved when package is activated
     serialize: ->
@@ -37,3 +41,6 @@ module.exports =
       
     hasFocus: ->
       @messageInput.is(':focus')
+      
+    closeConversation: ->
+      @parent.closeConversation()

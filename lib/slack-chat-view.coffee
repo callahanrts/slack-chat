@@ -12,17 +12,18 @@ module.exports =
     conversationView: null
 
     @content: (params) ->
-      # @div class: 'list-inline tab-bar inset-panel', =>
-        # @div 'Slack Chat', class: 'slack-title'
-      @div class: 'slack-chat-resizer', =>
-        @div class: 'slack-chat-scroller', outlet: 'scroller', =>
-          @div class: 'conversation', outlet: 'conversation'
-          @div class: 'chat-menu', outlet: 'menu', =>
-            @ol 
-              class: 'slack-chat full-menu list-tree has-collapsable-children focusable-panel'
-              tabindex: -1
-              outlet: 'list'
-        @div class: 'slack-chat-resize-handle', outlet: 'resizeHandle'
+      @div class: 'slack-wrapper', =>
+        @div class: 'slack-header list-inline tab-bar inset-panel', =>
+          @div 'Slack Chat', class: 'slack-title', outlet: 'title'
+        @div class: 'slack-chat-resizer', =>
+          @div class: 'slack-chat-scroller', outlet: 'scroller', =>
+            @div class: 'conversation', outlet: 'conversation'
+            @div class: 'chat-menu', outlet: 'menu', =>
+              @ol 
+                class: 'slack-chat full-menu list-tree has-collapsable-children focusable-panel'
+                tabindex: -1
+                outlet: 'list'
+          @div class: 'slack-chat-resize-handle', outlet: 'resizeHandle'
   
     initialize: (@channels, @team) ->
       @slack = new SlackAPI()
@@ -38,7 +39,7 @@ module.exports =
       @command 'core:cancel', => @unfocus()
       # @command 'slack-chat:focus', => @focus()
       @command 'core:confirm', => @openConversation(@selectedEntry())
-      @command 'core:cancel', => @backToMenu()
+      @command 'core:cancel', => @closeConversation()
       # @command 'slack-chat:unfocus', => @unfocus()
       # @command 'slack-chat:focus', => @focus()
       # @command 'slack-chat:open-conversation', => @openConversation(@selectedEntry())
@@ -59,7 +60,8 @@ module.exports =
       @conversation.html @currentConversation
       @currentConversation.focus()
       
-    backToMenu: () ->
+    closeConversation: () ->
+      @title.text 'Slack Chat'
       @conversation.hide()
       @menu.show()
       @focus()

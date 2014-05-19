@@ -3,17 +3,21 @@
 // See https://github.com/atom/atom-dark-ui/blob/master/stylesheets/ui-variables.less
 // for a full listing of what's available.
 @import "ui-variables";
-
+.slack-wrapper{
+  width:100%;
+  height:100%;
+  color: #aaaaaa;  
+}
 .slack-chat {
   // background-color: #1e1e1e;
   overflow: auto;
   color: #aaaaaa;
 
   height: 100%;
+  width:100%;
   padding-left: @component-icon-padding;
   padding-right: @component-padding;
   position: relative;
-  max-width: 500px;
 
   // This fixes #110, see that issue for more details
   .entry {
@@ -26,22 +30,6 @@
       background: #444;
       box-shadow: inset -3px 0 0 rgba(0, 0, 0, 0.05);
     }
-  }
-  .slack-header {
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
-  .slack-title {
-    color: #aaa
-  }
-
-  .title{
-    margin-bottom: 5px;
-    padding-left: 10px;
-    font-size: 16px;
-    width:100%;
-    border-bottom: 1px solid #aaaaaa;
   }
   
   ul {
@@ -61,16 +49,39 @@
   }
 }
 
+.slack-header{
+  height:34px;
+  width: 100%;
+  background: black;
+  position: fixed;
+  z-index: 5;
+  top: 0;
+}
+.slack-title {
+  padding-top:5px;
+  font-size:14px;
+  width:100%;
+}
+.back{
+  display: inline;
+  float: left;
+  cursor: pointer;
+  margin-right: 5px;
+  padding-top: 2px;
+}
+
 
 .slack-chat-resizer {
-  position: relative;
-  height: 100%;
+  padding-top: 34px;
+  position: absolute;
+  top:0;
   overflow: hidden;
   cursor: default;
   -webkit-user-select: none;
   min-width: 100px;
-  width: 200px;
   z-index: 2;
+  height: 100%;
+  width: 100%;
 
   .slack-chat-scroller, .chat-menu, .conversation {
     height: 100%;
@@ -105,17 +116,12 @@
   .conversation {
     display:none;
     word-wrap: break-word;
+    color: #aaaaaa;
     .message {
       word-wrap: break-word;
     }
     #msg{
       height: 400px;
-    }
-    .back{
-      display: inline;
-      float: left;
-      cursor: pointer;
-      padding: 0 10px;
     }
   }
 }
