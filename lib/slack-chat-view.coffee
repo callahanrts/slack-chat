@@ -62,6 +62,7 @@ module.exports =
       
     closeConversation: () ->
       @title.text 'Slack Chat'
+      @currentConversation = null
       @conversation.hide()
       @menu.show()
       @focus()
@@ -154,6 +155,7 @@ module.exports =
 
     focus: ->
       @list.focus()
+      @currentConversation.focus() if @currentConversation
 
     unfocus: ->
       atom.workspaceView.focus()
