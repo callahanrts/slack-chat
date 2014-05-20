@@ -1,3 +1,8 @@
 ## 0.1.0 - First Release
-* Every feature added
-* Every bug fixed
+* Features
+  * Can send basic messages to 
+    * Channels
+    * PMs
+  * Message history gets loaded upon opening a conversation
+  
+
