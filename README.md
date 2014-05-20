@@ -1,4 +1,4 @@
-# Slack Chat - Atom package
+# Slack Chat - Atom package *Beta*
 
 Slack Chat is an Atom package that integrates the slack messaging client into the editor.
 #### With slack chat you can: 
@@ -18,6 +18,7 @@ Slack Chat is an Atom package that integrates the slack messaging client into th
 - Notifications for new messages
 - Receive messages in real time
 - More customization on placement and theme of Slack Chat
+- Make the commands less buggy
 
 # Usage
 ![Slack Chat settings](settings.png)
