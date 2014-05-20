@@ -6,13 +6,14 @@ class MessageView extends View
   @content: (message, team) ->
     user = _.findWhere(team, {id: message.user}) if message.user
     lines = message.text.split(/\r\n|\r|\n/g);
+    username = if user then user.name else atom.config.get('slack-chat.username')
     @div class: 'message', =>
       @div class: 'user_icon', =>
         if user
           @img src: user.profile.image_24
         else
           @div class: 'icon glyphicon glyphicon-user'
-      @div "#{if user then user.name else ''}", class: 'name', outlet: 'memberName'
+      @div "#{username}", class: 'name', outlet: 'memberName'
       @div "#{message.ts}", class: 'time', outlet: 'time'
       @div class: 'text', outlet: 'memberName', =>
         for l in lines
