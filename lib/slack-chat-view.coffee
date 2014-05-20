@@ -53,8 +53,11 @@ module.exports =
       @detach()
 
     openConversation: (view) ->
-      member = view.member
-      @currentConversation = new ConversationView(member, @)
+      room = view.member
+      unless room
+        room = view.channel
+        room.im = {id: room.id, channel: true}
+      @currentConversation = new ConversationView(room, @)
       @prevConversations.push @currentConversation
       @menu.hide()
       @conversation.show()
@@ -108,6 +111,7 @@ module.exports =
       entry = $(e.currentTarget).view()
       @selectEntry(entry)
       @openConversation(entry) if entry instanceof MemberView
+      console.log entry
       false
       
     moveDown: ->

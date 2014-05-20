@@ -20,6 +20,7 @@ module.exports =
           @subview 'miniEditor', new EditorView(mini: true)
 
     initialize: (@member, @parent) ->
+      console.log @member
       @slack = new SlackAPI()
       @load()
 
@@ -50,7 +51,7 @@ module.exports =
       @detach()
 
     getMessages: ->
-      for m in @slack.messages(@member.im.id)
+      for m in @slack.messages(@member.im.id, @member.im.channel)
         @messages.append new MessageView(m, @parent.team)
         
     focus: ->

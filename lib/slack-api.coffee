@@ -13,8 +13,8 @@ module.exports =
     team: ->
       @slackTeam
       
-    messages: (channel) ->
-      @getMessages(channel)
+    messages: (channel, is_channel) ->
+      @getMessages(channel, is_channel)
       @slackMessages.reverse()
 
     #################################################################################
@@ -30,11 +30,12 @@ module.exports =
         success: (data) =>
           params.success()
 
-    getMessages: (channel) ->
+    getMessages: (channel, is_channel) ->
+      t = if is_channel then 'channels' else 'im'
       $.ajax
         async: false
         type: 'GET'
-        url: "https://slack.com/api/im.history?token=#{atom.config.get('slack-chat.token')}&channel=#{channel}"
+        url: "https://slack.com/api/#{t}.history?token=#{atom.config.get('slack-chat.token')}&channel=#{channel}"
         success: (data) =>
           @slackMessages = data.messages if data.ok
 
