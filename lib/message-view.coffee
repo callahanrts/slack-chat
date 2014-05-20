@@ -3,25 +3,29 @@ _ = require 'underscore-plus'
 
 module.exports =
 class MessageView extends View
-  @content: (message, team) ->
+  @content: (message, parent) ->
+    team = parent.team
     user = _.findWhere(team, {id: message.user}) if message.user
-    lines = message.text.split(/\r\n|\r|\n/g);
-    username = if user then user.name else atom.config.get('slack-chat.username')
-    @div class: 'message', =>
-      @div class: 'user_icon', =>
-        if user
-          @img src: user.profile.image_24
-        else
-          @div class: 'icon glyphicon glyphicon-user'
-      @div "#{username}", class: 'name', outlet: 'memberName'
-      @div "#{message.ts}", class: 'time', outlet: 'time'
-      @div class: 'text', outlet: 'memberName', =>
-        for l in lines
-          @div l, class: 'line'
+    @div class: 'message', outlet: 'slackMessage', =>
+      # Deleted messages wont have a text object so don't show them.
+      if message.text
+        lines = message.text.split(/\r\n|\r|\n/g);
+        username = if user then user.name else atom.config.get('slack-chat.username')
+        @div class: 'user_icon', =>
+          if user
+            @img src: user.profile.image_24
+          else
+            @div class: 'icon glyphicon glyphicon-user'
+        @div "#{username}", class: 'name', outlet: 'memberName'
+        @div "#{message.ts}", class: 'time', outlet: 'time'
+        @div class: 'text', outlet: 'messageText', =>
+          for l in lines
+            @div l, class: 'line'
 
-  initialize: (message, team) ->
-    user = _.findWhere(team, {id: message.user}) if message.user
-    @getTime(message.ts)
+  initialize: (message, @parent) ->
+    @getTime(message.ts) if message.text
+    # @slackMessage.width(@parent.miniEditor.width())
+    # @messageText.width(@parent.miniEditor.width() - 60)
     
   getTime: (timestamp) ->
     a = new Date(timestamp * 1000)

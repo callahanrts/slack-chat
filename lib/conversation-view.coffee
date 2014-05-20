@@ -52,7 +52,8 @@ module.exports =
 
     getMessages: ->
       for m in @slack.messages(@member.im.id, @member.im.channel)
-        @messages.append new MessageView(m, @parent.team)
+        m = m.message if m.message
+        @messages.append new MessageView(m, @parent)
         
     focus: ->
       @miniEditor.height(34)
