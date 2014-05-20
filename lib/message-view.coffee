@@ -22,9 +22,6 @@ class MessageView extends View
   initialize: (message, team) ->
     user = _.findWhere(team, {id: message.user}) if message.user
     @getTime(message.ts)
-    # @fileName.text(@file.name)
-    # @fileName.attr('data-name', @file.name)
-    # @fileName.attr('data-path', relativeFilePath)
     
   getTime: (timestamp) ->
     a = new Date(timestamp * 1000)
