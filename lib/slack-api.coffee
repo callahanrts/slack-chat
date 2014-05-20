@@ -83,7 +83,7 @@ module.exports =
       if regex.test(icon)
         args.icon_emoji = icon
       else
-        args.icon_image = icon
+        args.icon_url = icon
         
       $.get('https://slack.com/api/chat.postMessage', args).done (data) =>
         console.log data
