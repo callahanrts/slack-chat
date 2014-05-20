@@ -6,14 +6,14 @@ Slack Chat is an Atom package that integrates the slack messaging client into th
 - View message history
 
 # Preview
-![Slack Chat for Atom](slackchat.gif)
+<img src="slackchat.gif" alt="Slack Chat for Atom" style="width: 300px;"/>
 
 # Todo
 - Parse markdown
 - Enable links
 - Display images
 - Display emoticons
-- Automatically scroll to new messages
+- Automatically scroll to new messagesP
 - More responsive message input
 - Notifications for new messages
 - Receive messages in real time
@@ -21,6 +21,7 @@ Slack Chat is an Atom package that integrates the slack messaging client into th
 - Make the commands less buggy
 
 # Usage
+
 ![Slack Chat settings](settings.png)
 ### Icon emoji or image
 Select he emoji or image that will be seen by others as your icon.
