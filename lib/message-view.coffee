@@ -1,16 +1,25 @@
 {View} = require 'atom'
+_ = require 'underscore-plus'
 
 module.exports =
 class MessageView extends View
-  @content: (message) ->
-    # console.log message
+  @content: (message, team) ->
+    user = _.findWhere(team, {id: message.user}) if message.user
+    lines = message.text.split(/\r\n|\r|\n/g);
     @div class: 'message', =>
-      @div class: 'icon glyphicon glyphicon-envelope'
-      @div "#{message.user}", class: 'name', outlet: 'memberName'
-      @div "#{message.text}", class: 'name', outlet: 'memberName'
+      @div class: 'user_icon', =>
+        if user
+          @img src: user.profile.image_24
+        else
+          @div class: 'icon glyphicon glyphicon-user'
+      @div "#{if user then user.name else ''}", class: 'name', outlet: 'memberName'
       @div "#{message.ts}", class: 'time', outlet: 'time'
+      @div class: 'text', outlet: 'memberName', =>
+        for l in lines
+          @div l, class: 'line'
 
-  initialize: (message) ->
+  initialize: (message, team) ->
+    user = _.findWhere(team, {id: message.user}) if message.user
     @getTime(message.ts)
     # @fileName.text(@file.name)
     # @fileName.attr('data-name', @file.name)
@@ -23,4 +32,9 @@ class MessageView extends View
     date = a.getDate()
     hour = a.getHours()
     min = a.getMinutes()
-    @time.text("#{month} #{date} #{hour}:#{min}")
+    if hour > 12
+      hour = hour - 12
+      t = " pm"
+    else
+      t = " am"
+    @time.text("#{month} #{date} #{hour}:#{min} #{t}")

@@ -83,6 +83,6 @@ module.exports =
         args.icon_emoji = icon
       else
         args.icon_image = icon
-
-      $.get('https://slack.com/api/chat.postMessage', args)#.done (data) =>
-        # console.log data
+        
+      $.get('https://slack.com/api/chat.postMessage', args).done (data) =>
+        console.log data

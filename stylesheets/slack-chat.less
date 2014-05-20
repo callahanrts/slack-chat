@@ -118,11 +118,53 @@
     display:none;
     word-wrap: break-word;
     color: #aaaaaa;
+    #message_list{padding-left:0}
+    .message {
+      width: 100%;
+      padding: 7px 0 20px 10px;
+      overflow: auto;
+      border-bottom: 1px solid #333;
+      .line{display:block;}
+      .time{
+        font-size: 10px;
+        width:auto;
+        display:table-cell;
+        vertical-align:bottom;
+        line-height: 18px;
+      }
+      .name{
+        display:table-cell;
+        vertical-align:bottom;
+        margin: 0 10px;
+        float:left;
+        width:auto;
+        line-height: 18px;
+      }
+      .text{
+        display:block;
+        width: 100%;
+        padding-left: 36px;
+        float:left;
+      }
+      .user_icon{
+        width: 24px;
+        float:left;
+        display:inline;
+      }
+    }
+    ol.messages{
+      padding-bottom: 40px;
+    }
     .message {
       word-wrap: break-word;
     }
-    .message_input{
-      .overlayer{ height: 34px; }
+    #message_input{
+      max-height:200px;
+      overflow: auto;
+      position: absolute;
+      width: 100%;
+      bottom: 0;
+      height: auto
     }
   }
 }

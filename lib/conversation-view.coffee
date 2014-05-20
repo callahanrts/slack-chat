@@ -1,4 +1,5 @@
 {$, EditorView, View} = require 'atom'
+
 SlackAPI = require './slack-api'
 MessageView = require './message-view'
 
@@ -10,17 +11,30 @@ module.exports =
           @span class: 'back glyphicon glyphicon-chevron-left'
           @div "#{member.name}", class: 'title'
         @ol 
-          class: 'slack-chat full-menu list-tree has-collapsable-children focusable-panel'
+          id: 'message_list'
+          class: 'slack-chat messages full-menu list-tree has-collapsable-children focusable-panel'
           tabindex: -1
           outlet: 'messages'
 
-        @div id: 'message_input', =>
+        @div id: 'message_input', outlet: "messageInput", =>
           @subview 'miniEditor', new EditorView(mini: true)
 
     initialize: (@member, @parent) ->
       @slack = new SlackAPI()
       @load()
-  
+
+      @on 'click', "#message_input", ->
+        @focus()
+
+      @command 'core:confirm', => 
+        @slack.sendMessage(@member.im.id, @miniEditor.getText())
+        @miniEditor.setText('')
+        @miniEditor.height(34)
+        
+      @command 'slack-chat:new-line', =>
+        @miniEditor.setText(@miniEditor.getText() + '\n')
+        @miniEditor.height(@miniEditor.height() + 25)
+
     load: ->
       @header.hide()
       @parent.title.html @header.html()
@@ -37,7 +51,7 @@ module.exports =
 
     getMessages: ->
       for m in @slack.messages(@member.im.id)
-        @messages.append new MessageView(m)
+        @messages.append new MessageView(m, @parent.team)
         
     focus: ->
       @miniEditor.height(34)
@@ -48,3 +62,4 @@ module.exports =
       
     closeConversation: ->
       @parent.closeConversation()
+      

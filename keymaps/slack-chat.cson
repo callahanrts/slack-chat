@@ -9,3 +9,7 @@
 # https://atom.io/docs/latest/advanced/keymaps
 '.workspace':
   'cmd-m': 'slack-chat:toggle'
+
+  'ctrl-o': 'slack-chat:open-conversation'
+  'shift-enter': 'slack-chat:new-line'
+  

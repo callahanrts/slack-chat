@@ -34,20 +34,16 @@ module.exports =
       @addPeople()
       @on 'mousedown', '.slack-chat-resize-handle', (e) => @resizeStarted(e)
       @on 'click', '.entry', (e) => @entryClicked(e)
-      @on 'keypress', '', (e) =>
+
       @command 'core:move-up', => @moveUp()
       @command 'core:move-down', => @moveDown()
 
       @command 'slack-chat:jump-to-previous-conversation', => @previousConversation()
       @command 'slack-chat:jump-to-next-conversation', => @nextConversation()
-      @command 'core:cancel', => @unfocus()
-      # @command 'slack-chat:focus', => @focus()
-      @command 'core:confirm', => @openConversation(@selectedEntry())
       @command 'core:cancel', => @closeConversation()
-      # @command 'slack-chat:unfocus', => @unfocus()
-      # @command 'slack-chat:focus', => @focus()
-      # @command 'slack-chat:open-conversation', => @openConversation(@selectedEntry())
-      # @command 'slack-chat:close-conversation', => @backToMenu()
+      # @command 'slack-chat:toggle-focus', => @toggleFocus()
+      @command 'slack-chat:open-conversation', => @openConversation(@selectedEntry())
+      @command 'slack-chat:close-conversation', => @backToMenu()
 
     # Returns an object that can be retrieved when package is activated
     serialize: ->
