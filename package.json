@@ -1,7 +1,7 @@
 {
   "name": "slack-chat",
   "main": "./lib/slack-chat",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Slack Chat is an Atom package that integrates the slack messaging client into the editor.",
   "activationEvents": [
     "slack-chat:toggle",
@@ -19,7 +19,7 @@
     "atom": ">0.50.0"
   },
   "dependencies": {
-    "jquery": "~2.1.1", 
+    "jquery": "~2.1.1",
     "underscore-plus": "~1.2.1"
   }
 }
