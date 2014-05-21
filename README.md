@@ -6,7 +6,7 @@ Slack Chat is an Atom package that integrates the slack messaging client into th
 - View message history
 
 # Preview
-<img src="slackchat.gif" width=500 />
+<img src="http://drive.google.com/uc?export=view&id=0B_FMiWCp_bLQX2xJTkhNdEhpcG8" width=500 />
 
 # Todo
 - Parse markdown
@@ -22,7 +22,7 @@ Slack Chat is an Atom package that integrates the slack messaging client into th
 
 # Usage
 
-![Slack Chat settings](settings.png)
+![Slack Chat settings](http://drive.google.com/uc?export=view&id=0B_FMiWCp_bLQTTdzZjhQQ2wya0U)
 ### Icon emoji or image
 Select he emoji or image that will be seen by others as your icon.
 ### Token
