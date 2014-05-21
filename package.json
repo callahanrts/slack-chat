@@ -2,7 +2,7 @@
   "name": "slack-chat",
   "main": "./lib/slack-chat",
   "version": "0.0.0",
-  "description": "A short description of your package",
+  "description": "Slack Chat is an Atom package that integrates the slack messaging client into the editor.",
   "activationEvents": [
     "slack-chat:toggle",
     "slack-chat:send-message",
@@ -13,7 +13,7 @@
     "slack-chat:jump-to-previous-conversation",
     "slack-chat:jump-to-next-conversation"
   ],
-  "repository": "https://github.com/atom/slack-chat",
+  "repository": "https://github.com/callahanrts/slack-chat",
   "license": "MIT",
   "engines": {
     "atom": ">0.50.0"
