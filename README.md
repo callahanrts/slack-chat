@@ -6,7 +6,7 @@ Slack Chat is an Atom package that integrates the slack messaging client into th
 - View message history
 
 # Preview
-![Slack Chat for Atom](slackchat.gif =300x)
+<center><img src="slackchat.gif" width=400 /></center>
 
 # Todo
 - Parse markdown
