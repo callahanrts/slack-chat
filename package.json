@@ -20,6 +20,6 @@
   },
   "dependencies": {
     "jquery": "~2.1.1",
-    "underscore-plus": "~1.2.1"
+    "underscore-plus": "~1.2.1",
   }
 }

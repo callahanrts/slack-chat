@@ -1,0 +1,23 @@
+{
+  "manifest_version": 2,
+
+  "name": "Slack Chat",
+  "description": "Send notifications to Slack Chat for Atom",
+  "version": "1.0",
+
+  "content_scripts": [{
+    "matches": ["https://*.slack.com/messages/*/*"],
+    "js": ["injector.js"]
+  }],
+  
+  "web_accessible_resources": [
+    "slack-scraper.js", 
+    "jquery.js", 
+    "underscore.js"
+  ],
+
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_popup": "popup.html"
+  }
+}
