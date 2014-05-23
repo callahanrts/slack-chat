@@ -54,21 +54,17 @@ module.exports =
       @detach()
       
     newMessage: (messages) ->
-      console.log "slack-chat-view", messages
       $('.entry', '.slack-chat').each (index, element) ->
         view = $(element).view()
-        member = view.member if view instanceof MemberView
-        console.log member
-        message = _.findWhere messages, {channel_id: member.id} if member
-        if member and message
-          view.newMessages.html message.count
+        model = view.member if view instanceof MemberView
+        model = view.channel if view instanceof ChannelView
+        message = _.findWhere messages, {channel_id: model.id} if model
+        if model and message
+          view.newMessages.html message.count unless view instanceof ChannelView
           view.newMessages.show()
-        # if m instanceof MemberView
-          # console.log m
-        # if entry instanceof ChannelView
-          
 
     openConversation: (view) ->
+      view.newMessages.hide()
       room = view.member
       unless room
         room = view.channel

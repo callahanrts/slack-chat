@@ -9,4 +9,3 @@ class MemberView extends View
       @span "1", class: 'notifications', outlet: 'newMessages'
 
   initialize: (@member) ->
-    @newMessages.hide()

@@ -64,6 +64,10 @@ module.exports =
         success: (data) =>
           @slackMessages = data.messages if data.ok
 
+          # Set mark when message is sent
+          $.get("https://slack.com/api/#{t}.mark?token=#{atom.config.get('slack-chat.token')}&channel=#{channel}&ts=#{Date.now()}")
+
+
     getChannels: ->
       @slackChannels ||= []
       unless @slackChannels.length > 0
@@ -112,7 +116,3 @@ module.exports =
         
       $.get('https://slack.com/api/chat.postMessage', args).done (data) =>
         console.log data
-
-        # Set mark when message is sent
-        $.get('https://slack.com/api/channels.mark?', {token: atom.config.get('slack-chat.token'), channel: im, ts: Date.now()}).done (data) ->
-          console.log data
