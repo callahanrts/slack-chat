@@ -1,6 +1,5 @@
 {$, EditorView, View} = require 'atom'
 
-SlackAPI = require './slack-api'
 MessageView = require './message-view'
 
 module.exports =
@@ -20,8 +19,9 @@ module.exports =
           @subview 'miniEditor', new EditorView(mini: true)
 
     initialize: (@member, @parent) ->
+      @slack = @parent.slack
+      @slack.addMessageSubscription(@newMessage)
       console.log @member
-      @slack = new SlackAPI()
       @load()
 
       @on 'click', "#message_input", ->
@@ -49,6 +49,9 @@ module.exports =
     # Tear down any state and detach
     destroy: ->
       @detach()
+      
+    newMessage: (messages) ->
+      console.log 'conversation-view', messages
 
     getMessages: ->
       for m in @slack.messages(@member.im.id, @member.im.channel)

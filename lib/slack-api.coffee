@@ -1,11 +1,27 @@
 {$, ScrollView} = require 'atom'
 _ = require 'underscore-plus'
+express = require('express');
+bodyParser = require('body-parser')
 
 module.exports =
   class SlackAPI
     constructor: ->
       @getChannels()
       @getTeam()
+      
+      @app = express();
+      @app.use(bodyParser())
+      @app.all '/*', (req, res, next) ->
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "X-Requested-With");
+        next();
+
+      server = @app.listen 51932, () ->
+        console.log('Listening on port %d', server.address().port);
+        
+      @app.post '/new', (req, res) =>
+        @setNotifications(req.body.messages)
+        res.send("success!")
 
     channels: ->
       @slackChannels
@@ -16,6 +32,15 @@ module.exports =
     messages: (channel, is_channel) ->
       @getMessages(channel, is_channel)
       @slackMessages.reverse()
+      
+    setNotifications: (messages) ->
+      @subscriptions ||= []
+      for n in @subscriptions
+        n(messages)
+        
+    addMessageSubscription: (sub) ->
+      @subscriptions ||= []
+      @subscriptions.push sub
 
     #################################################################################
     #

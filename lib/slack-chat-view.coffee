@@ -11,7 +11,7 @@ module.exports =
   class SlackChatView extends ScrollView
     conversationView: null
 
-    @content: (params) ->
+    @content: ->
       @div class: 'slack-wrapper', =>
         @div class: 'slack-header list-inline tab-bar inset-panel', =>
           @div 'Slack Chat', class: 'slack-title', outlet: 'title'
@@ -25,10 +25,11 @@ module.exports =
                 outlet: 'list'
           @div class: 'slack-chat-resize-handle', outlet: 'resizeHandle'
   
-    initialize: (@channels, @team) ->
+    initialize: () ->
+      @slack = new SlackAPI()
+      @slack.addMessageSubscription(@newMessage)
       @prevConversations = []
       @nextConversations = []
-      @slack = new SlackAPI()
       @width(400)
       @addChannels()
       @addPeople()
@@ -51,6 +52,21 @@ module.exports =
     # Tear down any state and detach
     destroy: ->
       @detach()
+      
+    newMessage: (messages) ->
+      console.log "slack-chat-view", messages
+      $('.entry', '.slack-chat').each (index, element) ->
+        view = $(element).view()
+        member = view.member if view instanceof MemberView
+        console.log member
+        message = _.findWhere messages, {channel_id: member.id} if member
+        if member and message
+          view.newMessages.html message.count
+          view.newMessages.show()
+        # if m instanceof MemberView
+          # console.log m
+        # if entry instanceof ChannelView
+          
 
     openConversation: (view) ->
       room = view.member
