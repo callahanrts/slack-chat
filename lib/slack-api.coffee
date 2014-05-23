@@ -33,7 +33,6 @@ module.exports =
       
     messages: (channel, is_channel) ->
       @getMessages(channel, is_channel)
-      console.log @slackMessages
       @slackMessages.reverse()
       
     setNotifications: (messages) ->
@@ -131,5 +130,4 @@ module.exports =
       else
         args.icon_url = icon
         
-      $.get('https://slack.com/api/chat.postMessage', args).done (data) =>
-        console.log data
+      $.get('https://slack.com/api/chat.postMessage', args)

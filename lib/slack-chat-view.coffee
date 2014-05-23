@@ -123,7 +123,6 @@ module.exports =
       entry = $(e.currentTarget).view()
       @selectEntry(entry)
       @openConversation(entry) if entry instanceof MemberView
-      console.log entry
       false
       
     moveDown: ->
