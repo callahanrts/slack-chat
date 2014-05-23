@@ -22,6 +22,8 @@ module.exports =
       @app.post '/new', (req, res) =>
         @setNotifications(req.body.messages)
         res.send("success!")
+        
+      @last_ts = 0
 
     channels: ->
       @slackChannels
@@ -31,6 +33,7 @@ module.exports =
       
     messages: (channel, is_channel) ->
       @getMessages(channel, is_channel)
+      console.log @slackMessages
       @slackMessages.reverse()
       
     setNotifications: (messages) ->
@@ -41,6 +44,9 @@ module.exports =
     addMessageSubscription: (sub) ->
       @subscriptions ||= []
       @subscriptions.push sub
+      
+    removeMessageSubscription: (sub) ->
+      @subscriptions = _.without @subscriptions, sub
 
     #################################################################################
     #
@@ -62,11 +68,22 @@ module.exports =
         type: 'GET'
         url: "https://slack.com/api/#{t}.history?token=#{atom.config.get('slack-chat.token')}&channel=#{channel}"
         success: (data) =>
-          @slackMessages = data.messages if data.ok
+          @slackMessages = if data.ok then data.messages else []
+          @setMark(t, channel)
+          
+    # newestMessages: (channel, is_channel) ->
+    #   t = if is_channel then 'channels' else 'im'
+    #   $.ajax
+    #     async: false
+    #     type: 'GET'
+    #     url: "https://slack.com/api/#{t}.history?token=#{atom.config.get('slack-chat.token')}&channel=#{channel}"
+    #     success: (data) =>
+    #       @slackMessages = data.messages if data.ok
+    #       @setMark(t, channel)
 
-          # Set mark when message is sent
-          $.get("https://slack.com/api/#{t}.mark?token=#{atom.config.get('slack-chat.token')}&channel=#{channel}&ts=#{Date.now()}")
-
+    setMark: (path, channel) ->
+      # Set mark when message is sent
+      $.get("https://slack.com/api/#{path}.mark?token=#{atom.config.get('slack-chat.token')}&channel=#{channel}&ts=#{Date.now()}")
 
     getChannels: ->
       @slackChannels ||= []

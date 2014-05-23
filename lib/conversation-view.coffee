@@ -20,8 +20,7 @@ module.exports =
 
     initialize: (@member, @parent) ->
       @slack = @parent.slack
-      @slack.addMessageSubscription(@newMessage)
-      console.log @member
+      @slack.addMessageSubscription(@appendMessage)
       @load()
 
       @on 'click', "#message_input", ->
@@ -36,6 +35,7 @@ module.exports =
         @miniEditor.setText(@miniEditor.getText() + '\n')
         @miniEditor.height(@miniEditor.height() + 25)
 
+
     load: ->
       @header.hide()
       @parent.title.html @header.html()
@@ -48,12 +48,14 @@ module.exports =
 
     # Tear down any state and detach
     destroy: ->
+      @slack.removeMessageSubscription(@appendMessage)
       @detach()
-      
-    newMessage: (messages) ->
-      console.log 'conversation-view', messages
+
+    appendMessage: (messages) =>
+      @getMessages()
 
     getMessages: ->
+      @messages.html('')
       for m in @slack.messages(@member.im.id, @member.im.channel)
         m = m.message if m.message
         @messages.append new MessageView(m, @parent)

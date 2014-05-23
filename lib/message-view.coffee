@@ -22,10 +22,9 @@ class MessageView extends View
           for l in lines
             @div l, class: 'line'
 
-  initialize: (message, @parent) ->
-    @getTime(message.ts) if message.text
-    # @slackMessage.width(@parent.miniEditor.width())
-    # @messageText.width(@parent.miniEditor.width() - 60)
+  initialize: (@message, @parent) ->
+    @getTime(@message.ts) if @message.text
+
     
   getTime: (timestamp) ->
     a = new Date(timestamp * 1000)
