@@ -28,6 +28,7 @@ module.exports =
 
       @command 'core:confirm', => 
         @slack.sendMessage(@member.im.id, @miniEditor.getText())
+        @getMessages()
         @miniEditor.setText('')
         @miniEditor.height(34)
         
