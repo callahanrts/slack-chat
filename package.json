@@ -22,6 +22,7 @@
     "jquery": "~2.1.1",
     "underscore-plus": "~1.2.1",
     "express": "~4.3.0",
-    "body-parser":"*"
+    "body-parser":"*", 
+    "jquery-scrollto": "*"
   }
 }

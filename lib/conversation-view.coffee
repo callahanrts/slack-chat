@@ -1,13 +1,14 @@
 {$, EditorView, View} = require 'atom'
 
 MessageView = require './message-view'
+ScrollTo = require 'jquery-scrollto'
 
 module.exports =
   class ConversationView extends View
     @content: (member) ->
       @div class: 'conversation-view',  =>
         @div class: 'conversation-header', outlet: 'header', =>
-          @span class: 'back glyphicon glyphicon-chevron-left'
+          @span '<', class: 'back'
           @div "#{member.name}", class: 'title'
         @ol 
           id: 'message_list'
@@ -60,7 +61,7 @@ module.exports =
       for m in @slack.messages(@member.im.id, @member.im.channel)
         m = m.message if m.message
         @messages.append new MessageView(m, @parent)
-        
+      
     focus: ->
       @miniEditor.height(34)
       @miniEditor.focus()

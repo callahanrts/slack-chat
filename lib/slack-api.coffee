@@ -117,17 +117,10 @@ module.exports =
                 m.im = i if m
       
     sendMessage: (im, message) ->
-      regex = /:.{1,}:/
-      icon = atom.config.get('slack-chat.icon_emoji_or_image')
-      args = {
+      $.get('https://slack.com/api/chat.postMessage', {
         token: atom.config.get('slack-chat.token')
         channel: im
         text: message
         username: atom.config.get('slack-chat.username')
-      }
-      if regex.test(icon)
-        args.icon_emoji = icon
-      else
-        args.icon_url = icon
-        
-      $.get('https://slack.com/api/chat.postMessage', args)
+        icon_url: atom.config.get('slack-chat.icon_image')
+      })

@@ -6,7 +6,7 @@ class MessageView extends View
   @content: (message, parent) ->
     team = parent.team
     user = _.findWhere(team, {id: message.user}) if message.user
-    @div class: 'message', outlet: 'slackMessage', =>
+    @li class: 'message', outlet: 'slackMessage', =>
       # Deleted messages wont have a text object so don't show them.
       if message.text
         lines = message.text.split(/\r\n|\r|\n/g);
@@ -15,7 +15,7 @@ class MessageView extends View
           if user
             @img src: user.profile.image_24
           else
-            @div class: 'icon glyphicon glyphicon-user'
+            @img src: atom.config.get('slack-chat.icon_image'), height: 24, width: 24
         @div "#{username}", class: 'name', outlet: 'memberName'
         @div "#{message.ts}", class: 'time', outlet: 'time'
         @div class: 'text', outlet: 'messageText', =>
