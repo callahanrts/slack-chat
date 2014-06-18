@@ -31,3 +31,9 @@ The slack api doesn't operate as the user who is sending requests but as a bot t
 requests on behalf of the user. For this reason, you'll need to specify a username to be used.
 If you use the same username as you have specified on Slack, you will see your username show up as
 "*\#{username} (bot)*". "(bot)" will not appear if your username is not the same as your Slack username.
+### Real Time Messaging
+Slack Chat can accept and send messages in real time--with a catch. To receive notifications and carry 
+on real time conversations you will need to:
+- Install the accompanying chrome extension https://chrome.google.com/webstore/detail/slack-chat/lhdjcloiphabhhodmcclbfhcehfddlpc?authuser=1
+- Keep a Slack tab open 
+- Refresh Slack until you see the `Slack Chat is running` banner.
