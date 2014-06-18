@@ -9,16 +9,15 @@ Slack Chat is an Atom package that integrates the slack messaging client into th
 <img src="http://drive.google.com/uc?export=view&id=0B_FMiWCp_bLQX2xJTkhNdEhpcG8" width=500 />
 
 # Todo
-- Parse markdown
+- Fix sluggishness
+- Automatically scroll to new messages
+- More responsive message input
+- Make the commands less buggy
 - Enable links
 - Display images
+- Parse markdown
 - Display emoticons
-- Automatically scroll to new messagesP
-- More responsive message input
-- Notifications for new messages
-- Receive messages in real time
 - More customization on placement and theme of Slack Chat
-- Make the commands less buggy
 
 # Usage
 
