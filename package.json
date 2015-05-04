@@ -21,7 +21,7 @@
   "dependencies": {
     "body-parser": "1.3.0",
     "express": "~4.3.0",
-    "jquery": "~1.11.3",
+    "jquery": "~2.1.1",
     "jquery-scrollto": "*",
     "loophole": "^1.0.0",
     "underscore-plus": "~1.2.1"
