@@ -5,7 +5,8 @@ ChannelView = require './channel-view'
 
 SlackAPI = require './slack-api'
 {$, ScrollView} = require 'atom'
-_ = require 'underscore-plus'
+{allowUnsafeEval} = require 'loophole'
+_ = allowUnsafeEval -> require 'underscore-plus'
 
 module.exports =
   class SlackChatView extends ScrollView
@@ -19,12 +20,12 @@ module.exports =
           @div class: 'slack-chat-scroller', outlet: 'scroller', =>
             @div class: 'conversation', outlet: 'conversation'
             @div class: 'chat-menu', outlet: 'menu', =>
-              @ol 
+              @ol
                 class: 'slack-chat full-menu list-tree has-collapsable-children focusable-panel'
                 tabindex: -1
                 outlet: 'list'
           @div class: 'slack-chat-resize-handle', outlet: 'resizeHandle'
-  
+
     initialize: () ->
       @slack = new SlackAPI()
       @slack.addMessageSubscription(@newMessage)
@@ -52,7 +53,7 @@ module.exports =
     # Tear down any state and detach
     destroy: ->
       @detach()
-      
+
     newMessage: (messages) ->
       $('.entry', '.slack-chat').each (index, element) ->
         view = $(element).view()
@@ -75,14 +76,14 @@ module.exports =
       @conversation.show()
       @conversation.html @currentConversation
       @currentConversation.focus()
-      
+
     closeConversation: () ->
       @title.text 'Slack Chat'
       @currentConversation = null
       @conversation.hide()
       @menu.show()
       @focus()
-      
+
     nextConversation: () ->
       # if @nextConversations.length > 0
       #   c = @nextConversations.pop()
@@ -118,13 +119,13 @@ module.exports =
 
     deselect: ->
       @list.find('.selected').removeClass('selected')
-      
+
     entryClicked: (e, el) ->
       entry = $(e.currentTarget).view()
       @selectEntry(entry)
       @openConversation(entry) if entry instanceof MemberView
       false
-      
+
     moveDown: ->
       selectedEntry = @selectedEntry()
       if selectedEntry
@@ -141,7 +142,7 @@ module.exports =
         @selectEntry(@list.find('.entry').last())
       @scrollToEntry(@selectedEntry())
 
-      
+
     ############################################################
     # Populate
     #
@@ -160,7 +161,7 @@ module.exports =
     # Display and focus
     #
     ############################################################
-      
+
     toggle: ->
       if @isVisible()
         @detach()
@@ -170,7 +171,7 @@ module.exports =
     show: ->
       @attach() unless @hasParent()
       @focus()
-    
+
     attach: ->
       if atom.config.get('slack-chat.show_on_right_side')
         @removeClass('panel-left')
@@ -223,7 +224,7 @@ module.exports =
       else
         width = pageX
       @width(width)
-              
+
     ######################################################
     # Scroll Code
     #
