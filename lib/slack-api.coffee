@@ -1,14 +1,15 @@
 {$, ScrollView} = require 'atom'
-_ = require 'underscore-plus'
-express = require('express');
-bodyParser = require('body-parser')
+{allowUnsafeEval} = require 'loophole'
+_ = allowUnsafeEval -> require 'underscore-plus'
+express = allowUnsafeEval -> require 'express'
+bodyParser = allowUnsafeEval -> require 'body-parser'
 
 module.exports =
   class SlackAPI
     constructor: ->
       @getChannels()
       @getTeam()
-      
+
       @app = express();
       @app.use(bodyParser())
       @app.all '/*', (req, res, next) ->
@@ -18,32 +19,32 @@ module.exports =
 
       server = @app.listen 51932, () ->
         console.log('Listening on port %d', server.address().port);
-        
+
       @app.post '/new', (req, res) =>
         @setNotifications(req.body.messages)
         res.send("success!")
-        
+
       @last_ts = 0
 
     channels: ->
       @slackChannels
-    
+
     team: ->
       @slackTeam
-      
+
     messages: (channel, is_channel) ->
       @getMessages(channel, is_channel)
       @slackMessages.reverse()
-      
+
     setNotifications: (messages) ->
       @subscriptions ||= []
       for n in @subscriptions
         n(messages)
-        
+
     addMessageSubscription: (sub) ->
       @subscriptions ||= []
       @subscriptions.push sub
-      
+
     removeMessageSubscription: (sub) ->
       @subscriptions = _.without @subscriptions, sub
 
@@ -69,7 +70,7 @@ module.exports =
         success: (data) =>
           @slackMessages = if data.ok then data.messages else []
           @setMark(t, channel)
-          
+
     # newestMessages: (channel, is_channel) ->
     #   t = if is_channel then 'channels' else 'im'
     #   $.ajax
@@ -115,7 +116,7 @@ module.exports =
               for i in data.ims
                 m = _.findWhere(@slackTeam, {id: i.user})
                 m.im = i if m
-      
+
     sendMessage: (im, message) ->
       $.get('https://slack.com/api/chat.postMessage', {
         token: atom.config.get('slack-chat.token')

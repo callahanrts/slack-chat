@@ -1,9 +1,10 @@
 SlackChatView = require './slack-chat-view'
-$ = require 'jquery'
-_ = require 'underscore-plus'
+{allowUnsafeEval} = require 'loophole'
+$ = allowUnsafeEval -> require 'jquery'
+_ = allowUnsafeEval -> require 'underscore-plus'
 
 module.exports =
-  configDefaults: 
+  configDefaults:
     username: '(AT) username'
     token: 'xxxx-xxxxxxxxxx-xxxxxxxxxx-xxxxxxxxxx-xxxxxx'
     icon_image: 'https://lh6.googleusercontent.com/WKDA-bQqAKuf0ONQrnbZNOqUv0ggpcOs4v6_U8kIEIO1gJRg_wzcV0ke4HmzNFrhVVc7wVK6FNA'
@@ -12,7 +13,7 @@ module.exports =
 
   activate: (state) ->
     @slackChatView = new SlackChatView()
-    atom.workspaceView.command "slack-chat:toggle", => 
+    atom.workspaceView.command "slack-chat:toggle", =>
       @slackChatView.toggle()
 
   deactivate: ->

@@ -19,10 +19,11 @@
     "atom": ">0.50.0"
   },
   "dependencies": {
-    "jquery": "~2.1.1",
-    "underscore-plus": "~1.2.1",
+    "body-parser": "1.3.0",
     "express": "~4.3.0",
-    "body-parser": "*",
-    "jquery-scrollto": "*"
+    "jquery": "~2.1.1",
+    "jquery-scrollto": "*",
+    "loophole": "^1.0.0",
+    "underscore-plus": "~1.2.1"
   }
 }

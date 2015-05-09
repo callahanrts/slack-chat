@@ -1,5 +1,6 @@
 {View} = require 'atom'
-_ = require 'underscore-plus'
+{allowUnsafeEval} = require 'loophole'
+_ = allowUnsafeEval -> require 'underscore-plus'
 
 module.exports =
 class MessageView extends View
@@ -25,7 +26,7 @@ class MessageView extends View
   initialize: (@message, @parent) ->
     @getTime(@message.ts) if @message.text
 
-    
+
   getTime: (timestamp) ->
     a = new Date(timestamp * 1000)
     months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
