@@ -64,6 +64,9 @@ class SlackChatView extends ScrollView
   destroy: ->
     # @detach()
 
+  appendChild: (element) =>
+    $(@).appendChild(element)
+
   newMessage: (messages) ->
     # $('.entry', '.slack-chat').each (index, element) ->
     #   view = $(element).view()

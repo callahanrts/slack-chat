@@ -1,5 +1,5 @@
-SlackChatView = require './slack-chat-view'
-ChannelView = require './views/channel_view'
+SlackChatView = require './views/slack-chat-view'
+ChannelView = require './views/channel-view'
 
 {CompositeDisposable} = require 'atom'
 
@@ -16,25 +16,21 @@ module.exports = SlackChat =
       @client = new SlackClient(atom.config.get("sc-token"))
 
 
-    @slackChatView = new SlackChatView(state.slackChatViewState)
-    @modalPanel = atom.workspace.addRightPanel(item: @slackChatView.getElement(), visible: false)
+    @slackChatView = new SlackChatView(@, @client)
+    @modalPanel = atom.workspace.addRightPanel(item: @slackChatView, visible: false)
 
     # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
     @subscriptions = new CompositeDisposable
 
     # Register command that toggles this view
-    @subscriptions.add atom.commands.add 'atom-workspace', 'slack-chat:toggle': => @toggle()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'slack-chat:toggle', => @toggle()
 
     @client.addSubscriber (message) =>
       msg = JSON.parse(message)
       if msg.type is 'hello'
         atom.config.set('sc-token', @client.token)
         @channelView = new ChannelView(@, @client)
-        console.log @channelView.getElement()
-        console.log ''
-        console.log @slackChatView
-        @slackChatView.appendChild(@channelView.getElement())
-  #initializeViews: (parent, client) =>
+        @slackChatView.append(@channelView)
 
   deactivate: ->
     @modalPanel.destroy()
@@ -42,15 +38,10 @@ module.exports = SlackChat =
     @slackChatView.destroy()
 
   serialize: ->
-    slackChatViewState: @slackChatView.serialize()
-
-  #stateChannelView: =>
-  #  @slackChatView.appendChild(@channelView.getElement())
-  #  console.log @slackChatView.getElement()
+    #slackChatViewState: @slackChatView.serialize()
 
   toggle: ->
     console.log 'SlackChat was toggled!'
-
     if @modalPanel.isVisible()
       @modalPanel.hide()
     else
