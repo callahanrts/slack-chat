@@ -1,0 +1,19 @@
+{
+  "name": "slack-chat",
+  "main": "./lib/slack-chat",
+  "version": "0.0.0",
+  "description": "A short description of your package",
+  "keywords": [],
+  "activationCommands": {
+    "atom-workspace": "slack-chat:toggle"
+  },
+  "repository": "https://github.com/atom/slack-chat",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=0.174.0 <2.0.0"
+  },
+  "dependencies": {
+    "loophole": "^1.0.0",
+    "sc-client": "^1.0.3"
+  }
+}
