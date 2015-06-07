@@ -7,24 +7,37 @@ module.exports =
 class ConversationView extends ScrollView
   @content: ->
     @div id: 'conversations', =>
+      @div id: 'title', outlet: 'title'
       @ul id: 'channels', outlet: 'channelElements'
       @ul id: 'members', outlet: 'memberElements'
 
-  initialize: (@parent, @client) ->
+  initialize: (@stateController, @client) ->
     super
+    @channelViews ||= []
+    @memberViews ||= []
     @getChannels()
     @getMembers()
-
-  initializeViews: =>
-    console.log "init views", @channels
+    @getTeamInfo()
 
   getChannels: () =>
     @client.get 'channels.list', {}, (err, resp) =>
       @channels = resp.body.channels
-      @channelElements.append(new ChannelView(@, channel)) for channel in @channels
+      @channelViews.push new ChannelView(@stateController, channel) for channel in @channels
+      @channelElements.append(view) for view in @channelViews
 
   getMembers: (callback) =>
     @client.get 'users.list', {}, (err, resp) =>
       @members = resp.body.members
-      @memberElements.append(new MemberView(@, member)) for member in @members
+      @memberViews.push new MemberView(@stateController, member) for member in @members
+      @memberElements.append(view) for view in @memberViews
 
+  getTeamInfo: =>
+    @client.get 'team.info', {}, (err, resp) =>
+      @title.append(@titleElement(resp.body.team))
+
+  refresh: ->
+    view.eventHandlers() for view in @memberViews
+    view.eventHandlers() for view in @channelViews
+
+  titleElement: (team) ->
+    "<img id='teamIcon' src='#{team.icon.image_44}' /><h1>#{team.name}</h1>"

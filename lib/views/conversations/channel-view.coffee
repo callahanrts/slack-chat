@@ -1,16 +1,20 @@
 
-ChatView = require "../chat/chat-view"
 {$, View} = require 'atom-space-pen-views'
 
 module.exports =
 class ChannelView extends View
-  @content: (@parent, @channel) ->
-    @li id: @channel.id, class: 'channel', click: 'showConversation', =>
+  @content: (@stateController, @channel) ->
+    @li id: @channel.id, class: 'channel', =>
       @span "#", class: 'indicator'
       @span @channel.name
 
-  initialize: (@parent, @channel) ->
+  initialize: (@stateController, @channel) ->
+    @eventHandlers()
+
+  eventHandlers: =>
+    @.on 'click', =>
+      @showConversation()
 
   showConversation: () ->
-    new ChatView(@, @channel)
     console.log arguments
+    @stateController.setState('chat', @channel)

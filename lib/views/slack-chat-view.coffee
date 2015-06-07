@@ -5,16 +5,14 @@ module.exports =
 class SlackChatView extends ScrollView
   @content: ->
     @div class: 'slack-wrapper', =>
-      @div id: 'title', outlet: 'title'
+      @div id: 'content', outlet: 'content'
 
-  initialize: (@parent, @client) ->
-    super
-    @getTeamInfo()
+  initialize: (@stateController, @client) ->
 
-  getTeamInfo: =>
-    @client.get 'team.info', {}, (err, resp) =>
-      @title.append(@titleElement(resp.body.team))
+  addView: (view) ->
+    @content.append view
 
-  titleElement: (team) ->
-    "<img id='teamIcon' src='#{team.icon.image_44}' /><h1>#{team.name}</h1>"
+  clearViews: ->
+    @content.empty()
+
 

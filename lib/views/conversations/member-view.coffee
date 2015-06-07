@@ -1,16 +1,21 @@
 
-ChatView = require "../chat/chat-view"
 {$, View} = require 'atom-space-pen-views'
 
 module.exports =
 class MemberView extends View
-  @content: (@parent, @member) ->
-    @li id: @member.id, class: 'member', click: 'showConversation', =>
+  @content: (@stateController, @member) ->
+    @li id: @member.id, class: 'member',  =>
       @span class: 'dot'
       @span @member.name
 
-  initialize: (@parent, @member) ->
+  initialize: (@stateController, @member) ->
+    @eventHandlers()
+
+  eventHandlers: =>
+    @.on 'click', =>
+      @showConversation()
 
   showConversation: () ->
     console.log arguments
+    @stateController.setState('chat', @member)
 

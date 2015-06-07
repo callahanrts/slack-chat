@@ -4,6 +4,8 @@ ConversationView = require './views/conversation-view'
 ChatView = require './views/chat-view'
 {allowUnsafeEval} = require 'loophole'
 
+{$} = require 'atom-space-pen-views'
+
 module.exports =
 class StateController
   slackChatView: null
@@ -16,7 +18,8 @@ class StateController
     else
       instance = this
 
-    @stateStack = []
+    @stateHistory = []
+    @state = null
 
     # Use loophole for external calls made within the SlackClient
     allowUnsafeEval =>
@@ -34,7 +37,7 @@ class StateController
 
   #Clear all child elements of the SlackChatView
   clearRoot: =>
-    @slackChatView.remove(':not(.slack-wrapper)')
+    @slackChatView.clearViews()
 
   destroyElements: =>
     @modalPanel.destroy()
@@ -47,21 +50,24 @@ class StateController
     return @modalPanel
 
   previousState: ->
-    @setState @stateStack.pop()
+    @setState @stateHistory.pop()
 
   setState: (state) =>
     state = state[0].toUpperCase() + state[1..-1].toLowerCase()
-    @stateStack.push state # keep track of state history
-    @["state#{state}"]()
-
-  stateChat: =>
+    @stateHistory.push @state if @state # keep track of state history
+    @state = state
     @clearRoot()
+    @["state#{state}"].apply(this, arguments)
+
+  stateChat: (state, chatTarget) =>
+    @chatView = new ChatView(@, chatTarget)
+    @slackChatView.addView(@chatView)
 
   stateDefault: =>
-    @clearRoot()
-    @stateStack = [] # No need to store previous states when we land at the default
+    @stateHistory = [] # No need to store previous states when we land at the default
+    @channelView.refresh() if @channelView
     @channelView ||= new ConversationView(@, @client)
-    @slackChatView.append(@channelView)
+    @slackChatView.addView(@channelView)
 
   toggle: =>
     if @modalPanel.isVisible() then @modalPanel.hide() else @modalPanel.show()

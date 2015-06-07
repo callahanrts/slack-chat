@@ -14,12 +14,13 @@
 .slack-wrapper{
   height: 100%;
   width: 100%;
-  margin: 0 30px 0 0;
+  &.chat{ width: 400px; }
 }
 
 #title {
   height: 28px;
   margin: 10px 0;
+  padding-right: 30px;
   h1 {
     height: inherit;
     display: inline;
@@ -31,21 +32,22 @@
   }
 }
 
-#conversations {
-  ul {
-    list-style: none;
-    padding: 0;
-    li {
-      &:hover{ background-color: @background-color-highlight; }
-      .indicator{ margin-right: 5px; }
-      vertical-align: middle;
-      font-size: 14px;
-      height: 24px;
-      line-height: 24px;
-      margin: 5px 0;
-      padding: 0 10px;
-      cursor: pointer;
+ul {
+  list-style: none;
+  padding: 0;
+  li {
+    &:hover{ background-color: @background-color-highlight; }
+    &.action{
+      text-align: center;
     }
+    .indicator{ margin-right: 5px; }
+    vertical-align: middle;
+    font-size: 14px;
+    height: 24px;
+    line-height: 24px;
+    margin: 5px 0;
+    padding: 0 10px;
+    cursor: pointer;
   }
 }
 
