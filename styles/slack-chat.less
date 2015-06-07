@@ -7,6 +7,7 @@
 @import "octicon-utf-codes";
 @import "octicon-mixins";
 
+
 .slack-panel{
   border-left: 1px solid @base-border-color;
 }
@@ -18,10 +19,12 @@
 }
 
 #title {
+  font-size: 2em;
   height: 28px;
   margin: 10px 0;
   padding-right: 30px;
   h1 {
+    font-size: inherit;
     height: inherit;
     display: inline;
     vertical-align: middle;
@@ -37,9 +40,6 @@ ul {
   padding: 0;
   li {
     &:hover{ background-color: @background-color-highlight; }
-    &.action{
-      text-align: center;
-    }
     .indicator{ margin-right: 5px; }
     vertical-align: middle;
     font-size: 14px;
@@ -51,6 +51,36 @@ ul {
   }
 }
 
+#response-container {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 10px;
+}
+
+#chat-log {
+  overflow: auto;
+  padding-bottom: 140px;
+}
+
+.message {
+  padding: 10px 0;
+  table{ padding: 0 5px; }
+  td {
+    &:first-child{ padding-right: 10px; }
+    vertical-align: top;
+  }
+  .image {
+    width: 32px;
+    border-radius: 2px;
+  }
+  .text {
+  }
+
+}
+
+
+/* Octicon Classes */
 .dot {
   color: @text-color-subtle;
   .octicon(primitive-dot, 1em);
@@ -58,3 +88,14 @@ ul {
     color: #94E864;
   }
 }
+
+.chevron-left {
+  color: @text-color-subtle;
+  .octicon(chevron-left, 1em);
+  text-align: right;
+  cursor: pointer;
+  &:hover { color: @text-color; }
+}
+
+/* solve height and scroll issues */
+#content, #chat, #chat-log { height: 100%; }

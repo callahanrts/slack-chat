@@ -2,6 +2,7 @@
 SlackChatView = require './views/slack-chat-view'
 ConversationView = require './views/conversation-view'
 ChatView = require './views/chat-view'
+Team = require './team'
 {allowUnsafeEval} = require 'loophole'
 
 {$} = require 'atom-space-pen-views'
@@ -28,6 +29,8 @@ class StateController
 
     @slackChatView = new SlackChatView(@, @client)
     @modalPanel = atom.workspace.addRightPanel(item: @slackChatView, visible: false, className: 'slack-panel')
+
+    @team = new Team(@client) # Gather slack team
 
     @client.addSubscriber (message) =>
       msg = JSON.parse(message)

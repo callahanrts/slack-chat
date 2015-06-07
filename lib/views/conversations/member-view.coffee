@@ -4,9 +4,17 @@
 module.exports =
 class MemberView extends View
   @content: (@stateController, @member) ->
-    @li id: @member.id, class: 'member',  =>
-      @span class: 'dot'
-      @span @member.name
+    user = @stateController.team.members[@member.user]
+
+    if user?
+      @li id: @member.id, class: 'member',  =>
+        @span class: 'dot'
+        @span user.name
+    else
+      @li id: @member.id, class: 'member',  =>
+        @span class: 'dot'
+        @span @member.user
+
 
   initialize: (@stateController, @member) ->
     @eventHandlers()
@@ -16,6 +24,5 @@ class MemberView extends View
       @showConversation()
 
   showConversation: () ->
-    console.log arguments
     @stateController.setState('chat', @member)
 

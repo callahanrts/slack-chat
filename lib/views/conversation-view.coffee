@@ -26,8 +26,8 @@ class ConversationView extends ScrollView
       @channelElements.append(view) for view in @channelViews
 
   getMembers: (callback) =>
-    @client.get 'users.list', {}, (err, resp) =>
-      @members = resp.body.members
+    @client.get 'im.list', {}, (err, resp) =>
+      @members = resp.body.ims
       @memberViews.push new MemberView(@stateController, member) for member in @members
       @memberElements.append(view) for view in @memberViews
 

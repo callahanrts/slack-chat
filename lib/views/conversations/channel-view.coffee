@@ -16,5 +16,4 @@ class ChannelView extends View
       @showConversation()
 
   showConversation: () ->
-    console.log arguments
     @stateController.setState('chat', @channel)
