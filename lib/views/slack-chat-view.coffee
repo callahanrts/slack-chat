@@ -1,4 +1,4 @@
-ChannelView = require './channel-view'
+
 {$, ScrollView} = require 'atom-space-pen-views'
 
 module.exports =
@@ -9,7 +9,6 @@ class SlackChatView extends ScrollView
 
   initialize: (@parent, @client) ->
     super
-    @width(400)
     @getTeamInfo()
 
   getTeamInfo: =>
