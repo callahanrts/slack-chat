@@ -17,7 +17,7 @@ class ChatView extends View
         @h1 name, class: "#{'channel' unless @chat.profile}"
       @div id: 'chat-log', outlet: 'chatLog'
       @div id: 'response-container', outlet: 'responseContainer', =>
-        @textarea id: 'response', class: 'form-control native-key-bindings', outlet: 'response'
+        @textarea id: 'response', class: 'form-control native-key-bindings', outlet: 'response', keydown: 'keypress'
 
   initialize: (@stateController, @chat) ->
     @type = if @chat.is_channel? then 'channels' else 'im'
@@ -37,10 +37,24 @@ class ChatView extends View
     @stateController.slackChatView.removeClass("chat")
     @stateController.previousState()
 
-  update: =>
+  update: (e) =>
     @response.height(0)
     height = Math.min(@response.get(0).scrollHeight, 150)
     @response.height(height)
     @chatLog.css('padding-bottom', 50 + parseInt(@responseContainer.outerHeight()))
     @chatLog.scrollToBottom()
+
+  keypress: (e) =>
+    if e.keyCode is 13 and not e.shiftKey
+      @submit()
+      return false
+
+  submit: =>
+    @response.val('')
+    @stateController.client.post "chat.postMessage",
+      channel: @chat.id
+      text: @response.val()
+      as_user: @stateController.client.me.id
+    , (err, msg, resp) =>
+      console.log err if err?
 

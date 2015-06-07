@@ -33,6 +33,7 @@ class StateController
     @team = new Team(@client) # Gather slack team
 
     @client.addSubscriber (message) =>
+      console.log message
       msg = JSON.parse(message)
       if msg.type is 'hello'
         atom.config.set('sc-token', @client.token)
