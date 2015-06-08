@@ -56,12 +56,14 @@ class ChatView extends View
     @eventHandlers()
 
   submit: =>
+    text = @response.val()
     @response.val('')
     @stateController.client.post "chat.postMessage",
       channel: @chat.id
-      text: @response.val()
+      text: text
       as_user: @stateController.client.me.id
     , (err, msg, resp) =>
+      console.log arguments
       console.log err if err?
 
   update: (e) =>
