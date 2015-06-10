@@ -7,8 +7,10 @@ Slack Chat is an Atom package that integrates the slack messaging client into th
 - View message history
 
 # Preview
-<img src="http://drive.google.com/uc?export=view&id=0B_FMiWCp_bLQNlluR2MwRkNWVG8" />
-<img src="http://drive.google.com/uc?export=view&id=0B_FMiWCp_bLQOEM1ZjZvUDRhVEk" />
+<center>
+<img src="http://drive.google.com/uc?export=view&id=0B_FMiWCp_bLQNlluR2MwRkNWVG8" width="400px" />
+<img src="http://drive.google.com/uc?export=view&id=0B_FMiWCp_bLQOEM1ZjZvUDRhVEk" width="400px" />
+</center>
 
 # Todo
 - User Status (online/offline)
