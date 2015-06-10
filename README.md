@@ -23,8 +23,9 @@ Slack Chat is an Atom package that integrates the slack messaging client into th
 ### Toggle Slack Chat Panel
 `cmd+m` toggles the panel by default.
 
-Add something similar to the following to your `keymap.cson` to change the keybinding which toggles slack-chat.
+### Overridable commands
 ```cson
+# keymap.cson
 'atom-text-editor, atom-workspace':
   'ctrl-m': 'slack-chat:toggle'
 ```
