@@ -9,4 +9,3 @@
 # https://atom.io/docs/latest/behind-atom-keymaps-in-depth
 'atom-workspace':
   'cmd-m': 'slack-chat:toggle'
-  'ctrl-l': 'window:reload'
