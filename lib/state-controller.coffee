@@ -27,8 +27,9 @@ class StateController
     # Use loophole for external calls made within the SlackClient
     allowUnsafeEval =>
       SlackClient = require('sc-client').slackClient
-      token = atom.config.get('slack-chat.token')
-      @client = new SlackClient(if token is 'null' then null else token)
+      @token = atom.config.get('slack-chat.token')
+      @client = new SlackClient(if @token is 'null' then null else @token)
+
 
     @slackChatView = new SlackChatView(@, @client)
     @modalPanel = atom.workspace.addRightPanel(item: @slackChatView, visible: false, className: 'slack-panel')

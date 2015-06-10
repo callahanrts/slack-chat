@@ -8,8 +8,8 @@ class Team
 
   getTeamMembers: =>
     @client.get 'users.list', {}, (err, resp) =>
-      console.log 'got team'
-      @members[member.id] = member for member in resp.body.members
+      if resp.body.ok
+        @members[member.id] = member for member in resp.body.members
 
   memberImage: (member=null, message=null) =>
     if member?

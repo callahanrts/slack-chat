@@ -6,11 +6,33 @@ Slack Chat is an Atom package that integrates the slack messaging client into th
 - Send and receive messages in real time
 - View message history
 
+# Installation
+- Install slack-chat from the atom package manager
+- Log in to slack with the window that was opened in your browser
+  <img src="http://drive.google.com/uc?export=view&id=0B_FMiWCp_bLQems3NTlIUjlzWWM" width="400px" />
+- Authorize the sc-client application
+  <img src="http://drive.google.com/uc?export=view&id=0B_FMiWCp_bLQYm9HSi0xY2RMQVU" width="400px" />
+- Restart atom
+
+# Usage
+
+### Toggle Slack Chat Panel
+`cmd+m` toggles the panel by default.
+```cson
+# Change slack-chat:toggle to ctrol+m
+'atom-text-editor, atom-workspace':
+  'ctrl-m': 'slack-chat:toggle'
+```
+
+
+# Settings
+
+### Token
+This is your token for your team. Slack Chat should manage this for you. If you need to sign in with a different account/team, remove this token and reload Atom.
+
 # Preview
-<center>
 <img src="http://drive.google.com/uc?export=view&id=0B_FMiWCp_bLQNlluR2MwRkNWVG8" width="400px" />
 <img src="http://drive.google.com/uc?export=view&id=0B_FMiWCp_bLQOEM1ZjZvUDRhVEk" width="400px" />
-</center>
 
 # Todo
 - User Status (online/offline)
@@ -20,8 +42,4 @@ Slack Chat is an Atom package that integrates the slack messaging client into th
 - Parse markdown
 - Display emoticons
 
-# Usage
-
-### Token
-This is your token for your team. Slack Chat should manage this for you. If you need to sign in with a different account/team, remove this token and reload Atom.
 
