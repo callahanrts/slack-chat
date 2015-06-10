@@ -49,5 +49,6 @@ This is your token for your team. Slack Chat should manage this for you. If you 
 - [ ] Parse markdown
 - [ ] Display emoticons
 - [ ] Send a selection of text as a message/file
+- [ ] Upload files
 
 
