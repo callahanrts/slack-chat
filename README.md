@@ -41,6 +41,7 @@ This is your token for your team. Slack Chat should manage this for you. If you 
 <img src="http://drive.google.com/uc?export=view&id=0B_FMiWCp_bLQOEM1ZjZvUDRhVEk" width="400px" />
 
 # Todo
+- Real time message notification system
 - User Status (online/offline)
 - Enable links
 - Create Keybindings for selection
