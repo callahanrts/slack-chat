@@ -4,31 +4,31 @@ ChatMessageView = require './chat-message-view'
 
 module.exports =
 class ChatLogView extends ScrollView
+  root = @
   @content: (@stateController, @messages) ->
-    @div id: 'messages', outlet: 'messageViews', =>
+    @div class: 'messages', =>
+      @div class: 'list', outlet: 'messageViews'
       # NOTE: Use this for parsing markdown
       # https://github.com/chjj/marked
-      for message in @messages
-        author = @stateController.team.members[message.user]
-        image = @stateController.team.memberImage(author, message)
-        name = @stateController.team.memberName(author, message)
-
-        @div class: 'message native-key-bindings', =>
-          @table =>
-            @tr =>
-              @td =>
-                @img class: 'image', src: image
-              @td =>
-                @span class: 'name', name
-                @span class: 'ts', message.ts
-            @tr =>
-              @td ''
-              @td =>
-                @div message.text, class: 'text'
-
 
   initialize: (@stateController, @messages) ->
     super
+    @messageViews.append(@messageElement(message)) for message in @messages
+
+  getTime: (timestamp) ->
+    a = new Date(timestamp * 1000)
+    months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    month = months[a.getMonth()]
+    date = a.getDate()
+    hour = a.getHours()
+    min = a.getMinutes()
+    year = a.getFullYear()
+    if hour > 12
+      hour = hour - 12
+      t = " pm"
+    else
+      t = " am"
+    "#{month} #{date}#{if year < (new Date()).getFullYear() then ", #{year}" else ''} #{hour}:#{min} #{t}"
 
   messageElement: (message) =>
     author = @stateController.team.members[message.user]
@@ -43,7 +43,7 @@ class ChatLogView extends ScrollView
           </td>
           <td>
             <span class='name'>#{name}</span>
-            <span class='ts'>#{message.ts}</span>
+            <span class='ts'>#{@getTime(message.ts)}</span>
           </td>
         </tr>
         <tr>

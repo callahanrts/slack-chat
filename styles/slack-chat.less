@@ -7,95 +7,109 @@
 @import "octicon-utf-codes";
 @import "octicon-mixins";
 
+.slack-notification {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 100px;
+  height: 50px !important;
+  z-index: 9999;
+  border: 1px solid @overlay-border-color !important;
+  background-color: @overlay-background-color !important;
+  border-radius: @component-border-radius;
+  padding: @component-padding;
+}
 
 .slack-panel{
   border-left: 1px solid @base-border-color;
-}
 
-.slack-wrapper{
-  height: 100%;
-  width: 100%;
-  &.chat{ width: 400px; }
-}
-
-#title {
-  font-size: 2em;
-  height: 28px;
-  margin: 10px 0;
-  padding-right: 30px;
-  h1 {
-    font-size: inherit;
-    height: inherit;
-    display: inline;
-    vertical-align: middle;
+  .slack-wrapper{
+    height: 100%;
+    width: 100%;
   }
-  img {
-    height: inherit;
-    margin: 0 10px;
-  }
-}
 
-ul {
-  list-style: none;
-  padding: 0;
-  li {
-    &:hover{ background-color: @background-color-highlight; }
-    .indicator{ margin-right: 5px; }
-    vertical-align: middle;
-    font-size: 14px;
-    height: 24px;
-    line-height: 24px;
-    margin: 5px 0;
+  .title {
+    font-size: 2em;
+    height: 28px;
+    margin: 10px 0 15px 0;
+    padding-right: 30px;
+    h1 {
+      font-size: inherit;
+      height: inherit;
+      display: inline;
+      vertical-align: middle;
+    }
+    img {
+      height: inherit;
+      margin: 0 10px;
+    }
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    li {
+      &:hover{ background-color: @background-color-highlight; }
+      .indicator{ margin-right: 5px; }
+      vertical-align: middle;
+      font-size: 14px;
+      height: 24px;
+      line-height: 24px;
+      margin: 5px 0;
+      padding: 0 10px;
+      cursor: pointer;
+    }
+  }
+
+  .response-container {
+    textarea{ min-height: 46px; }
+    background-color: @app-background-color;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 10px;
+  }
+
+  .chat-log {
+    overflow: auto;
     padding: 0 10px;
+  }
+
+  .message {
+    padding: 10px 0;
+    table{ padding: 0 5px; }
+    td {
+      &:first-child{ padding-right: 10px; }
+      vertical-align: top;
+    }
+    .image {
+      width: 32px;
+      border-radius: 2px;
+    }
+    .text {
+    }
+
+  }
+
+
+  /* Octicon Classes */
+  .dot {
+    color: @text-color-subtle;
+    .octicon(primitive-dot, 1em);
+    .active {
+      color: #94E864;
+    }
+  }
+
+  .chevron-left {
+    color: @text-color-subtle;
+    .octicon(chevron-left, 1em);
+    text-align: right;
     cursor: pointer;
-  }
-}
-
-#response-container {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  padding: 10px;
-}
-
-#chat-log {
-  overflow: auto;
-  padding: 0 10px;
-}
-
-.message {
-  padding: 10px 0;
-  table{ padding: 0 5px; }
-  td {
-    &:first-child{ padding-right: 10px; }
-    vertical-align: top;
-  }
-  .image {
-    width: 32px;
-    border-radius: 2px;
-  }
-  .text {
+    &:hover { color: @text-color; }
   }
 
+  /* solve height and scroll issues */
+  #content, .chat, .chat-log { height: 100%; }
+
 }
-
-
-/* Octicon Classes */
-.dot {
-  color: @text-color-subtle;
-  .octicon(primitive-dot, 1em);
-  .active {
-    color: #94E864;
-  }
-}
-
-.chevron-left {
-  color: @text-color-subtle;
-  .octicon(chevron-left, 1em);
-  text-align: right;
-  cursor: pointer;
-  &:hover { color: @text-color; }
-}
-
-/* solve height and scroll issues */
-#content, #chat, #chat-log { height: 100%; }

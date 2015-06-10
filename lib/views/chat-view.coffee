@@ -10,31 +10,28 @@ class ChatView extends View
     image = @stateController.team.memberImage(user, @chat)
     name = @stateController.team.memberName(user, @chat)
 
-    @div id: 'chat', =>
-      @div id: 'title', =>
+    @div class: 'chat', =>
+      @div class: 'title', =>
         @span class: 'chevron-left back'
-        @img id: 'teamIcon', src: image if image?
+        @img class: 'teamIcon', src: image if image?
         @h1 name, class: "#{'channel' unless @chat.profile}"
-      @div id: 'chat-log', outlet: 'chatLog'
-      @div id: 'response-container', outlet: 'responseContainer', =>
-        @textarea id: 'response', class: 'form-control native-key-bindings', outlet: 'response'
+      @div class: 'chat-log', outlet: 'chatLog'
+      @div class: 'response-container', outlet: 'responseContainer', =>
+        @textarea class: 'response', class: 'form-control native-key-bindings', outlet: 'response'
 
   initialize: (@stateController, @chat) ->
+    @width(400)
     @type = if @chat.is_channel? then 'channels' else 'im'
     @getChatLog()
-    @stateController.slackChatView.addClass("chat")
     @eventHandlers()
 
   closeChat: =>
-    @stateController.slackChatView.removeClass("chat")
     @stateController.previousState()
 
   eventHandlers: =>
     @.on 'click', '.back', @closeChat
     @.on 'keydown', '#response', @keypress
     @.on 'input', 'textarea', @update
-
-    @update()
 
   getChatLog: =>
     @stateController.client.get "#{@type}.history", { channel: @chat.id }, (err, resp) =>
@@ -50,10 +47,11 @@ class ChatView extends View
 
   receiveMessage: (message) =>
     @chatLogView.receiveMessage(message)
-    @update()
+    setTimeout @update, 0
 
   refresh: =>
     @eventHandlers()
+    @update()
 
   submit: =>
     text = @response.val()
@@ -67,6 +65,7 @@ class ChatView extends View
       console.log err if err?
 
   update: (e) =>
+    console.log 'update', @chatLog, @chatLogView
     @response.height(0)
     height = Math.min(@response.get(0).scrollHeight, 150)
     @response.height(height)

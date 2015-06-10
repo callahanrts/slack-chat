@@ -3,6 +3,13 @@ StateController = require './state-controller'
 {CompositeDisposable} = require 'atom'
 
 module.exports = SlackChat =
+  config:
+    token:
+      title: 'Slack Token'
+      description: 'slack-chat should manage this for you (reset to change teams)'
+      default: 'null'
+      type: 'string'
+
   subscriptions: null
 
   activate: (state) ->

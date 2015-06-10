@@ -7,7 +7,7 @@ module.exports =
 class ConversationView extends ScrollView
   @content: ->
     @div id: 'conversations', =>
-      @div id: 'title', outlet: 'title'
+      @div class: 'title', outlet: 'title'
       @ul id: 'channels', outlet: 'channelElements'
       @ul id: 'members', outlet: 'memberElements'
 

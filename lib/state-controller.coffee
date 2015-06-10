@@ -2,10 +2,11 @@
 SlackChatView = require './views/slack-chat-view'
 ConversationView = require './views/conversation-view'
 ChatView = require './views/chat-view'
-Team = require './team'
-{allowUnsafeEval} = require 'loophole'
 
-{$} = require 'atom-space-pen-views'
+NotificationHandler = require './notification-handler'
+Team = require './team'
+
+{allowUnsafeEval} = require 'loophole'
 
 module.exports =
 class StateController
@@ -26,18 +27,19 @@ class StateController
     # Use loophole for external calls made within the SlackClient
     allowUnsafeEval =>
       SlackClient = require('sc-client').slackClient
-      @client = new SlackClient(atom.config.get("sc-token"))
+      token = atom.config.get('slack-chat.token')
+      @client = new SlackClient(if token is 'null' then null else token)
 
     @slackChatView = new SlackChatView(@, @client)
     @modalPanel = atom.workspace.addRightPanel(item: @slackChatView, visible: false, className: 'slack-panel')
 
-    @team = new Team(@client) # Gather slack team
+    @team = new Team(@client) if @client # Gather slack team
+    @notifications = new NotificationHandler(@)
 
     @client.addSubscriber (message) =>
-      console.log message
       msg = JSON.parse(message)
       if msg.type is 'hello'
-        atom.config.set('sc-token', @client.token)
+        atom.config.set('slack-chat.token', @client.token)
         @setState('default')
       else if msg.type is 'message'
         @chatHistory[msg.channel].receiveMessage(msg) if @chatHistory[msg.channel]
@@ -68,9 +70,12 @@ class StateController
     @["state#{state}"].apply(this, arguments)
 
   stateChat: (state, chatTarget) =>
-    @chatHistory[chatTarget.id].refresh() if @chatHistory[chatTarget.id]
-    @chatHistory[chatTarget.id] ||= new ChatView(@, chatTarget)
-    @slackChatView.addView(@chatHistory[chatTarget.id])
+    if @chatHistory[chatTarget.id]
+      @slackChatView.addView(@chatHistory[chatTarget.id])
+      @chatHistory[chatTarget.id].refresh()
+    else
+      @chatHistory[chatTarget.id] ||= new ChatView(@, chatTarget)
+      @slackChatView.addView(@chatHistory[chatTarget.id])
 
   stateDefault: =>
     @stateHistory = [] # No need to store previous states when we land at the default
