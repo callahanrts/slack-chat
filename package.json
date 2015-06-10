@@ -1,7 +1,7 @@
 {
   "name": "slack-chat",
   "main": "./lib/slack-chat",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "A short description of your package",
   "keywords": [],
   "repository": "https://github.com/atom/slack-chat",
