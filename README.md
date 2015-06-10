@@ -9,9 +9,13 @@ Slack Chat is an Atom package that integrates the slack messaging client into th
 # Installation
 - Install slack-chat from the atom package manager
 - Log in to slack with the window that was opened in your browser
+
   <img src="http://drive.google.com/uc?export=view&id=0B_FMiWCp_bLQems3NTlIUjlzWWM" width="400px" />
+
 - Authorize the sc-client application
+
   <img src="http://drive.google.com/uc?export=view&id=0B_FMiWCp_bLQYm9HSi0xY2RMQVU" width="400px" />
+
 - Restart atom
 
 # Usage
