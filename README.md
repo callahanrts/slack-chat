@@ -49,5 +49,6 @@ This is your token for your team. Slack Chat should manage this for you. If you 
 - [ ] Send a selection of text as a message/file
 - [ ] Upload files
 - [ ] Fix markdown differences between github flavored and Slack
+- [ ] Code highlight for markdown
 - [ ] Display images/files
 

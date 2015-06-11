@@ -1,6 +1,9 @@
 
 StateController = require './state-controller'
+Commands = require './commands'
 {CompositeDisposable} = require 'atom'
+
+{$} = require 'atom-space-pen-views'
 
 module.exports = SlackChat =
   config:
@@ -16,11 +19,20 @@ module.exports = SlackChat =
     # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
     @subscriptions = new CompositeDisposable
 
+    # Control slack-chat state and objects passed to each state
+    @stateController = new StateController(@subscriptions)
+    # Manage Commands
+    @commands = new Commands(@stateController)
+
     # Register command that toggles this view
     @subscriptions.add atom.commands.add 'atom-workspace', 'slack-chat:toggle', => @toggle()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'slack-chat:toggle-mode', => @toggleMode()
 
-    # Control slack-chat state and objects passed to each state
-    @stateController = new StateController()
+    # Slack chat mode commands
+    @subscriptions.add atom.commands.add '.slack-chat', 'slack-chat:move-down', => @commands.moveDown()
+    @subscriptions.add atom.commands.add '.slack-chat', 'slack-chat:move-up', => @commands.moveUp()
+    @subscriptions.add atom.commands.add '.slack-chat', 'slack-chat:open-conversation', => @commands.openConversation()
+    @subscriptions.add atom.commands.add '.slack-chat', 'slack-chat:close-conversation', => @commands.closeConversation()
 
   deactivate: ->
     @subscriptions.dispose()
@@ -32,4 +44,7 @@ module.exports = SlackChat =
   toggle: ->
     console.log 'SlackChat was toggled!'
     @stateController.toggle()
+
+  toggleMode: ->
+    $("atom-workspace").toggleClass('slack-chat')
 

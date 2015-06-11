@@ -13,6 +13,7 @@ class ConversationView extends ScrollView
 
   initialize: (@stateController, @client) ->
     super
+    @currentConversation = null
     @channelViews ||= []
     @memberViews ||= []
     @getChannels()
@@ -34,6 +35,32 @@ class ConversationView extends ScrollView
   getTeamInfo: =>
     @client.get 'team.info', {}, (err, resp) =>
       @title.append(@titleElement(resp.body.team))
+
+  nextConversation: =>
+    convos = $('li', '#conversations')
+    if @currentConversation?
+      index = convos.index(@currentConversation)
+      @setCurrentConversation($(convos[index + 1])) if index < convos.length - 1
+    else
+      @setCurrentConversation $('li', '#conversations').first()
+
+  prevConversation: =>
+    convos = $('li', '#conversations')
+    if @currentConversation?
+      index = convos.index(@currentConversation)
+      @setCurrentConversation($(convos[index - 1])) if index > 0
+    else
+      @setCurrentConversation convos.last()
+
+  openConversation: =>
+    @convos = @channelViews.concat(@memberViews)
+    index = $('li', '#conversations').index @currentConversation
+    @convos[index].showConversation()
+
+  setCurrentConversation: ($convo) =>
+    $(el).removeClass('selected') for el in $('li', '#conversations')
+    $convo.addClass('selected')
+    @currentConversation = $convo
 
   refresh: ->
     view.eventHandlers() for view in @memberViews

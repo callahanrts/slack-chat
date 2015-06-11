@@ -13,7 +13,7 @@ class StateController
   slackChatView: null
   instance = null
 
-  constructor: ->
+  constructor: (@subscriptions) ->
     # Ensure there is only ever one instance of this class
     if instance
       return instance

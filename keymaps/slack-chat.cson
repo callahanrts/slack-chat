@@ -9,3 +9,13 @@
 # https://atom.io/docs/latest/behind-atom-keymaps-in-depth
 'atom-workspace':
   'cmd-m': 'slack-chat:toggle'
+  'ctrl-s': 'slack-chat:toggle-mode'
+
+'.slack-chat':
+  'ctrl-s': 'slack-chat:toggle-mode'
+  'm': 'slack-chat:toggle'
+
+  'j': 'slack-chat:move-down'
+  'k': 'slack-chat:move-up'
+  'l': 'slack-chat:open-conversation'
+  'h': 'slack-chat:close-conversation'
