@@ -77,10 +77,26 @@
 
   .message {
     padding: 10px 0;
-    table{ padding: 0 5px; }
+    table{
+      padding: 0 5px;
+      width: 100%;
+    }
     td {
-      &:first-child{ padding-right: 10px; }
+      &:first-child{
+        width: 32px;
+        padding-right: 10px;
+      }
       vertical-align: top;
+    }
+    .name {
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .ts {
+      font-size: 10px;
+      font-weight: 400;
+      font-style: italic;
+      margin-left: 5px;
     }
     .image {
       width: 32px;
@@ -111,5 +127,22 @@
 
   /* solve height and scroll issues */
   #content, .chat, .chat-log { height: 100%; }
+
+/*
+ * Message Styles
+ *
+ */
+
+  /* */
+  a {
+    color: @text-color-info
+  }
+
+  /* Markdown styles */
+  pre, p code {
+    border: 1px solid @inset-panel-border-color;
+    background-color: @inset-panel-background-color;
+    border-radius: @component-border-radius
+  }
 
 }

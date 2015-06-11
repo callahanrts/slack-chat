@@ -2,6 +2,7 @@
 ChatMessageView = require './chat/chat-message-view'
 ChatLogView = require './chat/chat-log-view'
 {$, View} = require 'atom-space-pen-views'
+imagesLoaded = require 'imagesloaded'
 
 module.exports =
 class ChatView extends View
@@ -30,20 +31,19 @@ class ChatView extends View
 
   eventHandlers: =>
     @.on 'click', '.back', @closeChat
-    @.on 'keydown', '#response', @keypress
-    @.on 'input', 'textarea', @update
+    @.on 'keyup', 'textarea', @keypress
 
   getChatLog: =>
     @stateController.client.get "#{@type}.history", { channel: @chat.id }, (err, resp) =>
       @chatLogView = new ChatLogView(@stateController, resp.body.messages.reverse())
       @chatLog.append(@chatLogView)
-      # NOTE: Need to install imagesloaded for this to work correctly
-      @update()
+      imagesLoaded @chatLogView, @update
 
   keypress: (e) =>
     if e.keyCode is 13 and not e.shiftKey
       @submit()
       return false
+    @update()
 
   receiveMessage: (message) =>
     @chatLogView.receiveMessage(message)
@@ -56,16 +56,15 @@ class ChatView extends View
   submit: =>
     text = @response.val()
     @response.val('')
+    @update()
     @stateController.client.post "chat.postMessage",
       channel: @chat.id
       text: text
       as_user: @stateController.client.me.id
     , (err, msg, resp) =>
-      console.log arguments
       console.log err if err?
 
   update: (e) =>
-    console.log 'update', @chatLog, @chatLogView
     @response.height(0)
     height = Math.min(@response.get(0).scrollHeight, 150)
     @response.height(height)

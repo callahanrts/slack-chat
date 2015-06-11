@@ -1,6 +1,15 @@
 
 ChatMessageView = require './chat-message-view'
 {$, ScrollView} = require 'atom-space-pen-views'
+marked = require 'marked'
+renderer = new marked.Renderer();
+highlight = require 'highlight.js'
+
+marked.setOptions
+  renderer: renderer
+  highlight: (code) ->
+    console.log code
+    return highlight.highlightAuto(code).value
 
 module.exports =
 class ChatLogView extends ScrollView
@@ -8,8 +17,6 @@ class ChatLogView extends ScrollView
   @content: (@stateController, @messages) ->
     @div class: 'messages', =>
       @div class: 'list', outlet: 'messageViews'
-      # NOTE: Use this for parsing markdown
-      # https://github.com/chjj/marked
 
   initialize: (@stateController, @messages) ->
     super
@@ -49,7 +56,7 @@ class ChatLogView extends ScrollView
         <tr>
           <td></td>
           <td>
-            <div class='text'>#{message.text}</div>
+            <div class='text'>#{marked(message.text)}</div>
           </td>
         </tr>
       <table>

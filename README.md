@@ -43,12 +43,11 @@ This is your token for your team. Slack Chat should manage this for you. If you 
 # Todo
 - [ ] Real time message notification system
 - [ ] User Status (online/offline)
-- [ ] Enable links
 - [ ] Create Keybindings for selection
-- [ ] Display images
-- [ ] Parse markdown
+- [x] Parse markdown
 - [ ] Display emoticons
 - [ ] Send a selection of text as a message/file
 - [ ] Upload files
-
+- [ ] Fix markdown differences between github flavored and Slack
+- [ ] Display images/files
 
