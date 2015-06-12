@@ -29,10 +29,10 @@ module.exports = SlackChat =
     @subscriptions.add atom.commands.add 'atom-workspace', 'slack-chat:toggle-mode', => @toggleMode()
 
     # Slack chat mode commands
-    @subscriptions.add atom.commands.add '.slack-chat', 'slack-chat:move-down', => @commands.moveDown()
-    @subscriptions.add atom.commands.add '.slack-chat', 'slack-chat:move-up', => @commands.moveUp()
-    @subscriptions.add atom.commands.add '.slack-chat', 'slack-chat:open-conversation', => @commands.openConversation()
-    @subscriptions.add atom.commands.add '.slack-chat', 'slack-chat:close-conversation', => @commands.closeConversation()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'slack-chat:move-down', => @commands.moveDown()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'slack-chat:move-up', => @commands.moveUp()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'slack-chat:open-conversation', => @commands.openConversation()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'slack-chat:close-conversation', => @commands.closeConversation()
 
   deactivate: ->
     @subscriptions.dispose()
