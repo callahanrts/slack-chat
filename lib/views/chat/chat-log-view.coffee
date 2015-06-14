@@ -64,6 +64,7 @@ class ChatLogView extends ScrollView
 
   receiveMessage: (message) =>
     @messageViews.append(@messageElement(message))
-    $(".message", @messageViews).last().addClass("new #{'slack-mark' if $(".new", @messageViews).length is 0}")
+    unless message.user is @stateController.client.me.id
+      $(".message", @messageViews).last().addClass("new #{'slack-mark' if $(".new", @messageViews).length is 0}")
 
 

@@ -49,18 +49,23 @@ class StateController
     @setState('default')
 
   message: (message) =>
+    @updateChat(message)
     unless message.user is @client.me.id
       $("##{message.channel}", @channelView).addClass("unread")
-      @updateChat(message)
       member = @team.memberWithId(message.user)
       if atom.config.get('slack-chat.notifications')
         notifier.notify
           title: "New message from #{member.name}",
           message: "#{message.text.substring(0,140)}"
           icon: "https://raw.githubusercontent.com/callahanrts/slack-chat/master/lib/assets/icon256.png"
+          wait: true
+          member: member
         , (err, response) =>
+
+        notifier.on 'click', (nc, obj) =>
           @modalPanel.show() # Ensure slack chat is visible
-          @setState('chat', member) # Display chat
+          @setState('chat', obj.member) # Display chat
+
 
   presence_change: (message) =>
     @team.setPresence(message.user, message.presence)
