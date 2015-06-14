@@ -38,6 +38,7 @@ class ChatView extends View
     @stateController.client.get "#{@type}.history", { channel: @chat.id }, (err, resp) =>
       @chatLogView = new ChatLogView(@stateController, resp.body.messages.reverse())
       @chatLog.append(@chatLogView)
+      @setMark()
       imagesLoaded @chatLogView, @update
 
   keypress: (e) =>
@@ -62,6 +63,8 @@ class ChatView extends View
       ts: Date.now()
     , (err, msg, resp) =>
       console.log err if err?
+      if resp.ok
+        $(message).removeClass('new mark') for message in $(".message")
 
 
   submit: =>

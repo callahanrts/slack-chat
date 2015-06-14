@@ -76,6 +76,10 @@
   }
 
   .message {
+    &.slack-mark{border-top: 1px solid @text-color-highlight !important;}
+    &.new {
+      .name, .ts { color: @text-color-highlight; }
+    }
     padding: 10px 0;
     table{
       padding: 0 5px;
