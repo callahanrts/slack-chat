@@ -1,7 +1,7 @@
 {
   "name": "slack-chat",
   "main": "./lib/slack-chat",
-  "version": "3.1.3",
+  "version": "3.1.4",
   "description": "Slack Chat is an Atom package that integrates the slack messaging client into the editor.",
   "keywords": [
     "slack",
