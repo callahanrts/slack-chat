@@ -43,7 +43,7 @@ class StateController
         atom.config.set('slack-chat.token', @client.token)
         @setState('default')
       else if msg.type is 'message'
-        @chatHistory[msg.channel].receiveMessage(msg) if @chatHistory[msg.channel]
+        @notifications.handleMessage(msg)
 
 
   #Clear all child elements of the SlackChatView
@@ -77,6 +77,10 @@ class StateController
     else
       @chatHistory[chatTarget.id] ||= new ChatView(@, chatTarget)
       @slackChatView.addView(@chatHistory[chatTarget.id])
+
+  updateChat: (message) =>
+    console.log "update chat"
+    @chatHistory[message.channel].receiveMessage(message) if @chatHistory[message.channel]
 
   stateDefault: =>
     @stateHistory = [] # No need to store previous states when we land at the default

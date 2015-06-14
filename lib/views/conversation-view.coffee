@@ -55,6 +55,7 @@ class ConversationView extends ScrollView
   openConversation: =>
     @convos = @channelViews.concat(@memberViews)
     index = $('li', '#conversations').index @currentConversation
+    @currentConversation.removeClass('unread')
     @convos[index].showConversation()
 
   setCurrentConversation: ($convo) =>

@@ -1,8 +1,7 @@
 
 NotificationView = require './views/notification-view'
 
-$ = require('atom').$
-#require('atom')['jqueryui']
+{$} = require 'atom-space-pen-views'
 
 module.exports =
 class NotificationHandler
@@ -16,6 +15,10 @@ class NotificationHandler
   addEvent: (message) =>
   #  @notifications << message
   #  @alertUser()
+
+  handleMessage: (message) =>
+    $("##{message.channel}").addClass("unread")
+    @stateController.updateChat(message)
 
   alertUser: =>
     @modalNotification.show()

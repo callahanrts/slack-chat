@@ -7,9 +7,3 @@
 
 # For more detailed documentation see
 # https://atom.io/docs/latest/behind-atom-keymaps-in-depth
-'atom-workspace':
-  'cmd-m': 'slack-chat:toggle'
-  'ctrl-j': 'slack-chat:move-down'
-  'ctrl-k': 'slack-chat:move-up'
-  'ctrl-l': 'slack-chat:open-conversation'
-  'ctrl-o': 'slack-chat:close-conversation'

@@ -4,7 +4,7 @@
 module.exports =
 class ChannelView extends View
   @content: (@stateController, @channel) ->
-    @li id: @channel.id, class: 'channel', =>
+    @li id: @channel.id, class: 'channel', outlet: 'converations', =>
       @span "#", class: 'indicator'
       @span @channel.name
 
@@ -16,4 +16,5 @@ class ChannelView extends View
       @showConversation()
 
   showConversation: () ->
+    $("##{@channel.id}").removeClass('unread')
     @stateController.setState('chat', @channel)

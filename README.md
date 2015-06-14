@@ -10,8 +10,8 @@ Slack Chat is an Atom package that integrates the slack messaging client into th
 - Install slack-chat from the atom package manager
 - Log in to slack with the window that was opened in your browser and authorize the sc-client application
 
-  <img src="http://drive.google.com/uc?export=view&id=0B_FMiWCp_bLQems3NTlIUjlzWWM" width="400px" />
-  <img src="http://drive.google.com/uc?export=view&id=0B_FMiWCp_bLQYm9HSi0xY2RMQVU" width="400px" />
+  <img src="http://drive.google.com/uc?export=view&id=0B_FMiWCp_bLQems3NTlIUjlzWWM" width="325px" />
+  <img src="http://drive.google.com/uc?export=view&id=0B_FMiWCp_bLQYm9HSi0xY2RMQVU" width="325px" />
 
 - Restart atom
 
@@ -34,8 +34,8 @@ Slack Chat is an Atom package that integrates the slack messaging client into th
 This is your token for your team. Slack Chat should manage this for you. If you need to sign in with a different account/team, remove this token and reload Atom.
 
 # Preview
-<img src="http://drive.google.com/uc?export=view&id=0B_FMiWCp_bLQNlluR2MwRkNWVG8" width="400px" />
-<img src="http://drive.google.com/uc?export=view&id=0B_FMiWCp_bLQOEM1ZjZvUDRhVEk" width="400px" />
+<img src="http://drive.google.com/uc?export=view&id=0B_FMiWCp_bLQNlluR2MwRkNWVG8" width="325px" />
+<img src="http://drive.google.com/uc?export=view&id=0B_FMiWCp_bLQOEM1ZjZvUDRhVEk" width="325px" />
 
 # Todo
 - [ ] Fix real time messaging

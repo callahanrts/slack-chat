@@ -6,13 +6,11 @@ class MemberView extends View
   @content: (@stateController, @member) ->
     user = @stateController.team.members[@member.user]
 
-    if user?
-      @li id: @member.id, class: 'member',  =>
-        @span class: 'dot'
+    @li id: @member.id, class: 'member', outlet: 'conversation',  =>
+      @span class: 'dot'
+      if user?
         @span user.name
-    else
-      @li id: @member.id, class: 'member',  =>
-        @span class: 'dot'
+      else
         @span @member.user
 
 
@@ -24,5 +22,6 @@ class MemberView extends View
       @showConversation()
 
   showConversation: () ->
+    $("##{@member.id}").removeClass('unread')
     @stateController.setState('chat', @member)
 
