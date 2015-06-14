@@ -55,7 +55,6 @@ class ChatView extends View
 
   setMark: =>
     type = if @chat.is_channel? then 'channels' else 'im'
-    console.log "set mark #{@chat.channel.id}:#{Date.now()}"
     @stateController.client.post "#{type}.mark",
       channel: @chat.channel.id
       ts: Date.now()

@@ -38,8 +38,6 @@ class ChatLogView extends ScrollView
 
   messageElement: (message) =>
     author = @stateController.team.memberWithId(message.user) || @stateController.team.unknownUser(message)
-    console.log message
-    console.log author
     image = author.image
     name = author.name
     """
@@ -65,7 +63,6 @@ class ChatLogView extends ScrollView
     """
 
   receiveMessage: (message) =>
-    console.log 'received message', message
     @messageViews.append(@messageElement(message))
     $(".message", @messageViews).last().addClass("new #{'slack-mark' if $(".new", @messageViews).length is 0}")
 

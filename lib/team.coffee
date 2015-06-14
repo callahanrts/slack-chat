@@ -45,6 +45,12 @@ class Team
   membersNotMe: =>
     _.reject(@members, (member) => member.id is @client.me.id)
 
+  setPresence: (user, presence) =>
+    for member in @members
+      console.log "#{member.id} == #{user}"
+      member.presence = presence if member.id is user
+    console.log @members
+
   unknownUser: (message) =>
     image: @memberImage(null, message)
     name: @memberName(null, message)

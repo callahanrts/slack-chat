@@ -38,13 +38,29 @@ class StateController
 
     @client.addSubscriber (message) =>
       msg = JSON.parse(message)
-      if msg.type is 'hello'
-        @team = new Team(@client) if @client # Gather slack team
-        atom.config.set('slack-chat.token', @client.token)
-        @setState('default')
-      else if msg.type is 'message'
-        @notifications.handleMessage(msg)
+      @[msg.type]?(msg) # Call rtm method if it exists
 
+  ####################################################
+  # RTM Methods
+  ####################################################
+  hello: =>
+    console.log 'hello'
+    @team ||= new Team(@client) if @client # Gather slack team
+    atom.config.set('slack-chat.token', @client.token)
+    @setState('default')
+
+  message: (message) =>
+    @notifications.handleMessage(message)
+
+  presence_change: (message) =>
+    console.log message
+    @team.setPresence(message.user, message.presence)
+    @channelView.refresh() if @channelView
+
+
+  ####################################################
+  # View Methods
+  ####################################################
 
   #Clear all child elements of the SlackChatView
   clearRoot: =>
@@ -63,6 +79,9 @@ class StateController
   previousState: ->
     @setState @stateHistory.pop()
 
+  ####################################################
+  # State Methods
+  ####################################################
   setState: (state) =>
     state = state[0].toUpperCase() + state[1..-1].toLowerCase()
     @stateHistory.push @state if @state # keep track of state history

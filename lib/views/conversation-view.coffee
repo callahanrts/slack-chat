@@ -66,7 +66,7 @@ class ConversationView extends ScrollView
     @currentConversation = $convo
 
   refresh: ->
-    view.eventHandlers() for view in @memberViews
+    view.refresh() for view in @memberViews
     view.eventHandlers() for view in @channelViews
 
   titleElement: (team) ->
