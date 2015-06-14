@@ -80,7 +80,9 @@ class StateController
 
   updateChat: (message) =>
     console.log "update chat"
-    @chatHistory[message.channel].receiveMessage(message) if @chatHistory[message.channel]
+    if @chatHistory[message.channel]
+      console.log "chat found"
+      @chatHistory[message.channel].receiveMessage(message)
 
   stateDefault: =>
     @stateHistory = [] # No need to store previous states when we land at the default
