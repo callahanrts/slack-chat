@@ -35,4 +35,4 @@ Slack Chat is an Atom package that integrates the slack messaging client into th
 - [ ] Fix markdown differences between github flavored and Slack
 - [ ] Code highlight for markdown
 - [ ] Display images/files
-
+- [ ] [User requests](https://github.com/callahanrts/slack-chat/issues)

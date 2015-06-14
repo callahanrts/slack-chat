@@ -9,7 +9,6 @@ class MemberView extends View
       @span @member.name
 
   initialize: (@stateController, @member) ->
-    console.log @member
     @eventHandlers()
 
   eventHandlers: =>

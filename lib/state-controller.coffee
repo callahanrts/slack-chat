@@ -3,9 +3,10 @@ SlackChatView = require './views/slack-chat-view'
 ConversationView = require './views/conversation-view'
 ChatView = require './views/chat-view'
 
-NotificationHandler = require './notification-handler'
+notifier = require 'node-notifier'
 Team = require './team'
 
+{$} = require 'atom-space-pen-views'
 {allowUnsafeEval} = require 'loophole'
 
 module.exports =
@@ -34,8 +35,6 @@ class StateController
     @slackChatView = new SlackChatView(@, @client)
     @modalPanel = atom.workspace.addRightPanel(item: @slackChatView, visible: false, className: 'slack-panel')
 
-    @notifications = new NotificationHandler(@)
-
     @client.addSubscriber (message) =>
       msg = JSON.parse(message)
       @[msg.type]?(msg) # Call rtm method if it exists
@@ -50,10 +49,15 @@ class StateController
     @setState('default')
 
   message: (message) =>
-    @notifications.handleMessage(message)
+    $("##{message.channel}").addClass("unread")
+    @updateChat(message)
+    member = @team.memberWithId(message.user)
+    notifier.notify
+      title: "New message from #{member.name}",
+      message: "#{message.text.substring(0,140)}"
+      icon: member.image
 
   presence_change: (message) =>
-    console.log message
     @team.setPresence(message.user, message.presence)
     @channelView.refresh() if @channelView
 

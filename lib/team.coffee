@@ -47,9 +47,7 @@ class Team
 
   setPresence: (user, presence) =>
     for member in @members
-      console.log "#{member.id} == #{user}"
       member.presence = presence if member.id is user
-    console.log @members
 
   unknownUser: (message) =>
     image: @memberImage(null, message)
