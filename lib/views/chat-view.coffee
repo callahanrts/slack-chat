@@ -7,9 +7,8 @@ imagesLoaded = require 'imagesloaded'
 module.exports =
 class ChatView extends View
   @content: (@stateController, @chat) ->
-    user = @stateController.team.members[@chat.user]
-    image = @stateController.team.memberImage(user, @chat)
-    name = @stateController.team.memberName(user, @chat)
+    image = @chat.image
+    name = @chat.name
 
     @div class: 'chat', =>
       @div class: 'title', =>
@@ -35,7 +34,7 @@ class ChatView extends View
     @.on 'focus', 'textarea', @setMark
 
   getChatLog: =>
-    @stateController.client.get "#{@type}.history", { channel: @chat.id }, (err, resp) =>
+    @stateController.client.get "#{@type}.history", { channel: @chat.channel.id }, (err, resp) =>
       @chatLogView = new ChatLogView(@stateController, resp.body.messages.reverse())
       @chatLog.append(@chatLogView)
       imagesLoaded @chatLogView, @update
@@ -56,9 +55,9 @@ class ChatView extends View
 
   setMark: =>
     type = if @chat.is_channel? then 'channels' else 'im'
-    console.log "set mark #{@chat.id}:#{Date.now()}"
+    console.log "set mark #{@chat.channel.id}:#{Date.now()}"
     @stateController.client.post "#{type}.mark",
-      channel: @chat.id
+      channel: @chat.channel.id
       ts: Date.now()
     , (err, msg, resp) =>
       console.log err if err?
@@ -71,7 +70,7 @@ class ChatView extends View
     @response.val('')
     @update()
     @stateController.client.post "chat.postMessage",
-      channel: @chat.id
+      channel: @chat.channel.id
       text: text
       as_user: @stateController.client.me.id
     , (err, msg, resp) =>

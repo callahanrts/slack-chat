@@ -2,13 +2,12 @@
 ChatMessageView = require './chat-message-view'
 {$, ScrollView} = require 'atom-space-pen-views'
 marked = require 'marked'
-renderer = new marked.Renderer();
+renderer = new marked.Renderer()
 highlight = require 'highlight.js'
 
 marked.setOptions
   renderer: renderer
   highlight: (code) ->
-    console.log code
     return highlight.highlightAuto(code).value
 
 module.exports =
@@ -38,9 +37,11 @@ class ChatLogView extends ScrollView
     "#{month} #{date}#{if year < (new Date()).getFullYear() then ", #{year}" else ''} #{hour}:#{min} #{t}"
 
   messageElement: (message) =>
-    author = @stateController.team.members[message.user]
-    image = @stateController.team.memberImage(author, message)
-    name = @stateController.team.memberName(author, message)
+    author = @stateController.team.memberWithId(message.user) || @stateController.team.unknownUser(message)
+    console.log message
+    console.log author
+    image = author.image
+    name = author.name
     """
     <div class='message native-key-bindings'>
       <table>

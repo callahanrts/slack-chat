@@ -34,12 +34,12 @@ class StateController
     @slackChatView = new SlackChatView(@, @client)
     @modalPanel = atom.workspace.addRightPanel(item: @slackChatView, visible: false, className: 'slack-panel')
 
-    @team = new Team(@client) if @client # Gather slack team
     @notifications = new NotificationHandler(@)
 
     @client.addSubscriber (message) =>
       msg = JSON.parse(message)
       if msg.type is 'hello'
+        @team = new Team(@client) if @client # Gather slack team
         atom.config.set('slack-chat.token', @client.token)
         @setState('default')
       else if msg.type is 'message'
@@ -71,12 +71,12 @@ class StateController
     @["state#{state}"].apply(this, arguments)
 
   stateChat: (state, chatTarget) =>
-    if @chatHistory[chatTarget.id]
-      @slackChatView.addView(@chatHistory[chatTarget.id])
-      @chatHistory[chatTarget.id].refresh()
+    if @chatHistory[chatTarget.channel.id]
+      @slackChatView.addView(@chatHistory[chatTarget.channel.id])
+      @chatHistory[chatTarget.channel.id].refresh()
     else
-      @chatHistory[chatTarget.id] ||= new ChatView(@, chatTarget)
-      @slackChatView.addView(@chatHistory[chatTarget.id])
+      @chatHistory[chatTarget.channel.id] ||= new ChatView(@, chatTarget)
+      @slackChatView.addView(@chatHistory[chatTarget.channel.id])
 
   preloadChat: (chat) =>
     @chatHistory[chat.id] ||= new ChatView(@, chat) if atom.config.get('slack-chat.preloadChat')
