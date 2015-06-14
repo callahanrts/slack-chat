@@ -23,13 +23,17 @@ class ConversationView extends ScrollView
   getChannels: () =>
     @client.get 'channels.list', {}, (err, resp) =>
       @channels = resp.body.channels
-      @channelViews.push new ChannelView(@stateController, channel) for channel in @channels
+      for channel in @channels
+        @channelViews.push new ChannelView(@stateController, channel)
+        @stateController.preloadChat(channel)
       @channelElements.append(view) for view in @channelViews
 
   getMembers: (callback) =>
     @client.get 'im.list', {}, (err, resp) =>
       @members = resp.body.ims
-      @memberViews.push new MemberView(@stateController, member) for member in @members
+      for member in @members
+        @memberViews.push new MemberView(@stateController, member)
+        @stateController.preloadChat(member)
       @memberElements.append(view) for view in @memberViews
 
   getTeamInfo: =>

@@ -78,6 +78,9 @@ class StateController
       @chatHistory[chatTarget.id] ||= new ChatView(@, chatTarget)
       @slackChatView.addView(@chatHistory[chatTarget.id])
 
+  preloadChat: (chat) =>
+    @chatHistory[chat.id] ||= new ChatView(@, chat) if atom.config.get('slack-chat.preloadChat')
+
   updateChat: (message) =>
     console.log "update chat"
     if @chatHistory[message.channel]

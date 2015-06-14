@@ -12,6 +12,11 @@ module.exports = SlackChat =
       description: 'slack-chat should manage this for you (reset to change teams)'
       default: 'null'
       type: 'string'
+    preloadChat:
+      title: 'Load conversations on startup'
+      description: 'slack-chat will load your conversations on startup instead of when requested'
+      default: false
+      type: 'boolean'
 
   subscriptions: null
 
