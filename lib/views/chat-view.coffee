@@ -32,6 +32,7 @@ class ChatView extends View
   eventHandlers: =>
     @.on 'click', '.back', @closeChat
     @.on 'keyup', 'textarea', @keypress
+    @.on 'focus', 'textarea', @setMark
 
   getChatLog: =>
     @stateController.client.get "#{@type}.history", { channel: @chat.id }, (err, resp) =>
@@ -52,6 +53,16 @@ class ChatView extends View
   refresh: =>
     @eventHandlers()
     @update()
+
+  setMark: =>
+    type = if @chat.is_channel? then 'channels' else 'im'
+    console.log "set mark #{@chat.id}:#{Date.now()}"
+    @stateController.client.post "#{type}.mark",
+      channel: @chat.id
+      ts: Date.now()
+    , (err, msg, resp) =>
+      console.log err if err?
+
 
   submit: =>
     text = @response.val()

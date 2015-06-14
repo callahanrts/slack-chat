@@ -64,7 +64,7 @@ class ChatLogView extends ScrollView
     """
 
   receiveMessage: (message) =>
-    console.log 'received message'
+    console.log 'received message', message
     @messageViews.append(@messageElement(message))
 
 
