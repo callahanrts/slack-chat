@@ -76,6 +76,7 @@
   }
 
   .message {
+    &.file_comment{ display: none; }
     &.slack-mark{border-top: 1px solid @text-color-highlight !important;}
     &.new {
       .name, .ts { color: @text-color-highlight; }
@@ -153,6 +154,13 @@
  * Message Styles
  *
  */
+
+  .file{
+    &.image{
+      max-width: 100%;
+      width: 100%;
+    }
+  }
 
   /* */
   .emoji{ height: 22px; }

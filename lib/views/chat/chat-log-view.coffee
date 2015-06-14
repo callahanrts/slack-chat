@@ -32,6 +32,7 @@ class ChatLogView extends ScrollView
     date = a.getDate()
     hour = a.getHours()
     min = a.getMinutes()
+    min = if min < 10 then "0#{min}" else min
     year = a.getFullYear()
     if hour > 12
       hour = hour - 12
@@ -45,7 +46,7 @@ class ChatLogView extends ScrollView
     image = author.image
     name = author.name
     """
-    <div class='message native-key-bindings'>
+    <div class='message native-key-bindings #{message.subtype}'>
       <table>
         <tr>
           <td>
@@ -59,14 +60,61 @@ class ChatLogView extends ScrollView
         <tr>
           <td></td>
           <td>
-            <div class='text'>#{@parseMessage(message.text)}</div>
+            <div class='text'>#{@parseMessage(message)}</div>
           </td>
         </tr>
       <table>
     </div>
     """
 
-  parseMessage: (text) =>
+  file_share: (message) =>
+    file = message.file
+    msg = switch
+      when file.mimetype.match(/text/)? then @fileText(file)
+      when file.mimetype.match(/image/g)? then @fileImage(file)
+    msg.concat @fileComments(file)
+
+  fileComments: (file) =>
+    if file.initial_comment
+      """
+      <div id='#{file.id}_comments' class='file comment'>
+        <div class="file_comment">
+          <div class="text">
+            <p>#{file.initial_comment.comment}</p>
+          </div>
+        </div>
+      </div>
+      """
+    else
+      ""
+
+  fileImage: (file) =>
+    "<a href='#{file.url}'><img src='#{file.url}' class='file image' /></a>"
+
+  fileText: (file) =>
+    marked("""
+      ```
+      #{file.preview}
+      ```
+    """)
+
+  file_comment: (message) =>
+    comment = message.comment
+    user = @stateController.team.memberWithId(comment.user)
+    $("##{message.file.id}_comments", @messageViews).append("""
+      <div class="file_comment">
+      <span class='name' >#{user.name}</span>
+      <span class='ts' >#{@getTime(comment.timestamp)}</span>
+      <div class='text'>#{marked(comment.comment)}</div>
+      </div>
+      """)
+
+  parseMessage: (message) =>
+    @[message.subtype]?(message)
+
+  message: (message) =>
+    console.log message
+    text = message.text
     message = marked(text)
     message = @stateController.team.parseCustomEmoji(text)
     message = emoji(message, "https://raw.githubusercontent.com/HenrikJoreteg/emoji-images/master/pngs/")
