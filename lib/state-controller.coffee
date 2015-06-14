@@ -49,13 +49,18 @@ class StateController
     @setState('default')
 
   message: (message) =>
-    $("##{message.channel}").addClass("unread")
-    @updateChat(message)
-    member = @team.memberWithId(message.user)
-    notifier.notify
-      title: "New message from #{member.name}",
-      message: "#{message.text.substring(0,140)}"
-      icon: member.image
+    unless message.user is @client.me.id
+      $("##{message.channel}", @channelView).addClass("unread")
+      @updateChat(message)
+      member = @team.memberWithId(message.user)
+      if atom.config.get('slack-chat.notifications')
+        notifier.notify
+          title: "New message from #{member.name}",
+          message: "#{message.text.substring(0,140)}"
+          icon: "https://raw.githubusercontent.com/callahanrts/slack-chat/master/lib/assets/icon256.png"
+        , (err, response) =>
+          @modalPanel.show() # Ensure slack chat is visible
+          @setState('chat', member) # Display chat
 
   presence_change: (message) =>
     @team.setPresence(message.user, message.presence)
@@ -107,7 +112,6 @@ class StateController
   updateChat: (message) =>
     console.log "update chat"
     if @chatHistory[message.channel]
-      console.log "chat found"
       @chatHistory[message.channel].receiveMessage(message)
 
   stateDefault: =>

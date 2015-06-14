@@ -25,7 +25,7 @@ Slack Chat is an Atom package that integrates the slack messaging client into th
 
 # Todo
 - [x] Send/receive messages in real time
-- [ ] Real time message notification system
+- [x] Real time message notification system
 - [x] User Status (online/offline)
 - [x] Create Keybindings for selection
 - [x] Parse markdown

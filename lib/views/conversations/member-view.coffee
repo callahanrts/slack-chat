@@ -4,7 +4,7 @@
 module.exports =
 class MemberView extends View
   @content: (@stateController, @member) ->
-    @li id: @member.id, class: 'member', outlet: 'conversation',  =>
+    @li id: @member.channel.id, class: 'member', outlet: 'conversation',  =>
       @span class: "dot #{@member.presence}", outlet: 'presence'
       @span @member.name
 
@@ -16,7 +16,7 @@ class MemberView extends View
       @showConversation()
 
   showConversation: () ->
-    $("##{@member.id}").removeClass('unread')
+    $("##{@member.channel.id}").removeClass('unread')
     @stateController.setState('chat', @member)
 
   refresh: =>

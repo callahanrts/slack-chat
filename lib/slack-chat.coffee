@@ -17,6 +17,11 @@ module.exports = SlackChat =
       description: 'slack-chat will load your conversations on startup instead of when requested'
       default: false
       type: 'boolean'
+    notifications:
+      title: 'Use system notifications'
+      description: 'When this is enabled, system notifications will alert you of received messages.'
+      default: true
+      type: 'boolean'
 
   subscriptions: null
 
