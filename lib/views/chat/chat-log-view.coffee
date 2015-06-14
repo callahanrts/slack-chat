@@ -4,6 +4,7 @@ ChatMessageView = require './chat-message-view'
 marked = require 'marked'
 renderer = new marked.Renderer()
 highlight = require 'highlight.js'
+emoji = require 'emoji-images'
 
 marked.setOptions
   renderer: renderer
@@ -19,7 +20,10 @@ class ChatLogView extends ScrollView
 
   initialize: (@stateController, @messages) ->
     super
-    @messageViews.append(@messageElement(message)) for message in @messages
+    @addMessage(message) for message in @messages
+
+  addMessage: (message) =>
+    @messageViews.append(@messageElement(message))
 
   getTime: (timestamp) ->
     a = new Date(timestamp * 1000)
@@ -55,15 +59,21 @@ class ChatLogView extends ScrollView
         <tr>
           <td></td>
           <td>
-            <div class='text'>#{marked(message.text)}</div>
+            <div class='text'>#{@parseMessage(message.text)}</div>
           </td>
         </tr>
       <table>
     </div>
     """
 
+  parseMessage: (text) =>
+    message = marked(text)
+    message = @stateController.team.parseCustomEmoji(text)
+    message = emoji(message, "https://raw.githubusercontent.com/HenrikJoreteg/emoji-images/master/pngs/")
+    message
+
   receiveMessage: (message) =>
-    @messageViews.append(@messageElement(message))
+    @addMessage(message)
     unless message.user is @stateController.client.me.id
       $(".message", @messageViews).last().addClass("new #{'slack-mark' if $(".new", @messageViews).length is 0}")
 

@@ -10,11 +10,16 @@ class Team
 
     @getChannels()
     @getTeamMembers()
+    @getEmoji()
 
   getChannels: =>
     for channel in @client.channels
       channel.channel = { id: channel.id }
       @channels.push channel
+
+  getEmoji: =>
+    @client.get 'emoji.list', {}, (err, resp) =>
+      @emoji = resp.body.emoji
 
   # Parse team members with channel ids (for ims) from rtm.start of sc-client
   getTeamMembers: =>
@@ -44,6 +49,28 @@ class Team
 
   membersNotMe: =>
     _.reject(@members, (member) => member.id is @client.me.id)
+
+  customEmoji: (match) =>
+    return match unless @emoji
+    emoji = match.replace(/:/g, '')
+    if @emoji[emoji]?
+      @customEmojiImage(@emoji[emoji], match)
+    else
+      match
+
+  customEmojiImage: (emoji, match) =>
+    if emoji.match(/http/)?
+      "<img src='#{emoji}' class='emoji' title='#{match.replace(/:/g, '')}' alt='#{match.replace(/:/g, '')}' />"
+    else
+      @customEmoji(":#{emoji.split(':')[1]}:")
+
+
+  parseCustomEmoji: (text) =>
+    # Find and replace custom emoji with images
+    emoji = text.match(/:\S+:/g)
+    if emoji
+      text = text.replace(match, @customEmoji(match)) for match in emoji
+    text
 
   setPresence: (user, presence) =>
     for member in @members
