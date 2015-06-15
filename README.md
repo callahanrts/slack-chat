@@ -1,5 +1,5 @@
 
-# Slack Chat - Atom package *Beta*
+# Slack Chat - Atom package
 
 Slack Chat is an Atom package that integrates the slack messaging client into the editor.
 
@@ -30,9 +30,10 @@ Slack Chat is an Atom package that integrates the slack messaging client into th
 - [x] Create Keybindings for selection
 - [x] Parse markdown
 - [x] Display emoji (regular and custom)
-- [ ] Send a selection of text as a message/file
+- [ ] Display/download images/files
+- [ ] Display images/gifs/open graph data when a url is posted
 - [ ] Upload files
-- [ ] Fix markdown differences between github flavored and Slack
+- [ ] Send a selection of text as a message/file
 - [ ] Code highlight for markdown
-- [ ] Display images/files
+- [ ] Fix markdown differences between github flavored and Slack
 - [ ] [User requests](https://github.com/callahanrts/slack-chat/issues)
