@@ -110,10 +110,12 @@ class ChatLogView extends ScrollView
       """)
 
   parseMessage: (message) =>
-    @[message.subtype]?(message)
+    switch message.subtype
+      when 'file_comment' then @file_comment(message)
+      when 'file_share' then @file_share(message)
+      else @message(message)
 
   message: (message) =>
-    console.log message
     text = message.text
     message = marked(text)
     message = @stateController.team.parseCustomEmoji(text)
