@@ -7,20 +7,35 @@ Commands = require './commands'
 
 module.exports = SlackChat =
   config:
-    token:
+    api_key:
+      title: "Client ID"
+      description: "Slack API client id from https://api.slack.com/applications/new"
+      default: 'null'
+      type: 'string'
+    api_secret:
+      title: "Client Secret"
+      description: "Slack API client secret from https://api.slack.com/applications/new"
+      default: 'null'
+      type: 'string'
+    api_sport:
+      title: 'Port'
+      description: 'The port slack-chat waits for Slack messages. Use default unless there are conflicts'
+      default: 36347
+      type: 'integer'
+    api_token:
       title: 'Slack Token'
       description: 'slack-chat should manage this for you (reset to change teams)'
       default: 'null'
       type: 'string'
-    preloadChat:
-      title: 'Load conversations on startup'
-      description: 'slack-chat will load your conversations on startup instead of when requested'
-      default: false
-      type: 'boolean'
     notifications:
       title: 'Use system notifications'
       description: 'When this is enabled, system notifications will alert you of received messages.'
       default: true
+      type: 'boolean'
+    preloadChat:
+      title: 'Load conversations on startup'
+      description: 'slack-chat will load your conversations on startup instead of when requested'
+      default: false
       type: 'boolean'
 
   subscriptions: null

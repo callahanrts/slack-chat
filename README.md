@@ -1,7 +1,7 @@
 
-# Slack Chat - Atom package
+# Slack Chat
 
-Slack Chat is an Atom package that integrates the slack messaging client into the editor.
+Slack Chat is an Atom package that integrates the slack messaging client into the atom text editor.
 
 # Preview
 <img src="http://drive.google.com/uc?export=view&id=0B_FMiWCp_bLQNlluR2MwRkNWVG8" width="47%" />
@@ -9,8 +9,16 @@ Slack Chat is an Atom package that integrates the slack messaging client into th
 
 
 # Installation
-- Install slack-chat from the atom package manager
-- Log in to slack with the window that was opened in your browser and authorize the sc-client application
+- Get client id and secret keys by [creating a slack app](https://api.slack.com/applications/new)
+  - Name: pick an arbitrary name
+  - URL: http://0.0.0.0:36347
+  - Redirect URI(s): http://0.0.0.0:36347/oauth
+  - Description: not necessary
+  - Team: Your team, but the app seems to work with other teams as well.
+- Go to the slack-chat settings in atom
+  - Paste in your client id and secret
+- Install slack-chat from the atom package manager (or restart if you've already installed it)
+- Log in to slack with the window that was opened in your browser and authorize the application you've just created (sc-client is an example)
 
   <img src="http://drive.google.com/uc?export=view&id=0B_FMiWCp_bLQems3NTlIUjlzWWM" width="47%" />
   <img src="http://drive.google.com/uc?export=view&id=0B_FMiWCp_bLQYm9HSi0xY2RMQVU" width="47%" />
@@ -36,4 +44,6 @@ Slack Chat is an Atom package that integrates the slack messaging client into th
 - [ ] Send a selection of text as a message/file
 - [ ] Code highlight for markdown
 - [ ] Fix markdown differences between github flavored and Slack
+- [ ] Load previous when at top of scroll
+- [ ] Search for messages
 - [ ] [User requests](https://github.com/callahanrts/slack-chat/issues)

@@ -28,8 +28,12 @@ class StateController
     # Use loophole for external calls made within the SlackClient
     allowUnsafeEval =>
       SlackClient = require('sc-client').slackClient
-      @token = atom.config.get('slack-chat.token')
-      @client = new SlackClient(if @token is 'null' then null else @token)
+      @token = atom.config.get('slack-chat.api_token')
+      @token = if @token is 'null' then null else @token
+      clientId = atom.config.get('slack-chat.api_key')
+      clientSecret = atom.config.get('slack-chat.api_secret')
+      port = atom.config.get('slack-chat.api_sport')
+      @client = new SlackClient(clientId, clientSecret, @token, port)
 
 
     @slackChatView = new SlackChatView(@, @client)
@@ -45,7 +49,7 @@ class StateController
   hello: =>
     console.log 'hello'
     @team ||= new Team(@client) if @client # Gather slack team
-    atom.config.set('slack-chat.token', @client.token)
+    atom.config.set('slack-chat.api_token', @client.token)
     @setState('default')
 
   message: (message) =>
