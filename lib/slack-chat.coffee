@@ -51,13 +51,13 @@ module.exports = SlackChat =
 
     # Register command that toggles this view
     @subscriptions.add atom.commands.add 'atom-workspace', 'slack-chat:toggle', => @toggle()
-    @subscriptions.add atom.commands.add 'atom-workspace', 'slack-chat:toggle-mode', => @toggleMode()
 
     # Slack chat mode commands
     @subscriptions.add atom.commands.add 'atom-workspace', 'slack-chat:move-down', => @commands.moveDown()
     @subscriptions.add atom.commands.add 'atom-workspace', 'slack-chat:move-up', => @commands.moveUp()
     @subscriptions.add atom.commands.add 'atom-workspace', 'slack-chat:open-conversation', => @commands.openConversation()
     @subscriptions.add atom.commands.add 'atom-workspace', 'slack-chat:close-conversation', => @commands.closeConversation()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'slack-chat:upload-selection', => @commands.uploadSelection()
 
   deactivate: ->
     @subscriptions.dispose()

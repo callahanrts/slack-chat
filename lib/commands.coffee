@@ -17,3 +17,6 @@ class Commands
     console.log @stateController
     @stateController.setState('default')
 
+  uploadSelection: =>
+    @stateController.modalPanel.show()
+    @stateController.setState('upload')

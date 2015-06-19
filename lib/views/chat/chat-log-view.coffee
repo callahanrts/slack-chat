@@ -69,7 +69,6 @@ class ChatLogView extends ScrollView
 
   file_share: (message) =>
     file = message.file
-    console.log file
     dl = "#{file.name}<a href='#{file.url_download}'><span class='download'></span></a>"
     msg = switch
       when file.mimetype.match(/text/)? then @fileText(file)
@@ -118,7 +117,6 @@ class ChatLogView extends ScrollView
       """)
 
   parseMessage: (message) =>
-    console.log message.subtype
     switch message.subtype
       when 'file_comment' then @file_comment(message)
       when 'file_share' then @file_share(message)

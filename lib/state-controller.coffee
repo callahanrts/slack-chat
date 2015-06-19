@@ -2,6 +2,8 @@
 SlackChatView = require './views/slack-chat-view'
 ConversationView = require './views/conversation-view'
 ChatView = require './views/chat-view'
+FileManager = require './file-manager'
+FileUploadView = require './views/file-upload-view'
 
 notifier = require 'node-notifier'
 Team = require './team'
@@ -49,6 +51,7 @@ class StateController
   hello: =>
     console.log 'hello'
     @team ||= new Team(@client) if @client # Gather slack team
+    @fileManager = new FileManager(@)
     atom.config.set('slack-chat.api_token', @client.token)
     @setState('default')
 
@@ -128,6 +131,11 @@ class StateController
     @channelView.refresh() if @channelView
     @channelView ||= new ConversationView(@, @client)
     @slackChatView.addView(@channelView)
+
+  stateUpload: =>
+    @uploadView.refresh() if @uploadView
+    @uploadView ||= new FileUploadView(@)
+    @slackChatView.addView(@uploadView)
 
   toggle: =>
     if @modalPanel.isVisible() then @modalPanel.hide() else @modalPanel.show()
