@@ -26,7 +26,7 @@ class ChatView extends View
     @eventHandlers()
 
   closeChat: =>
-    @stateController.previousState()
+    @stateController.setState('default')
 
   eventHandlers: =>
     @.on 'click', '.back', @closeChat

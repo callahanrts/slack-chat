@@ -16,7 +16,7 @@ class FileUploadView extends ScrollView
 
       @div id: 'comment-wrapper', =>
         @label 'Comment', for: 'comment'
-        @textarea id: 'comment', class: 'form-control', outlet: @comment
+        @textarea id: 'comment', class: 'form-control native-key-bindings', outlet: @comment
         @button 'Upload', id: 'submit', class: 'btn btn-primary'
 
 

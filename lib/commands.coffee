@@ -14,7 +14,6 @@ class Commands
     @stateController.channelView.openConversation()
 
   closeConversation: =>
-    console.log @stateController
     @stateController.setState('default')
 
   uploadSelection: =>
