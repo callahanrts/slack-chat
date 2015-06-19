@@ -38,10 +38,11 @@ Slack Chat is an Atom package that integrates the slack messaging client into th
 - [x] Create Keybindings for selection
 - [x] Parse markdown
 - [x] Display emoji (regular and custom)
-- [ ] Display/download images/files
+- [x] Display/download images/files
 - [ ] Display images/gifs/open graph data when a url is posted
 - [ ] Upload files
 - [ ] Send a selection of text as a message/file
+- [ ] Synchronize with slack themes
 - [ ] Code highlight for markdown
 - [ ] Fix markdown differences between github flavored and Slack
 - [ ] Load previous when at top of scroll

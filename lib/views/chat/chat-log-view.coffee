@@ -69,10 +69,14 @@ class ChatLogView extends ScrollView
 
   file_share: (message) =>
     file = message.file
+    console.log file
+    dl = "#{file.name}<a href='#{file.url_download}'><span class='download'></span></a>"
     msg = switch
       when file.mimetype.match(/text/)? then @fileText(file)
       when file.mimetype.match(/image/g)? then @fileImage(file)
+      else ""
     msg.concat @fileComments(file)
+    "#{dl}<br>#{msg}"
 
   fileComments: (file) =>
     if file.initial_comment
@@ -89,14 +93,18 @@ class ChatLogView extends ScrollView
       ""
 
   fileImage: (file) =>
-    "<a href='#{file.url}'><img src='#{file.url}' class='file image' /></a>"
+    """
+    <div class='file'>
+      <a href='#{file.url}'><img src='#{file.url}' class='image' /></a>
+    </div>
+    """
 
   fileText: (file) =>
-    marked("""
+    marked("""<span class='file'>
       ```
       #{file.preview}
       ```
-    """)
+    </file>""")
 
   file_comment: (message) =>
     comment = message.comment
@@ -110,6 +118,7 @@ class ChatLogView extends ScrollView
       """)
 
   parseMessage: (message) =>
+    console.log message.subtype
     switch message.subtype
       when 'file_comment' then @file_comment(message)
       when 'file_share' then @file_share(message)

@@ -130,6 +130,12 @@
     &:hover { color: @text-color; }
   }
 
+  .download {
+    .octicon(cloud-download, 1.4em);
+    float: right;
+    cursor: pointer;
+  }
+
   /* solve height and scroll issues */
   #content, .chat, .chat-log { height: 100%; }
 
@@ -156,7 +162,8 @@
  */
 
   .file{
-    &.image{
+    margin-top: 10px;
+    .image{
       max-width: 100%;
       width: 100%;
     }
