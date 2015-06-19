@@ -50,6 +50,11 @@ class Team
   membersNotMe: =>
     _.reject(@members, (member) => member.id is @client.me.id)
 
+  chatWithChannel: (channel) =>
+    chats = @members.concat(@channels)
+    _.find chats, (chat) =>
+      chat.channel? and chat.channel.id is channel
+
   customEmoji: (match) =>
     return match unless @emoji
     emoji = match.replace(/:/g, '')

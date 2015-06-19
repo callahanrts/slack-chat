@@ -31,7 +31,9 @@ class FileManager
       channels: channels.join(',')
     , (err, resp) =>
       if resp.body.ok
-        @stateController.setState('default')
+        chat = @stateController.team.chatWithChannel(channels[0])
+        console.log chat
+        @stateController.setState('chat', chat)
 
   getFileTypeFromGrammar: (editor) =>
     grammar = editor.getGrammar().name
