@@ -126,6 +126,10 @@ class StateController
     if @chatHistory[message.channel]
       @chatHistory[message.channel].receiveMessage(message)
 
+  updateChatView: (channel) =>
+    if @chatHistory[channel]
+      @chatHistory[channel].update()
+
   stateDefault: =>
     @stateHistory = [] # No need to store previous states when we land at the default
     @channelView.refresh() if @channelView

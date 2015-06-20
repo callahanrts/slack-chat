@@ -23,6 +23,7 @@
     "marked": "^0.3.3",
     "highlight.js": "^8.6.0",
     "node-notifier": "^4.2.1",
-    "emoji-images": "^0.1.1"
+    "emoji-images": "^0.1.1",
+    "open-graph": "^0.1.5"
   }
 }

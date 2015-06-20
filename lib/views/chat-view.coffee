@@ -35,7 +35,7 @@ class ChatView extends View
 
   getChatLog: =>
     @stateController.client.get "#{@type}.history", { channel: @chat.channel.id }, (err, resp) =>
-      @chatLogView = new ChatLogView(@stateController, resp.body.messages.reverse())
+      @chatLogView = new ChatLogView(@stateController, resp.body.messages.reverse(), @chat)
       @chatLog.append(@chatLogView)
       imagesLoaded @chatLogView, @update
 

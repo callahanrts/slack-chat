@@ -3,8 +3,10 @@ ChatMessageView = require './chat-message-view'
 {$, ScrollView} = require 'atom-space-pen-views'
 marked = require 'marked'
 renderer = new marked.Renderer()
+imagesLoaded = require 'imagesloaded'
 highlight = require 'highlight.js'
 emoji = require 'emoji-images'
+og = require 'open-graph'
 
 marked.setOptions
   renderer: renderer
@@ -18,7 +20,7 @@ class ChatLogView extends ScrollView
     @div class: 'messages', =>
       @div class: 'list', outlet: 'messageViews'
 
-  initialize: (@stateController, @messages) ->
+  initialize: (@stateController, @messages, @chat) ->
     super
     @addMessage(message) for message in @messages
 
@@ -134,7 +136,7 @@ class ChatLogView extends ScrollView
           when (/\.(gif|jpg|jpeg|tiff|png)$/i).test(url) then @fileImage({url: url})
           when (/youtube\.com.*$/i).test(url) then @youtubeElement(url)
           when (/vimeo\.com.*$/i).test(url) then @vimeoElement(url)
-          else ''
+          else @openGraphElement(url)
     message.concat data
 
   parseMessage: (message) =>
@@ -150,6 +152,25 @@ class ChatLogView extends ScrollView
     message = @stateController.team.parseCustomEmoji(message)
     message = emoji(message, "https://raw.githubusercontent.com/HenrikJoreteg/emoji-images/master/pngs/")
     message
+
+  metaElements: (url, meta) =>
+    console.log meta
+    elements = []
+    elements.push("<img src='#{meta.image.url}' class='og_image' />") if meta?.image?.url?
+    elements.push("<a href='#{url}'><div class='og_title'>#{meta.title}</div></a>") if meta?.title?
+    elements.push("<div class='og_description'>#{meta.description}</div>") if meta?.description?
+    elements.join('')
+
+  openGraphData: (url, id) =>
+    og url, (err, meta) =>
+      $("##{id}").html(@metaElements(url, meta)) unless err
+      imagesLoaded $("##{id}"), =>
+        @stateController.updateChatView(@chat.channel.id)
+
+  openGraphElement: (url) =>
+    id = Date.now()
+    @openGraphData(url, id)
+    "<div id='#{id}' class='og_data'></div>"
 
   receiveMessage: (message) =>
     @addMessage(message)
