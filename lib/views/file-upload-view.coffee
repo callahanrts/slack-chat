@@ -21,18 +21,22 @@ class FileUploadView extends ScrollView
 
 
   initialize: (@stateController, @client) ->
-    @channels = []
     @width(250)
+    @channels = []
     @eventHandlers()
     super
 
+  # Facilitate user interaction
   eventHandlers: =>
     @.on 'click', '.channel', @selectChannel
     @.on 'click', '#submit', @uploadSelection
 
+  # Event handlers have to be refreshed when a view is removed and readded to the
+  # slack-wrapper view. This happens a lot when changing states
   refresh: =>
     @eventHandlers()
 
+  # Select a channel to upload the selection/file to
   selectChannel: (e) =>
     if e.ctrlKey or e.shiftKey
       @channels.push $(e.target).attr('id')
@@ -41,6 +45,7 @@ class FileUploadView extends ScrollView
       @channels = [$(e.target).attr('id')]
     $(e.target).addClass('selected')
 
+  # Upload the selection as a text snippet to slack (includes comment)
   uploadSelection: (e) =>
     @stateController.fileManager.uploadSelection(@channels, $("#comment").val())
 

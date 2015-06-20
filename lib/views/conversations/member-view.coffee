@@ -15,12 +15,15 @@ class MemberView extends View
     @.on 'click', =>
       @showConversation()
 
+  # Show conversation when a member is selected
   showConversation: () ->
+    # Mark as read and enter the chat state for this member
     $("##{@member.channel.id}").removeClass('unread')
     @stateController.setState('chat', @member)
 
+  # Refresh the member view (when the state has changed)
   refresh: =>
-    @eventHandlers()
-    presence = @stateController.team.memberWithId(@member.id).presence
-    @presence.removeClass('active away').addClass(presence)
+    @eventHandlers() # update event handlers
+    presence = @stateController.team.memberWithId(@member.id).presence # Aquire the member's presence
+    @presence.removeClass('active away').addClass(presence) # Set the active/away class for the member
 

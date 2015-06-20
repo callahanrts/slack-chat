@@ -15,6 +15,8 @@ class ChannelView extends View
     @.on 'click', =>
       @showConversation()
 
+  # Show conversation when a channel is selected
   showConversation: () ->
+    # Mark as read and enter the chat state for this channel
     $("##{@channel.id}").removeClass('unread')
     @stateController.setState('chat', @channel)

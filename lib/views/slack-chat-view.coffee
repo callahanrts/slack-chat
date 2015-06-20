@@ -9,9 +9,11 @@ class SlackChatView extends ScrollView
 
   initialize: (@stateController, @client) ->
 
+  # Add a view to the slack-wrapper
   addView: (view) ->
     @content.append view
 
+  # Clear out all views that might be attached to the slack-wrapper
   clearViews: ->
     @content.empty()
 

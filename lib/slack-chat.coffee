@@ -46,18 +46,12 @@ module.exports = SlackChat =
 
     # Control slack-chat state and objects passed to each state
     @stateController = new StateController(@subscriptions)
-    # Manage Commands
-    @commands = new Commands(@stateController)
 
     # Register command that toggles this view
     @subscriptions.add atom.commands.add 'atom-workspace', 'slack-chat:toggle', => @toggle()
 
-    # Slack chat mode commands
-    @subscriptions.add atom.commands.add 'atom-workspace', 'slack-chat:move-down', => @commands.moveDown()
-    @subscriptions.add atom.commands.add 'atom-workspace', 'slack-chat:move-up', => @commands.moveUp()
-    @subscriptions.add atom.commands.add 'atom-workspace', 'slack-chat:open-conversation', => @commands.openConversation()
-    @subscriptions.add atom.commands.add 'atom-workspace', 'slack-chat:close-conversation', => @commands.closeConversation()
-    @subscriptions.add atom.commands.add 'atom-workspace', 'slack-chat:upload-selection', => @commands.uploadSelection()
+    # Manage Commands
+    @commands = new Commands(@stateController, @subscriptions)
 
   deactivate: ->
     @subscriptions.dispose()
@@ -69,7 +63,4 @@ module.exports = SlackChat =
   toggle: ->
     console.log 'SlackChat was toggled!'
     @stateController.toggle()
-
-  toggleMode: ->
-    $("atom-workspace").toggleClass('slack-chat')
 

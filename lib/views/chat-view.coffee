@@ -25,34 +25,43 @@ class ChatView extends View
     @getChatLog()
     @eventHandlers()
 
+  # Return to default state. One day this might just pop state
   closeChat: =>
     @stateController.setState('default')
 
+  # Bind events for the chat view
   eventHandlers: =>
     @.on 'click', '.back', @closeChat
     @.on 'keyup', 'textarea', @keypress
     @.on 'focus', 'textarea', @setMark
 
+  # Retrieve chat history on initialization
   getChatLog: =>
     @stateController.client.get "#{@type}.history", { channel: @chat.channel.id }, (err, resp) =>
+      # View for managing chat logs
       @chatLogView = new ChatLogView(@stateController, resp.body.messages.reverse(), @chat)
-      @chatLog.append(@chatLogView)
-      imagesLoaded @chatLogView, @update
+      @chatLog.append(@chatLogView) # Display logs
+      imagesLoaded @chatLogView, @update # update (scroll down) after content has loaded (this excludes async content eg. open_graph)
 
+  # Send message/create newline functionality for the textarea
   keypress: (e) =>
     if e.keyCode is 13 and not e.shiftKey
       @submit()
       return false
     @update()
 
+  # Add the message to the chat log and update the view
   receiveMessage: (message) =>
     @chatLogView.receiveMessage(message)
     setTimeout @update, 0
 
+  # Called when states change to ensure event handlers are active and
+  # content is present/in place
   refresh: =>
     @eventHandlers()
     @update()
 
+  # Mark the channel as read
   setMark: =>
     type = if @chat.is_channel? then 'channels' else 'im'
     @stateController.client.post "#{type}.mark",
@@ -61,9 +70,12 @@ class ChatView extends View
     , (err, msg, resp) =>
       console.log err if err?
       if resp.ok
+        # Remove classes that show the section of unread messages
         $(message).removeClass('new slack-mark') for message in $(".message")
 
 
+  # Send a message to a channel through the slack api and Update the view's state
+  # accordingly.
   submit: =>
     text = @response.val()
     @response.val('')
@@ -75,9 +87,15 @@ class ChatView extends View
     , (err, msg, resp) =>
       console.log err if err?
 
+  # Called all the time to make sure the view is in an optimal state
   update: (e) =>
-    @response.height(0)
+    @response.height(0) # Set response height to 0 to calculate scroll height
+
+    # Get the new height based off the scroll height for auto-resizing the textarea
     height = Math.min(@response.get(0).scrollHeight, 150)
-    @response.height(height)
+    @response.height(height) # Set the new height
+
+    # Update the chat log's padding to accomodate for textarea's change in height.
+    # Also make sure the view is displaying the newest message (scroll to bottom)
     @chatLog.css('padding-bottom', 50 + parseInt(@responseContainer.outerHeight()))
     @chatLog.scrollToBottom()
