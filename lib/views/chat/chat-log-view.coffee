@@ -17,7 +17,7 @@ module.exports =
 class ChatLogView extends ScrollView
   root = @
   @content: (@stateController, @messages) ->
-    @div class: 'messages', =>
+    @div class: 'messages native-key-bindings', tabindex: -1, =>
       @div class: 'list', outlet: 'messageViews'
 
   initialize: (@stateController, @messages, @chat) ->
