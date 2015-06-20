@@ -126,12 +126,11 @@ class ChatLogView extends ScrollView
     url.split("#{param}=")[1].split("&")[0]
 
   parseLinks: (message) =>
-    message = message.replace(/<[^>]*>/g, "")
-    urls = message.match(/(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/g)
+    urls = message.replace(/<[^>]*>/g, "")
+    urls = urls.match(/(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/g)
     data = ''
     if urls
       for url in urls
-        message = @getLink(message, url)
         data = switch
           when (/\.(gif|jpg|jpeg|tiff|png)$/i).test(url) then @fileImage({url: url})
           when (/youtube\.com.*$/i).test(url) then @youtubeElement(url)
@@ -147,11 +146,12 @@ class ChatLogView extends ScrollView
 
   message: (message) =>
     text = message.text
-    message = marked(text)
-    message = @parseLinks(message)
-    message = @stateController.team.parseCustomEmoji(message)
-    message = emoji(message, "https://raw.githubusercontent.com/HenrikJoreteg/emoji-images/master/pngs/")
-    message
+    text = text.replace(/(?:\r\n|\r|\n)/g, '<br />')
+    text = marked(text)
+    text = @parseLinks(text)
+    text = @stateController.team.parseCustomEmoji(text)
+    text = emoji(text, "https://raw.githubusercontent.com/HenrikJoreteg/emoji-images/master/pngs/")
+    text
 
   metaElements: (url, meta) =>
     elements = []
