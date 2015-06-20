@@ -154,7 +154,6 @@ class ChatLogView extends ScrollView
     message
 
   metaElements: (url, meta) =>
-    console.log meta
     elements = []
     elements.push("<img src='#{meta.image.url}' class='og_image' />") if meta?.image?.url?
     elements.push("<a href='#{url}'><div class='og_title'>#{meta.title}</div></a>") if meta?.title?
@@ -163,7 +162,9 @@ class ChatLogView extends ScrollView
 
   openGraphData: (url, id) =>
     og url, (err, meta) =>
-      $("##{id}").html(@metaElements(url, meta)) unless err
+      og_elements = @metaElements(url, meta)
+      $("##{id}").html(og_elements) unless err
+      $("##{id}").remove() unless og_elements
       imagesLoaded $("##{id}"), =>
         @stateController.updateChatView(@chat.channel.id)
 
