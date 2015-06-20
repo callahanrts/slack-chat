@@ -67,6 +67,7 @@ class ChatLogView extends ScrollView
     </div>
     """
 
+
   file_share: (message) =>
     file = message.file
     dl = "#{file.name}<a href='#{file.url_download}'><span class='download'></span></a>"
@@ -116,6 +117,26 @@ class ChatLogView extends ScrollView
       </div>
       """)
 
+  getLink: (message, url) ->
+    message.replace(url, "<a href='#{url}'>#{url}</a>")
+
+  getURLParam: (url, param) ->
+    url.split("#{param}=")[1].split("&")[0]
+
+  parseLinks: (message) =>
+    message = message.replace(/<[^>]*>/g, "")
+    urls = message.match(/(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/g)
+    data = ''
+    if urls
+      for url in urls
+        message = @getLink(message, url)
+        data = switch
+          when (/\.(gif|jpg|jpeg|tiff|png)$/i).test(url) then @fileImage({url: url})
+          when (/youtube\.com.*$/i).test(url) then @youtubeElement(url)
+          when (/vimeo\.com.*$/i).test(url) then @vimeoElement(url)
+          else ''
+    message.concat data
+
   parseMessage: (message) =>
     switch message.subtype
       when 'file_comment' then @file_comment(message)
@@ -125,7 +146,8 @@ class ChatLogView extends ScrollView
   message: (message) =>
     text = message.text
     message = marked(text)
-    message = @stateController.team.parseCustomEmoji(text)
+    message = @parseLinks(message)
+    message = @stateController.team.parseCustomEmoji(message)
     message = emoji(message, "https://raw.githubusercontent.com/HenrikJoreteg/emoji-images/master/pngs/")
     message
 
@@ -134,4 +156,19 @@ class ChatLogView extends ScrollView
     unless message.user is @stateController.client.me.id
       $(".message", @messageViews).last().addClass("new #{'slack-mark' if $(".new", @messageViews).length is 0}")
 
+  vimeoElement: (url) =>
+    url_parts = url.split("/")
+    id = url_parts[url_parts.length - 1]
+    """
+    <div class='video-wrapper'>
+      <iframe src="https://player.vimeo.com/video/#{id}" frameborder="0"></iframe>
+    </div>
+    """
 
+  youtubeElement: (url) =>
+    id = @getURLParam(url, 'v')
+    """
+    <div class='video-wrapper'>
+      <iframe width='560' height='315' src='https://www.youtube.com/embed/#{id}' frameborder='0'></iframe>
+    </div>
+    """
