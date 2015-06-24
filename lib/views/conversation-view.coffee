@@ -34,8 +34,9 @@ class ConversationView extends ScrollView
   getMembers: (callback) =>
     @members = @stateController.team.membersNotMe()
     for member in @members
-      @memberViews.push new MemberView(@stateController, member)
-      @stateController.preloadChat(member)
+      if member?.channel?.id?
+        @memberViews.push new MemberView(@stateController, member)
+        @stateController.preloadChat(member)
     @memberElements.append(view) for view in @memberViews
 
   # Display the team name and image at the top of the channel view

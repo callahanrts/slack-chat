@@ -172,6 +172,7 @@ class ChatLogView extends ScrollView
 
   # Parse all the emoji, markdown, and links you might find in a typical message
   message: (message) =>
+    return '' unless message?.text?
     text = message.text
     text = text.replace(/(?:\r\n|\r|\n)/g, '<br />')
     text = marked(text)
