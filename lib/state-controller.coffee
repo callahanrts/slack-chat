@@ -78,7 +78,7 @@ class StateController
       member = @team.memberWithId(message.user)
 
       # Send growl/native/whatever notifications when a message has been received
-      if atom.config.get('slack-chat.notifications')
+      if atom.config.get('slack-chat.notifications') and member?
         notifier.notify
           title: "New message from #{member.name}",
           message: "#{message.text.substring(0,140)}"
