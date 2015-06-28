@@ -15,9 +15,9 @@ class Team
   # Creates an array that stores the channels a user has access to. It adds
   # the `channel` object so it can be used in the same way as members.
   getChannels: =>
-    for channel in @client.channels
+    for channel in @client.channels.concat(@client.groups)
       channel.channel = { id: channel.id }
-      @channels.push channel unless channel.is_archived or not channel.is_member
+      @channels.push channel unless channel.is_archived or (not channel.is_member and not channel.is_group)
 
   # Retrieves any custom emoji from slack the user has access to
   getEmoji: =>

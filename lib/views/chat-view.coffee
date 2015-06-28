@@ -21,7 +21,11 @@ class ChatView extends View
 
   initialize: (@stateController, @chat) ->
     @width(400)
-    @type = if @chat.is_channel? then 'channels' else 'im'
+    @type =
+      switch
+        when @chat.is_channel? then 'channels'
+        when @chat.is_im? then 'im'
+        when @chat.is_group? then 'groups'
     @getChatLog()
     @eventHandlers()
 
@@ -39,6 +43,7 @@ class ChatView extends View
   getChatLog: =>
     @stateController.client.get "#{@type}.history", { channel: @chat.channel.id }, (err, resp) =>
       # View for managing chat logs
+      console.log resp.body
       @chatLogView = new ChatLogView(@stateController, resp.body.messages.reverse(), @chat)
       @chatLog.append(@chatLogView) # Display logs
       imagesLoaded @chatLogView, @update # update (scroll down) after content has loaded (this excludes async content eg. open_graph)
@@ -63,7 +68,11 @@ class ChatView extends View
 
   # Mark the channel as read
   setMark: =>
-    type = if @chat.is_channel? then 'channels' else 'im'
+    type =
+      switch
+        when @chat.is_channel? then 'channels'
+        when @chat.is_im? then 'im'
+        when @chat.is_group? then 'groups'
     @stateController.client.post "#{type}.mark",
       channel: @chat.channel.id
       ts: Date.now()
