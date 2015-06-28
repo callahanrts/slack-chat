@@ -17,7 +17,7 @@ class Team
   getChannels: =>
     for channel in @client.channels
       channel.channel = { id: channel.id }
-      @channels.push channel
+      @channels.push channel unless channel.is_archived or not channel.is_member
 
   # Retrieves any custom emoji from slack the user has access to
   getEmoji: =>
