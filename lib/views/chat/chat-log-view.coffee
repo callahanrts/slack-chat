@@ -143,7 +143,7 @@ class ChatLogView extends ScrollView
 
   # Simple url parser to retrieve params from links (youtube video id)
   getURLParam: (url, param) ->
-    url.split("#{param}=")[1].split("&")[0]
+    url?.split("#{param}=")?[1]?.split("&")?[0]
 
   # Parse links and decide what to do with them.
   parseLinks: (message) =>
@@ -174,8 +174,8 @@ class ChatLogView extends ScrollView
   message: (message) =>
     return '' unless message?.text?
     text = message.text
-    text = text.replace(/(?:\r\n|\r|\n)/g, '<br />')
     text = marked(text)
+    text = text.replace(/(?:\r\n|\r|\n)/g, '<br />')
     text = @parseLinks(text)
     text = @stateController.team.parseCustomEmoji(text)
     text = emoji(text, "https://raw.githubusercontent.com/HenrikJoreteg/emoji-images/master/pngs/")

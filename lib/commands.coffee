@@ -4,11 +4,11 @@ class Commands
 
   constructor: (@stateController, @subscriptions) ->
     # Register slack-chat commands
-    @subscriptions.add atom.commands.add 'atom-workspace', 'slack-chat:move-down', => @commands.moveDown()
-    @subscriptions.add atom.commands.add 'atom-workspace', 'slack-chat:move-up', => @commands.moveUp()
-    @subscriptions.add atom.commands.add 'atom-workspace', 'slack-chat:open-conversation', => @commands.openConversation()
-    @subscriptions.add atom.commands.add 'atom-workspace', 'slack-chat:close-conversation', => @commands.closeConversation()
-    @subscriptions.add atom.commands.add 'atom-workspace', 'slack-chat:upload-selection', => @commands.uploadSelection()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'slack-chat:move-down', => @moveDown()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'slack-chat:move-up', => @moveUp()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'slack-chat:open-conversation', => @openConversation()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'slack-chat:close-conversation', => @closeConversation()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'slack-chat:upload-selection', => @uploadSelection()
 
   # Move channel/member selection down
   moveDown: =>
