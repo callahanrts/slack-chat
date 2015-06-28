@@ -22,8 +22,6 @@
 }
 
 .slack-panel{
-  height: 100%;
-  overflow: auto;
   border-left: 1px solid @base-border-color;
 
   .slack-wrapper{
@@ -159,6 +157,8 @@
  *
  */
 #conversations {
+  height: 100%;
+  overflow: auto;
   .dot {
     &.active{ color: @text-color-success; }
     &.away{ color: @text-color-subtle; }
