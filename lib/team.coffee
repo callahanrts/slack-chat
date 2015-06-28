@@ -27,9 +27,10 @@ class Team
   # Parse team members with channel ids (for ims) from rtm.start of sc-client
   getTeamMembers: =>
     for user in @client.users
-      user.channel = _.findWhere(@client.ims, { user: user.id })
-      user.image = @memberImage(user)
-      @members.push user
+      unless user.deleted
+        user.channel = _.findWhere(@client.ims, { user: user.id })
+        user.image = @memberImage(user)
+        @members.push user
 
   # Images are inconsistent. They come from bots or people or channels or whatever else
   # slack decides to slap an image on. There isn't much of consistency with their location

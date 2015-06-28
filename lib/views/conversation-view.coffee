@@ -68,7 +68,7 @@ class ConversationView extends ScrollView
     @convos = @channelViews.concat(@memberViews) # Combine channel and member views
     index = $('li', '#conversations').index @currentConversation # Get an index for the selected view
     @currentConversation.removeClass('unread') # Mark as read when entering
-    @convos[index].showConversation() # Show the conversation for the selected channel/member
+    @convos[index]?.showConversation() # Show the conversation for the selected channel/member
 
   # Set the current conversation as the user navigates up or down conversations with the keyboard
   setCurrentConversation: ($convo) =>

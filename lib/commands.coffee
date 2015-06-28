@@ -12,19 +12,23 @@ class Commands
 
   # Move channel/member selection down
   moveDown: =>
-    @stateController.channelView.nextConversation()
+    if @stateController.modalPanel.isVisible()
+      @stateController.channelView.nextConversation()
 
   # Move channel/member selection up
   moveUp: =>
-    @stateController.channelView.prevConversation()
+    if @stateController.modalPanel.isVisible()
+      @stateController.channelView.prevConversation()
 
   # Enter chat view for a channel
   openConversation: =>
-    @stateController.channelView.openConversation()
+    if @stateController.modalPanel.isVisible()
+      @stateController.channelView.openConversation()
 
   # Return to default state (conversation view)
   closeConversation: =>
-    @stateController.setState('default')
+    if @stateController.modalPanel.isVisible()
+      @stateController.setState('default')
 
   # Upload a selection of text
   uploadSelection: =>
