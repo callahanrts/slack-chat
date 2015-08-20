@@ -24,9 +24,8 @@ class ChatView extends View
     @type =
       switch
         when @chat.is_channel? then 'channels'
-        when @chat.is_im? then 'im'
         when @chat.is_group? then 'groups'
-        else 'im'
+        when @chat.is_im? || @chat.is_owner? || @chat.is_admin? then 'im'
     @getChatLog()
     @eventHandlers()
 
@@ -72,9 +71,8 @@ class ChatView extends View
     type =
       switch
         when @chat.is_channel? then 'channels'
-        when @chat.is_im? then 'im'
         when @chat.is_group? then 'groups'
-        else 'im'
+        when @chat.is_im? || @chat.is_owner? || @chat.is_admin? then 'im'
     @stateController.client.post "#{type}.mark",
       channel: @chat.channel.id
       ts: Date.now()
