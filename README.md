@@ -17,7 +17,6 @@ Slack Chat is an Atom package that integrates the slack messaging client into th
   - Team: Your team, but the app seems to work with other teams as well.
 - Go to the slack-chat package settings in atom
   - Paste in your client id and secret
-- Install slack-chat from the atom package manager (or restart if you've already installed it)
 - When the browser opens, select the team you'd like to use with atom<br>
   <img src="http://i.imgur.com/J5n1H8y.png" width="47%" />
 - Authorize the app<br>
