@@ -9,20 +9,10 @@ Slack Chat is an Atom package that integrates the slack messaging client into th
 
 
 # Installation
-- Get client id and secret keys by [creating a slack app](https://api.slack.com/applications/new)
-  - Name: pick an arbitrary name
-  - URL: http://0.0.0.0:36347
-  - Redirect URI(s): http://0.0.0.0:36347/oauth
-  - Description: not necessary
-  - Team: Your team, but the app seems to work with other teams as well.
+- Navigate to [https://api.slack.com/web](https://api.slack.com/web).
+- Under **Authentication**, create a token for your team.
 - Go to the slack-chat settings in atom
-  - Paste in your client id and secret
-- Install slack-chat from the atom package manager (or restart if you've already installed it)
-- Log in to slack with the window that was opened in your browser and authorize the application you've just created (sc-client is an example)
-
-  <img src="http://drive.google.com/uc?export=view&id=0B_FMiWCp_bLQems3NTlIUjlzWWM" width="47%" />
-  <img src="http://drive.google.com/uc?export=view&id=0B_FMiWCp_bLQYm9HSi0xY2RMQVU" width="47%" />
-
+  - Paste in your token
 - Restart atom
 
 # Usage

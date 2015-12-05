@@ -4,6 +4,7 @@ ConversationView = require './views/conversation-view'
 ChatView = require './views/chat-view'
 FileManager = require './file-manager'
 FileUploadView = require './views/file-upload-view'
+SlackClient = require('./slack-client')
 
 notifier = require 'node-notifier'
 Team = require './team'
@@ -27,23 +28,12 @@ class StateController
     @stateHistory = []
     @state = null
 
-    # Use loophole for external calls made within the SlackClient
-    allowUnsafeEval =>
-      # Require sc-client instance under unsafe eval so atom doesn't bitch.
-      SlackClient = require('sc-client').slackClient
-
-      # Retrieve slack token if we've previously authenticated a user
-      @token = atom.config.get('slack-chat.api_token')
-      @token = if @token is 'null' then null else @token
-
-      # Retrieve slack client, secret, and port variables
-      clientId = atom.config.get('slack-chat.api_key')
-      clientSecret = atom.config.get('slack-chat.api_secret')
-      port = atom.config.get('slack-chat.api_sport')
-
-      # Create the slack api client instance. We'll pass it around like a blunt
-      @client = new SlackClient(clientId, clientSecret, @token, port)
-
+    # Retrieve slack token if we've previously authenticated a user
+    token = atom.config.get('slack-chat.api_token')
+    token = if token is 'null' then null else token
+    clientId = atom.config.get('slack-chat.api_key')
+    clientSecret = atom.config.get('slack-chat.api_secret')
+    @client = new SlackClient(clientId, clientSecret, token)
 
     # Create main view for the slack-chat package and bind it to the right modal panel
     @slackChatView = new SlackChatView(@, @client)
