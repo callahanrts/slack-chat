@@ -31,8 +31,12 @@ class StateController
     # Retrieve slack token if we've previously authenticated a user
     token = atom.config.get('slack-chat.api_token')
     token = if token is 'null' then null else token
+
     clientId = atom.config.get('slack-chat.api_key')
+    clientId = if clientId is 'null' then null else clientId
+
     clientSecret = atom.config.get('slack-chat.api_secret')
+    clientSecret = if clientSecret is 'null' then null else clientSecret
     @client = new SlackClient(clientId, clientSecret, token)
 
     # Create main view for the slack-chat package and bind it to the right modal panel

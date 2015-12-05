@@ -17,11 +17,6 @@ module.exports = SlackChat =
       description: "Slack API client secret from https://api.slack.com/applications/new"
       default: 'null'
       type: 'string'
-    api_sport:
-      title: 'Port'
-      description: 'The port slack-chat waits for Slack messages. Use default unless there are conflicts'
-      default: 36347
-      type: 'integer'
     api_token:
       title: 'Slack Token'
       description: 'slack-chat should manage this for you (reset to change teams)'

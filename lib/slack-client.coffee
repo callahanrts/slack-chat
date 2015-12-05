@@ -9,7 +9,8 @@ class SlackClient
   constructor: (@clientId, @clientSecret, @token) ->
     @subscribers = []
     if @token is null
-      open "https://slack.com/oauth/authorize?client_id=#{@clientId}&redirect_uri=#{@redirectUri()}&scope=read,post,client&state=scstate"
+      if @clientId? and @clientSecret?
+        open "https://slack.com/oauth/authorize?client_id=#{@clientId}&redirect_uri=#{@redirectUri()}&scope=read,post,client&state=scstate"
     else
       @rtmUrl()
 
