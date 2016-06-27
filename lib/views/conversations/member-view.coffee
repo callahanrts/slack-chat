@@ -26,4 +26,3 @@ class MemberView extends View
     @eventHandlers() # update event handlers
     presence = @stateController.team.memberWithId(@member.id).presence # Aquire the member's presence
     @presence.removeClass('active away').addClass(presence) # Set the active/away class for the member
-

@@ -6,265 +6,289 @@
 @import 'octicons';
 @import "octicon-utf-codes";
 @import "octicon-mixins";
-
-
 .slack-notification {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 100px;
-  height: 50px !important;
-  z-index: 9999;
-  border: 1px solid @overlay-border-color !important;
-  background-color: @overlay-background-color !important;
-  border-radius: @component-border-radius;
-  padding: @component-padding;
-}
-
-.slack-panel{
-  border-left: 1px solid @base-border-color;
-
-  .slack-wrapper{
-    height: 100%;
-    width: 100%;
-  }
-
-  .title {
-    font-size: 2em;
-    height: 28px;
-    margin: 10px 0 15px 0;
-    padding-right: 30px;
-    h1 {
-      &.channel{
-        &:before { content: '#' }
-        margin-left: 10px;
-      }
-      font-size: inherit;
-      height: inherit;
-      display: inline;
-      vertical-align: middle;
-    }
-    img {
-      height: inherit;
-      margin: 0 10px;
-    }
-  }
-
-  ul {
-    list-style: none;
-    padding: 0;
-    li {
-      &:hover{ background-color: @background-color-highlight; }
-      .indicator{ margin-right: 5px; }
-      vertical-align: middle;
-      font-size: 14px;
-      height: 24px;
-      line-height: 24px;
-      margin: 5px 0;
-      padding: 0 10px;
-      cursor: pointer;
-    }
-  }
-
-  .response-container {
-    textarea{
-      min-height: 46px;
-      background-color: @input-background-color;
-      border-color: @input-border-color;
-      color: @text-color;
-      resize: none;
-    }
-    background-color: @app-background-color;
     position: absolute;
-    bottom: 0;
-    width: 100%;
-    padding: 10px;
-  }
-
-  .chat-log {
-    overflow: auto;
-    padding: 0 10px;
-  }
-
-  .message {
-    &.file_comment{ display: none; }
-    &.slack-mark{border-top: 1px solid @text-color-highlight !important;}
-    &.new {
-      .name, .ts { color: @text-color-highlight; }
+    top: 10px;
+    right: 10px;
+    width: 100px;
+    height: 50px !important;
+    z-index: 9999;
+    border: 1px solid @overlay-border-color !important;
+    background-color: @overlay-background-color !important;
+    border-radius: @component-border-radius;
+    padding: @component-padding;
+}
+.slack-panel {
+    border-left: 1px solid @base-border-color;
+    .slack-wrapper {
+        background-color: #f4f4f4f4;
+        height: 100%;
+        width: 100%;
     }
-    max-width: 100%;
-    overflow: auto;
-    padding: 10px 0;
-    table{
-      padding: 0 5px;
-      width: 100%;
+    .title {
+        background-color: #4D394B;
+        font-size: 2em;
+        color: #ffffff;
+        margin: 10px 0 15px;
+        padding: 30px;
+        h1 {
+            &.channel {
+                &:before {
+                    content: '#';
+                }
+                margin-left: 10px;
+            }
+            font-size: inherit;
+            height: inherit;
+            display: inline;
+            vertical-align: middle;
+        }
+        img {
+            height: inherit;
+            margin: 0 10px;
+        }
     }
-    td {
-      &:first-child{
-        width: 32px;
-        padding-right: 10px;
-      }
-      vertical-align: top;
+    ul {
+        list-style: none;
+        padding: 0;
+        li {
+            &:hover {
+                background-color: @background-color-highlight;
+            }
+            .indicator {
+                margin-right: 5px;
+            }
+            vertical-align: middle;
+            font-size: 14px;
+            height: 24px;
+            line-height: 24px;
+            margin: 5px 0;
+            padding: 0 10px;
+            cursor: pointer;
+        }
     }
-    .name {
-      font-size: 14px;
-      font-weight: bold;
+    .response-container {
+        textarea {
+            min-height: 100px;
+            background-color: @input-background-color;
+            border-color: @input-border-color;
+            color: @text-color;
+            resize: none;
+        }
+        background-color: @app-background-color;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        padding: 10px;
     }
-    .ts {
-      font-size: 10px;
-      font-weight: 400;
-      font-style: italic;
-      margin-left: 5px;
+    .chat-log {
+        overflow: auto;
+        padding: 0 10px;
     }
-    .image {
-      width: 32px;
-      border-radius: 2px;
+    .message {
+        &.file_comment {
+            display: none;
+        }
+        &.slack-mark {
+            border-top: 1px solid @text-color-highlight !important;
+        }
+        &.new {
+            .name,
+            .ts {
+                color: @text-color-highlight;
+            }
+        }
+        background-color: #ffffff;
+        margin-top: 10px;
+        border-radius: 3px;
+        max-width: 100%;
+        overflow: auto;
+        padding: 10px 0;
+        table {
+            padding: 0 5px;
+            width: 100%;
+        }
+        td {
+            &:first-child {
+                width: 32px;
+                padding-right: 10px;
+            }
+            vertical-align: top;
+        }
+        .name {
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .ts {
+            float: right;
+            color: #999999;
+            margin-right: 10px;
+            font-size: 10px;
+            font-weight: 400;
+            font-style: italic;
+            margin-left: 5px;
+        }
+        .image {
+            width: 50px;
+            margin-left: 10px;
+            border-radius: 2px;
+        }
+        .text {}
     }
-    .text {
+    /* Octicon Classes */
+    .dot {
+        color: @text-color-subtle;
+        .octicon(primitive-dot, 1em);
+        .active {
+            color: #94E864;
+        }
     }
-
-  }
-
-
-  /* Octicon Classes */
-  .dot {
-    color: @text-color-subtle;
-    .octicon(primitive-dot, 1em);
-    .active {
-      color: #94E864;
+    .chevron-left {
+        color: @text-color-subtle;
+        .octicon(chevron-left, 1em);
+        text-align: right;
+        cursor: pointer;
+        &:hover {
+            color: @text-color;
+        }
     }
-  }
-
-  .chevron-left {
-    color: @text-color-subtle;
-    .octicon(chevron-left, 1em);
-    text-align: right;
-    cursor: pointer;
-    &:hover { color: @text-color; }
-  }
-
-  .download {
-    .octicon(cloud-download, 1.4em);
-    float: right;
-    cursor: pointer;
-  }
-
-  /* solve height and scroll issues */
-  #content, .chat, .chat-log { height: 100%; }
-
-/*
+    .download {
+        .octicon(cloud-download, 1.4em);
+        float: right;
+        cursor: pointer;
+    }
+    /* solve height and scroll issues */
+    /* FIX TEMPORAIRE POUR LE CHAT SCROLL */
+    #content,
+    .chat,
+    .chat-log {
+        height: 900px;
+    }
+    /*
  * Conversation Styles
  *
  */
-#upload {
-  height: 100%;
-  overflow: auto;
-  padding-bottom: 130px;
-  #comment-wrapper{ background-color: @app-background-color }
-  .selected {
-    background-color: @background-color-highlight;
-    font-weight: bolder;
-  }
-}
-
-#conversations {
-  height: 100%;
-  overflow: auto;
-  .dot {
-    &.active{ color: @text-color-success; }
-    &.away{ color: @text-color-subtle; }
-  }
-  .selected {
-    background-color: @background-color-highlight;
-    font-weight: bolder;
-  }
-  .unread {
-    color: @text-color-highlight;
-  }
-}
-
-/*
+    #upload {
+        height: 100%;
+        overflow: auto;
+        padding-bottom: 130px;
+        #comment-wrapper {
+            background-color: @app-background-color
+        }
+        .selected {
+            background-color: @background-color-highlight;
+            font-weight: bolder;
+        }
+    }
+    #conversations {
+        height: 100%;
+        overflow: auto;
+        .dot {
+            &.active {
+                color: @text-color-success;
+            }
+            &.away {
+                color: @text-color-subtle;
+            }
+        }
+        .selected {
+            background-color: @background-color-highlight;
+            font-weight: bolder;
+        }
+        .unread {
+            color: @text-color-highlight;
+        }
+    }
+    /*
  * Message Styles
  *
  */
-
-  .file{
-    margin-top: 10px;
-    .image{
-      max-width: 100%;
-      width: 100%;
+    .file {
+        margin-top: 10px;
+        .image {
+            max-width: 100%;
+            width: 100%;
+        }
     }
-  }
-
-  /* */
-  .emoji{ height: 22px; }
-  a {
-    color: @text-color-info
-  }
-
-  /* Markdown styles */
-  pre, p code {
-    border: 1px solid @inset-panel-border-color;
-    background-color: @inset-panel-background-color;
-    border-radius: @component-border-radius
-  }
-
+    /* */
+    .emoji {
+        height: 22px;
+    }
+    a {
+        color: @text-color-info
+    }
+    /* Markdown styles */
+    p code,
+    pre {
+        border: 1px solid @inset-panel-border-color;
+        background-color: @inset-panel-background-color;
+        border-radius: @component-border-radius
+    }
 }
-
-
 /*
  * File upload
  *
  */
 #upload {
-  .selected{ background-color: @background-color-highlight; }
-  .share-with{
-    color: #efefef;
-    background-color: @text-color-info;
-    padding: 5px;
-  }
-  #comment-wrapper{
-    width: 100%;
-    padding: 10px;
-    position: absolute;
-    bottom: 0;
-  }
-  #submit {
-    margin-top: 10px;
-    width: 100%;
-  }
+    .selected {
+        background-color: @background-color-highlight;
+    }
+    .share-with {
+        color: #efefef;
+        background-color: @text-color-info;
+        padding: 5px;
+    }
+    #comment-wrapper {
+        width: 100%;
+        padding: 10px;
+        position: absolute;
+        bottom: 0;
+    }
+    #submit {
+        margin-top: 10px;
+        width: 100%;
+    }
 }
-
 /*
  * Responsive embed
  */
-
 .video-wrapper {
-  margin-top: 10px;
-  position: relative;
-  padding-bottom: 56.25%; /* 16:9 */
-  padding-top: 25px;
-  height: 0;
+    margin-top: 10px;
+    position: relative;
+    padding-bottom: 56.25%;
+    /* 16:9 */
+    padding-top: 25px;
+    height: 0;
 }
 .video-wrapper iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
-
 /*
  * open graph data
  */
 .og_data {
-  max-width: 100%;
-  border: 1px solid @inset-panel-border-color;
-  background-color: @inset-panel-background-color;
-  padding: 10px;
-  img { max-width: 100%; }
-  .og_title{
-    font-size: 1.3em;
-    margin-top: 7px;
-  }
+    max-width: 100%;
+    border: 1px solid @inset-panel-border-color;
+    background-color: @inset-panel-background-color;
+    padding: 10px;
+    img {
+        max-width: 100%;
+    }
+    .og_title {
+        font-size: 1.3em;
+        margin-top: 7px;
+    }
+}
+.pull-left {
+    float: left;
+}
+.escape-image {
+    margin-left: 70px;
+}
+.custom-area {
+    height: 200px;
 }

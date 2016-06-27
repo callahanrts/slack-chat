@@ -48,4 +48,3 @@ class FileUploadView extends ScrollView
   # Upload the selection as a text snippet to slack (includes comment)
   uploadSelection: (e) =>
     @stateController.fileManager.uploadSelection(@channels, $("#comment").val())
-

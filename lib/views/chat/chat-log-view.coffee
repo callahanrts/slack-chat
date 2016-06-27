@@ -54,23 +54,21 @@ class ChatLogView extends ScrollView
     name = author.name
     """
     <div class='message native-key-bindings #{message.subtype}'>
-      <table>
-        <tr>
-          <td>
-            <img class='image' src=#{image} />
-          </td>
-          <td>
-            <span class='name'>#{name}</span>
-            <span class='ts'>#{@getTime(message.ts)}</span>
-          </td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>
-            <div class='text'>#{@parseMessage(message)}</div>
-          </td>
-        </tr>
-      <table>
+
+      <div class="pull-left">
+        <img class='image' src=#{image} />
+      </div>
+
+      <div class="escape-image">
+        <div>
+          <span class='name'>#{name}</span>
+          <span class='ts'>#{@getTime(message.ts)}</span>
+        </div>
+
+        <div>
+          <div class='text'>#{@parseMessage(message)}</div>
+        </div>
+      </div>
     </div>
     """
 

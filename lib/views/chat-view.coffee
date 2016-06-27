@@ -17,7 +17,7 @@ class ChatView extends View
         @h1 name, class: "#{'channel' unless @chat.profile}"
       @div class: 'chat-log', outlet: 'chatLog'
       @div class: 'response-container', outlet: 'responseContainer', =>
-        @textarea class: 'response', class: 'form-control native-key-bindings', outlet: 'response'
+        @textarea class: 'response', class: 'form-control native-key-bindings', outlet: 'response', placeholder:'Add a new message'
 
   initialize: (@stateController, @chat) ->
     @width(400)
